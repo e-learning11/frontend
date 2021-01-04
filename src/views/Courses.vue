@@ -1,9 +1,18 @@
 <template>
   <!-- Hero Container -->
   <v-container fluid class="hero-container white--text">
-    <v-row dense align="center">
+    <v-row no-gutters align="center">
       <v-col cols="12" class="center-horizontally">
-        <h1 class="text-h1 font-weight-bold mb-5">Courses</h1>
+        <h1
+          class="font-weight-bold mb-5"
+          :class="{
+            'text-h4': $vuetify.breakpoint.xs,
+            'text-h3': $vuetify.breakpoint.sm,
+            'text-h1': $vuetify.breakpoint.mdAndUp
+          }"
+        >
+          Courses
+        </h1>
       </v-col>
     </v-row>
   </v-container>
