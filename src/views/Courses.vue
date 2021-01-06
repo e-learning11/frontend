@@ -2,20 +2,22 @@
   <div>
     <!-- Hero Container -->
     <v-container fluid class="hero-container white--text">
-      <v-row no-gutters align="center">
-        <v-col cols="12" class="center-horizontally">
-          <h1
-            class="font-weight-bold mb-5"
-            :class="{
-              'text-h4': $vuetify.breakpoint.xs,
-              'text-h3': $vuetify.breakpoint.sm,
-              'text-h1': $vuetify.breakpoint.mdAndUp
-            }"
-          >
-            Courses
-          </h1>
-        </v-col>
-      </v-row>
+      <v-container>
+        <v-row dense align="center">
+          <v-col cols="12" class="center-horizontally">
+            <h1
+              class="font-weight-bold mb-5"
+              :class="{
+                'text-h4': $vuetify.breakpoint.xs,
+                'text-h3': $vuetify.breakpoint.sm,
+                'text-h1': $vuetify.breakpoint.mdAndUp
+              }"
+            >
+              Courses
+            </h1>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-container>
     <Footer></Footer>
   </div>
@@ -39,8 +41,9 @@ export default {
   object-fit: contain;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
+  height: 90vh;
 }
 .center-horizontally {
   text-align: center;
