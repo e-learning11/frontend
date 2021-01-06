@@ -1,35 +1,23 @@
-<template
-  ><router-link to="/courses" class="clear-text"
-    ><v-card
-      class="mx-auto"
-      :height="height"
+<template>
+  <router-link to="/courses" class="clear-text">
+    <v-card
+      class="mx-auto card"
       @mouseenter="reveal = true"
       @mouseleave="reveal = false"
       rounded
-      max-width="450"
-      elevation="5"
-      color="grey lighten-4"
+      :class="{ 'definite-width': $vuetify.breakpoint.sm }"
+      color="white"
     >
-      <v-img :src="CardData.image" height="70%"> </v-img>
+      <div class="anchor-img">
+        <v-img :src="CardData.image" :height="height" class="zoom-img"> </v-img>
+        <div class="anchored-text">
+          <h2 class="font-weight-medium">{{ CardData.Name }}</h2>
+        </div>
+      </div>
       <v-card-text class="black--text center-text">
-        <div class="text-h6">{{ CardData.Name }}</div>
-        <p class="text-subtitle-1">{{ CardData.Author }}</p>
+        <h3 class="text-h6 font-weight-bold mx-5">{{ CardData.text }}</h3>
+        <p class="text-subtitle-1 mx-5 text-center">{{ CardData.Author }}</p>
       </v-card-text>
-
-      <v-expand-transition>
-        <v-card
-          v-if="reveal"
-          class="transition-fast-in-fast-out v-card--reveal"
-          style="height: 100%;"
-          :color="CardData.color"
-        >
-          <v-card-text class="pb-0">
-            <p class="display-1 text-center white--text">
-              {{ CardData.text }}
-            </p>
-          </v-card-text>
-        </v-card>
-      </v-expand-transition>
     </v-card>
   </router-link>
 </template>
@@ -47,13 +35,8 @@ export default {
 </script>
 
 <style scoped>
-.v-card--reveal {
-  bottom: 0;
-  position: absolute;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.card {
+  overflow: hidden;
 }
 .clear-text {
   text-decoration: none;
@@ -63,5 +46,27 @@ export default {
   flex-direction: column;
   justify-content: center;
   height: 30%;
+}
+.definite-width {
+  max-width: 450px;
+}
+.anchored-text {
+  position: absolute;
+  bottom: 0;
+  left: 15px;
+  background-color: #1f98f4;
+  color: white;
+  font-size: 12px;
+  padding: 3px;
+}
+.anchor-img {
+  position: relative;
+  overflow: hidden;
+}
+.zoom-img {
+  transition: transform 0.2s;
+}
+.zoom-img:hover {
+  transform: scale(1.2);
 }
 </style>

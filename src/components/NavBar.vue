@@ -18,7 +18,7 @@
           text
           x-large
           color="white"
-          active-class="btn-active"
+          active-class="logo-active"
           :to="buttons[i - 1].route"
           width="220px"
         >
@@ -33,14 +33,14 @@
     </v-navigation-drawer>
 
     <!-- Navigation Bar -->
-    <v-app-bar app dense flat color="black" height="80px">
+    <v-app-bar app flat color="black" height="80">
       <v-container fluid>
         <v-row>
           <!-- Logo and Name -->
           <v-col md="3" sm="6" class="center-horizontally center-vertically">
             <v-btn
               to="/"
-              active-class="btn-active"
+              active-class="logo-active"
               text
               class="text-h4 text-none"
               color="white"
@@ -52,19 +52,18 @@
           <!-- Navigation list -->
           <v-col cols="7" v-if="$vuetify.breakpoint.mdAndUp">
             <ul class="Nav-list">
-              <v-btn
-                v-for="i in buttons.length - 1"
-                :key="i"
-                class="nav-btn text-none text-h6 font-weight-light"
-                type="li"
-                text
-                x-large
-                color="white"
-                active-class="btn-active"
-                :to="buttons[i - 1].route"
-              >
-                {{ buttons[i - 1].name }}</v-btn
-              >
+              <li v-for="i in buttons.length - 1" :key="i">
+                <v-btn
+                  class="nav-btn text-none text-h6 font-weight-light"
+                  text
+                  x-large
+                  color="white"
+                  active-class="btn-active"
+                  :to="buttons[i - 1].route"
+                >
+                  {{ buttons[i - 1].name }}</v-btn
+                >
+              </li>
             </ul>
           </v-col>
           <!-- Register Button -->
@@ -169,7 +168,14 @@ export default {
   color: #ffffff;
   text-align: center;
 }
+.btn-active {
+  border-bottom: 5px solid white;
+  border-radius: 0;
+}
 .btn-active::before {
+  opacity: 0 !important;
+}
+.logo-active::before {
   opacity: 0 !important;
 }
 </style>
