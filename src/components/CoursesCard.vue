@@ -15,8 +15,26 @@
         </div>
       </div>
       <v-card-text class="black--text center-text">
-        <h3 class="text-h6 font-weight-bold mx-5">{{ CardData.text }}</h3>
-        <p class="text-subtitle-1 mx-5 text-center">{{ CardData.Author }}</p>
+        <h3
+          class="font-weight-bold mx-5"
+          :class="{
+            'text-subtitle-1': $vuetify.breakpoint.xs,
+            'text-subtitle-1': $vuetify.breakpoint.sm,
+            'text-h6': $vuetify.breakpoint.mdAndUp
+          }"
+        >
+          {{ CardData.text }}
+        </h3>
+        <p
+          class="mx-5 text-center"
+          :class="{
+            'text-subtitle-2': $vuetify.breakpoint.xs,
+            'text-subtitle-2': $vuetify.breakpoint.sm,
+            'text-subtitle-1': $vuetify.breakpoint.mdAndUp
+          }"
+        >
+          {{ CardData.Author }}
+        </p>
       </v-card-text>
     </v-card>
   </router-link>
