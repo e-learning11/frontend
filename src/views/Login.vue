@@ -20,7 +20,7 @@
           <v-col md="8" sm="12" class="px-0">
             <v-form ref="form" class="form-center" v-model="valid">
               <v-text-field
-                color="blue darken-3"
+                color="blue darken-2"
                 outlined
                 label="E-mail"
                 required
@@ -29,7 +29,7 @@
 
               <v-text-field
                 outlined
-                color="blue darken-3"
+                color="blue darken-2"
                 label="Password"
                 required
                 v-model="password"
@@ -41,7 +41,7 @@
 
               <v-btn
                 x-large
-                color="blue darken-3"
+                color="blue darken-2"
                 class="text-h5 white--text mt-5"
                 @click="validate"
               >

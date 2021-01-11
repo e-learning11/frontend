@@ -42,14 +42,197 @@
         </v-row>
       </v-container>
     </v-container>
+
+    <!--Road to success Section-->
+    <v-container
+      :class="{
+        'mb-0': $vuetify.breakpoint.smAndDown,
+        'mt-0': $vuetify.breakpoint.smAndDown,
+        'mb-5': $vuetify.breakpoint.mdAndUp,
+        'mt-5': $vuetify.breakpoint.mdAndUp
+      }"
+    >
+      <v-row
+        class="mt-10 mb-10"
+        :class="{
+          'mb-1': $vuetify.breakpoint.smAndDown,
+          'mt-1': $vuetify.breakpoint.smAndDown
+        }"
+      >
+        <v-col
+          md="6"
+          sm="12"
+          class="center-vertical"
+          :class="{
+            'center-horizontal': $vuetify.breakpoint.smAndDown,
+            'pr-3': $vuetify.breakpoint.smAndDown,
+            'pr-16': $vuetify.breakpoint.mdAndUp
+          }"
+        >
+          <h2
+            class="mb-10 mt-10 font-weight-light"
+            :class="{
+              'text-h3': $vuetify.breakpoint.smAndDown,
+              'text-center': $vuetify.breakpoint.smAndDown,
+              'text-h2': $vuetify.breakpoint.md,
+              'text-large': $vuetify.breakpoint.lgAndUp
+            }"
+          >
+            Your Course to Success
+          </h2>
+          <p
+            class="text-h6 mb-5 mt-5 font-weight-light"
+            :class="{
+              'text-subtitle-1': $vuetify.breakpoint.smAndDown,
+              'text-center': $vuetify.breakpoint.smAndDown,
+              'text-subtitle-1': $vuetify.breakpoint.md,
+              'text-h6': $vuetify.breakpoint.lgAndUp
+            }"
+          >
+            Build skills with courses, certificates, and degrees online from
+            world-class universities and companies.
+          </p>
+          <v-btn
+            x-large
+            width="200"
+            height="80"
+            to="/register"
+            color="blue darken-1"
+            class="white--text mb-10 text-h6"
+            outlined
+            :class="{
+              'text-subtitle-1': $vuetify.breakpoint.smAndDown,
+              'text-center': $vuetify.breakpoint.smAndDown
+            }"
+            >Join Now</v-btn
+          >
+        </v-col>
+        <v-col v-if="$vuetify.breakpoint.mdAndUp" md="6">
+          <v-img
+            height="500"
+            src="../assets/Mountain-succes.png"
+            class="rounded-img"
+          ></v-img>
+        </v-col>
+      </v-row>
+    </v-container>
+
+    <!--Goals Section-->
+    <v-container fluid class="goals-section pt-10 pb-10">
+      <v-container>
+        <v-row
+          justify="center"
+          align="center"
+          class="mt-3"
+          :class="{
+            'mb-5': $vuetify.breakpoint.xs,
+            'mb-14': $vuetify.breakpoint.smAndUp
+          }"
+        >
+          <v-col
+            ><h2
+              class="text-center"
+              :class="{
+                'text-h5': $vuetify.breakpoint.xs,
+                'text-h4': $vuetify.breakpoint.sm,
+                'text-h3': $vuetify.breakpoint.mdAndUp
+              }"
+            >
+              Achieve your goals with Us
+            </h2></v-col
+          >
+        </v-row>
+        <v-row>
+          <v-col md="3" sm="6" cols="12">
+            <v-card
+              color="rgb(245, 245, 245)"
+              elevation="0"
+              class="text-center pa-5"
+            >
+              <v-icon size="60" color="blue lighten-1" class="mb-8"
+                >mdi-school-outline</v-icon
+              >
+              <h3 class="mb-3 text-h6 font-weight-medium">Learn new skills</h3>
+              <p class="text-h6 font-weight-light">
+                like Managment, graphic design and more
+              </p>
+            </v-card>
+          </v-col>
+
+          <v-col md="3" sm="6" cols="12">
+            <v-card
+              color="rgb(245, 245, 245)"
+              elevation="0"
+              class="text-center pa-5"
+            >
+              <v-icon size="60" color="blue lighten-1" class="mb-8"
+                >mdi-teach</v-icon
+              >
+              <h3 class="mb-3 text-h6 font-weight-medium">
+                Study for a career
+              </h3>
+              <p class="text-h6 font-weight-light">
+                in the high-demand fields that are open for work
+              </p>
+            </v-card>
+          </v-col>
+
+          <v-col md="3" sm="6" cols="12">
+            <v-card
+              color="rgb(245, 245, 245)"
+              elevation="0"
+              class="text-center pa-5"
+            >
+              <v-icon size="60" color="blue lighten-1" class="mb-8"
+                >mdi-certificate-outline</v-icon
+              >
+              <h3 class="mb-3 text-h6 font-weight-medium">
+                Earn a Certificate
+              </h3>
+              <p class="text-h6 font-weight-light">
+                to show your progress and your hardwork
+              </p>
+            </v-card>
+          </v-col>
+
+          <v-col md="3" sm="6" cols="12">
+            <v-card
+              color="rgb(245, 245, 245)"
+              elevation="0"
+              class="text-center pa-5"
+            >
+              <v-icon size="60" color="blue lighten-1" class="mb-8"
+                >mdi-account-group</v-icon
+              >
+              <h3 class="mb-3 text-h6 font-weight-medium">
+                Benefit your Society
+              </h3>
+              <p class="text-h6 font-weight-light">
+                help others by knowing more about the world
+              </p>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-container>
+
     <!-- Courses Section -->
     <v-container fill-height class="courses-section">
-      <v-row no-gutters justify="center" align="center" class="mb-10 mt-10 ">
+      <v-row
+        no-gutters
+        justify="center"
+        align="center"
+        class="mb-10"
+        :class="{
+          'mt-1': $vuetify.breakpoint.smAndDown,
+          'mt-10': $vuetify.breakpoint.mdAndUp
+        }"
+      >
         <h2
-          class="font-weight-black"
           :class="{
-            'text-subtitle-1': $vuetify.breakpoint.xs,
-            'text-h6': $vuetify.breakpoint.sm,
+            'text-h5': $vuetify.breakpoint.xs,
+            'text-center': $vuetify.breakpoint.smAndDown,
+            'text-h4': $vuetify.breakpoint.sm,
             'text-h3': $vuetify.breakpoint.mdAndUp
           }"
         >
@@ -162,5 +345,23 @@ export default {
 }
 .center-horizontally {
   text-align: center;
+}
+.center-horizontal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.center-vertical {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.text-large {
+  font-size: 5.5rem;
+  line-height: 5.5rem;
+}
+.goals-section {
+  background-color: rgb(245, 245, 245);
 }
 </style>
