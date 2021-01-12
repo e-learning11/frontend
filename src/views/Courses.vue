@@ -43,7 +43,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 90vh;
+  height: calc(100vh - 80px);
 }
 .center-horizontally {
   text-align: center;

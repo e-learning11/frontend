@@ -1,7 +1,15 @@
 <template>
   <v-container class="mt-16">
     <v-row justify="center" align="center">
-      <v-col cols="8">
+      <v-col
+        :class="{
+          'col-10': $vuetify.breakpoint.xs,
+          'col-8': $vuetify.breakpoint.sm,
+          'col-9': $vuetify.breakpoint.md,
+          'col-6': $vuetify.breakpoint.lg,
+          'col-4': $vuetify.breakpoint.xl
+        }"
+      >
         <v-row>
           <v-col>
             <h1
@@ -50,13 +58,33 @@
             </v-form>
 
             <v-row no-gutters class="mt-3">
-              <v-col md="6" sm="12" class="link-center">
-                <router-link to="#" class="link-style text-center"
+              <v-col
+                :class="{
+                  'col-12': $vuetify.breakpoint.smAndDown,
+                  'col-4': $vuetify.breakpoint.mdAndUp,
+                  'text-center': $vuetify.breakpoint.smAndDown,
+                  'text-left': $vuetify.breakpoint.mdAndUp
+                }"
+              >
+                <router-link to="#" class="link-style"
                   >Forgot password?</router-link
                 >
               </v-col>
-              <v-col md="6" sm="12" class="link-center">
-                <router-link to="/register" class="link-style text-center"
+              <v-col
+                :class="{
+                  'col-12': $vuetify.breakpoint.smAndDown,
+                  'col-8': $vuetify.breakpoint.mdAndUp,
+                  'text-center': $vuetify.breakpoint.smAndDown,
+                  'text-right': $vuetify.breakpoint.mdAndUp
+                }"
+              >
+                <router-link
+                  to="/register"
+                  class="link-style"
+                  :class="{
+                    'text-center': $vuetify.breakpoint.smAndDown,
+                    'text-right': $vuetify.breakpoint.mdAndUp
+                  }"
                   >Don't have an account? Sign Up</router-link
                 >
               </v-col>
@@ -102,12 +130,6 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-}
-.link-center {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 .link-style {
   text-decoration: none;

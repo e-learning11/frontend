@@ -1,7 +1,15 @@
 <template>
-  <v-container class="mt-16">
+  <v-container class="mt-10">
     <v-row justify="center" align="center">
-      <v-col cols="8">
+      <v-col
+        :class="{
+          'col-10': $vuetify.breakpoint.xs,
+          'col-8': $vuetify.breakpoint.sm,
+          'col-9': $vuetify.breakpoint.md,
+          'col-6': $vuetify.breakpoint.lg,
+          'col-4': $vuetify.breakpoint.xl
+        }"
+      >
         <v-row>
           <v-col>
             <h1

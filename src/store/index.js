@@ -4,7 +4,12 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
+  state: {
+    newNotification: {
+      state: true,
+      Message: "Hey! Nice to Have you here"
+    }
+  },
   mutations: {},
   actions: {},
   modules: {}
