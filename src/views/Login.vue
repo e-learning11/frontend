@@ -31,6 +31,7 @@
                 color="blue darken-2"
                 outlined
                 label="E-mail"
+                v-model="email"
                 required
                 :rules="[rules.required, rules.email]"
               ></v-text-field>
@@ -106,6 +107,7 @@ export default {
       show3: false,
       show4: false,
       password: "",
+      email: "",
       rules: {
         required: value => !!value || "Required.",
         email: value => {
@@ -118,6 +120,9 @@ export default {
   methods: {
     validate() {
       if (this.$refs.form.validate()) {
+        const user = { email: this.email };
+        localStorage.setItem("currentUser", JSON.stringify(user));
+        this.$store.state.currentUser = user;
         this.$router.push("/");
       }
     }
