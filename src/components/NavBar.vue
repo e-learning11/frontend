@@ -157,14 +157,13 @@
             <v-menu v-else offset-y>
               <template v-slot:activator="{ on }">
                 <v-btn
-                  depressed
                   color="white"
+                  outlined
                   v-on="on"
                   class="text-none pl-2 pr-2"
                   x-large
-                  tile
                   ><v-avatar size="30" class="mr-1 ml-0"
-                    ><v-icon size="30" color="grey darken-3"
+                    ><v-icon size="30" color="white"
                       >mdi-account-circle</v-icon
                     ></v-avatar
                   >
@@ -179,15 +178,17 @@
                 </v-btn>
               </template>
 
-              <v-list dense>
+              <v-list dense color="black">
                 <v-list-item
                   v-for="(item, index) in userButtons"
                   :key="index"
                   :to="item.route"
+                  active-class="btn-active-list"
                 >
-                  <v-list-item-title class="text-subtitle-2">{{
-                    item.name
-                  }}</v-list-item-title>
+                  <v-list-item-title
+                    class="text-subtitle-1 font-weight-light white--text"
+                    >{{ item.name }}</v-list-item-title
+                  >
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -335,6 +336,11 @@ export default {
 }
 .btn-active {
   border-bottom: 5px solid white;
+  border-radius: 0;
+}
+.btn-active-list {
+  border: 1px solid white;
+  margin: 3px 5px;
   border-radius: 0;
 }
 .btn-active::before {
