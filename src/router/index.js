@@ -5,6 +5,7 @@ import Courses from "../views/Courses.vue";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import Profile from "../views/Profile.vue";
+import EditProfile from "../views/EditProfile.vue";
 
 Vue.use(VueRouter);
 
@@ -33,6 +34,11 @@ const routes = [
     path: "/profile",
     name: "Profile",
     component: Profile
+  },
+  {
+    path: "/edit-profile",
+    name: "EditProfile",
+    component: EditProfile
   }
 ];
 
