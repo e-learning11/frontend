@@ -1,0 +1,10 @@
+{
+  "email": "admin@admin.com",
+  "password": "admin",
+  "data": {
+    "type": "user",
+    "image": null,
+    "name": "Admin",
+    "email": "admin@admin.com"
+  }
+}

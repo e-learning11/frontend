@@ -26,7 +26,7 @@
         </v-row>
         <v-row class="mt-16" justify="center" align="center">
           <v-col md="8" sm="12" class="px-0">
-            <v-form ref="form" class="form-center" v-model="valid">
+            <v-form ref="Loginform" class="form-center" v-model="valid">
               <v-text-field
                 color="blue darken-2"
                 outlined
@@ -98,6 +98,8 @@
 </template>
 
 <script>
+import api from "api-client";
+
 export default {
   data() {
     return {
@@ -118,14 +120,39 @@ export default {
     };
   },
   methods: {
-    validate() {
-      if (this.$refs.form.validate()) {
-        const user = { email: this.email };
-        localStorage.setItem("currentUser", JSON.stringify(user));
-        this.$store.state.currentUser = user;
+    async validate() {
+      // Validate the form
+      if (!this.$refs.Loginform.validate()) return;
+
+      // Send the request
+      const response = await api.loginUser({
+        email: this.email,
+        password: this.password
+      });
+
+      // If the request was successful,
+      // add the currentUser to localStorage
+      // and route to home
+      // 200 OK
+      if (response.status === 200) {
+        const currentUser = response.data.data;
+        localStorage.setItem("currentUser", JSON.stringify(currentUser));
+        this.$store.state.currentUser = currentUser;
+
+        // Display welcome Message
+        this.$store.state.newNotification.Message = "Welcome! Nice to Have you";
+        this.$store.state.newNotification.state = true;
+
         this.$router.push("/");
+      } else {
+        this.$store.state.newNotification.Message = response.data.message;
+        this.$store.state.newNotification.state = true;
       }
     }
+  },
+  beforeRouteEnter(to, from, next) {
+    if (localStorage.getItem("currentUser") == null) next();
+    else next("/");
   }
 };
 </script>

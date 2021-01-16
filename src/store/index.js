@@ -6,7 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     newNotification: {
-      state: true,
+      state: false,
       Message: "Hey! Nice to Have you here"
     },
     currentUser: null

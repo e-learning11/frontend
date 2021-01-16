@@ -214,6 +214,8 @@
 </template>
 
 <script>
+import api from "api-client";
+
 export default {
   data: () => ({
     buttons: [
@@ -282,14 +284,22 @@ export default {
     ],
     drawer: false
   }),
+
   methods: {
-    logOut(flag) {
+    async logOut(flag) {
       if (flag) {
-        localStorage.removeItem("currentUser");
-        this.$store.state.currentUser = null;
+        // Send a request to logout
+        const response = await api.logoutUser();
+
+        if (response.status === 200) {
+          localStorage.removeItem("currentUser");
+          this.$store.state.currentUser = null;
+          this.$router.push("/");
+        }
       }
     }
   },
+
   created() {
     this.$store.state.currentUser = JSON.parse(
       localStorage.getItem("currentUser")

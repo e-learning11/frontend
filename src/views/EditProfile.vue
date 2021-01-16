@@ -104,7 +104,11 @@ import Footer from "@/components/footer.vue";
 
 export default {
   name: "EditProfile",
-  components: { Footer }
+  components: { Footer },
+  beforeRouteEnter(to, from, next) {
+    if (localStorage.getItem("currentUser") == null) next("/login");
+    else next();
+  }
 };
 </script>
 

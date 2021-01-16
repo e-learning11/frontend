@@ -49,7 +49,7 @@
           >
             <div class="mr-5 font-weight-light">Email:</div>
             <p class="font-weight-medium">
-              {{ $store.state.currentUser.name || "John@Doe.com" }}
+              {{ $store.state.currentUser.email || "John@Doe.com" }}
             </p></v-col
           >
           <v-col
@@ -62,7 +62,7 @@
           >
             <div class="mr-5 font-weight-light">Phone No:</div>
             <p class="font-weight-medium">
-              {{ $store.state.currentUser.name || "01XXXXXXXXX" }}
+              {{ $store.state.currentUser.pnumber || "01XXXXXXXXX" }}
             </p></v-col
           >
           <v-col
@@ -75,7 +75,7 @@
           >
             <div class="mr-5 font-weight-light">Address:</div>
             <p class="font-weight-medium">
-              {{ $store.state.currentUser.name || "3 John street, Doe" }}
+              {{ $store.state.currentUser.address || "3 John street, Doe" }}
             </p></v-col
           >
         </v-row>
@@ -176,7 +176,11 @@ import Footer from "@/components/footer.vue";
 
 export default {
   name: "Profile",
-  components: { Footer }
+  components: { Footer },
+  beforeRouteEnter(to, from, next) {
+    if (localStorage.getItem("currentUser") == null) next("/login");
+    else next();
+  }
 };
 </script>
 
