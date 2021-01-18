@@ -293,8 +293,8 @@ export default {
 
         if (response.status === 200) {
           localStorage.removeItem("currentUser");
+          this.$store.state.newNotification.state = false;
           this.$store.state.currentUser = null;
-          this.$router.push("/");
         }
       }
     }
