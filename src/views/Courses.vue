@@ -23,13 +23,13 @@
     <!--Search query section-->
     <v-container fluid class="search-section">
       <v-container class="new-container">
-        <v-row dense align="center" justify="center" class="mt-10 mb-5">
+        <v-row dense align="center" justify="center" class="mt-5 mb-5">
           <v-col cols="12" class="text-center text-h5 font-weight-light">
             Showing {{ Courses.length }} Total Results
           </v-col>
           <v-col
             cols="12"
-            class="text-center font-weight-medium text-subtitle-1 mb-10"
+            class="text-center font-weight-medium text-subtitle-1"
           >
             Filter by
           </v-col>

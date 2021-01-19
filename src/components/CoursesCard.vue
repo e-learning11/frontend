@@ -1,5 +1,5 @@
 <template>
-  <router-link to="/courses" class="clear-text">
+  <router-link :to="courseLink" class="clear-text">
     <v-card
       class="mx-auto card"
       @mouseenter="reveal = true"
@@ -47,7 +47,16 @@ export default {
   }),
   props: {
     CardData: Object,
-    height: Number
+    height: Number,
+    courseNumber: {
+      type: Number,
+      default: 100
+    }
+  },
+  computed: {
+    courseLink() {
+      return "/course/" + this.courseNumber;
+    }
   }
 };
 </script>
