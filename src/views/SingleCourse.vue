@@ -23,7 +23,7 @@
     </v-container>
 
     <!--Main Section-->
-    <v-container class="new-container mb-10 px-0" v-if="courseData != null">
+    <v-container class="new-container mb-10 px-3" v-if="courseData != null">
       <!--Name and Info section-->
       <v-row justify="center" class="mt-5 mb-5">
         <v-col
@@ -66,9 +66,16 @@
         </v-col>
       </v-row>
 
-      <v-row>
+      <v-row justify="center">
         <!--Comments Section-->
-        <v-col cols="9" class="pa-10">
+        <v-col
+          :class="{
+            'col-9': $vuetify.breakpoint.mdAndUp,
+            'col-10': $vuetify.breakpoint.sm,
+            'col-12': $vuetify.breakpoint.xs
+          }"
+          class="pa-10"
+        >
           <v-row>
             <!--Comments Header-->
             <v-col
@@ -113,7 +120,15 @@
         </v-col>
 
         <!--Course RoadMap-->
-        <v-col cols="3" class="pt-8">
+        <v-col
+          :class="{
+            'col-3': $vuetify.breakpoint.mdAndUp,
+            'col-8': $vuetify.breakpoint.sm,
+            'col-12': $vuetify.breakpoint.xs,
+            'order-first': $vuetify.breakpoint.smAndDown
+          }"
+          class="pt-8"
+        >
           <div class="pa-3 courses-card">
             <h2
               class="text-center text-h6 font-weight-medium pill-text pt-2 pb-2 common-background white--text mb-5"
@@ -283,6 +298,11 @@ export default {
 @media (min-width: 1904px) {
   .new-container {
     max-width: 1440px;
+  }
+}
+@media (max-width: 500px) {
+  #video-wrapper {
+    height: 320px;
   }
 }
 </style>
