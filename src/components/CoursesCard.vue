@@ -55,7 +55,7 @@ export default {
   },
   computed: {
     courseLink() {
-      return "/course/" + this.courseNumber;
+      return "/course/" + this.courseNumber + "/1";
     }
   }
 };

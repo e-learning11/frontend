@@ -123,7 +123,7 @@
               </li>
             </ul>
             <ul class="Nav-list" v-else>
-              <li v-for="i in loggedButtons.length" :key="i">
+              <li v-for="i in loggedButtons.length" :key="i" class="list-item">
                 <v-btn
                   class="nav-btn text-none text-h6 font-weight-light"
                   text
@@ -358,5 +358,8 @@ export default {
 }
 .logo-active::before {
   opacity: 0 !important;
+}
+.list-item {
+  list-style: none;
 }
 </style>

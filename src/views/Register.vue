@@ -64,10 +64,10 @@
                 label="Password"
                 required
                 v-model="Userform.password"
-                :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                 :rules="[rules.required]"
-                :type="show1 ? 'text' : 'password'"
-                @click:append="show1 = !show1"
+                :type="showPassword ? 'text' : 'password'"
+                @click:append="showPassword = !showPassword"
               ></v-text-field>
 
               <v-text-field
@@ -76,7 +76,7 @@
                 label="Confirm Password"
                 required
                 v-model="Userform.confirmpassword"
-                :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                :append-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
                 :rules="[
                   rules.required,
                   rules.Matchingchar(
@@ -84,8 +84,8 @@
                     Userform.confirmpassword
                   )
                 ]"
-                :type="show2 ? 'text' : 'password'"
-                @click:append="show2 = !show2"
+                :type="showConfirmPassword ? 'text' : 'password'"
+                @click:append="showConfirmPassword = !showConfirmPassword"
               ></v-text-field>
 
               <v-btn
@@ -111,8 +111,8 @@ export default {
   data() {
     return {
       valid: true,
-      show1: false,
-      show2: false,
+      showPassword: false,
+      showConfirmPassword: false,
       Userform: {
         firstName: "",
         lastName: "",

@@ -43,7 +43,7 @@ const routes = [
     component: EditProfile
   },
   {
-    path: "/course/:id",
+    path: "/course/:courseId/:componentNumber",
     name: "SingleCourse",
     component: SingleCourse
   },

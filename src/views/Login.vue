@@ -42,10 +42,10 @@
                 label="Password"
                 required
                 v-model="password"
-                :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                 :rules="[rules.required]"
-                :type="show1 ? 'text' : 'password'"
-                @click:append="show1 = !show1"
+                :type="showPassword ? 'text' : 'password'"
+                @click:append="showPassword = !showPassword"
               ></v-text-field>
 
               <v-btn
@@ -104,10 +104,7 @@ export default {
   data() {
     return {
       valid: true,
-      show1: false,
-      show2: true,
-      show3: false,
-      show4: false,
+      showPassword: false,
       password: "",
       email: "",
       rules: {
