@@ -45,8 +45,6 @@ export default {
 
   async getCourseByid(CourseID, componentNumber) {
     const Courses = await fetch(mockCourses, 1000);
-    console.log(CourseID);
-    console.log(componentNumber);
     if (
       componentNumber <= Courses[0].components.length &&
       CourseID == Courses[0].id
@@ -55,5 +53,16 @@ export default {
     }
 
     return { status: 404 };
+  },
+
+  async getTestScore(FinalAnswers) {
+    const Courses = await fetch(mockCourses, 800);
+    let score = 0;
+    let index = 0;
+    FinalAnswers.forEach(element => {
+      if (element === Courses[0].components[3].Test[index].A[0]) score++;
+      index++;
+    });
+    return { status: 200, data: score };
   }
 };

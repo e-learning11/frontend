@@ -1,50 +1,124 @@
 [
-    {
-        "id":100,
-        "name": "Explore Vue 3 (Including Router and Vuex)",
-        "components": [
-            {
-                "number": 1,
-                "videoID": 48815306,
-                "name": "Introduction",
-                "comments": [
-                    {
-                        "userName": "Tester 1",
-                        "date": "1 day ago",
-                        "data": "This is the first comment on the video"
-                    },
-                    {
-                        "userName": "Tester 2",
-                        "date": "1 minute ago",
-                        "data": "This is the second comment on the video"
-                    }
-                ]
-            },
-            {
-                "number": 2,
-                "videoID": 363540035,
-                "name": "Vue Router and Its uses",
-                "comments": [
-                    {
-                        "userName": "Tester 1",
-                        "date": "1 day ago",
-                        "data": "This is the first comment on the video"
-                    }
-                ]
-            },
-            {
-                "number": 3,
-                "videoID": 499908635,
-                "name": "Vuex and Global Variables",
-                "comments": [
-                    {
-                        "userName": "Tester 1",
-                        "date": "1 day ago",
-                        "data": "This is the first comment on the video"
-                    }
-                ]
-            }
+  {
+    "id": 100,
+    "name": "Explore Vue 3 (Including Router and Vuex)",
+    "registered": false,
+    "components": [
+      {
+        "number": 1,
+        "videoID": 48815306,
+        "name": "Introduction",
+        "comments": [
+          {
+            "userName": "Tester 1",
+            "date": "1 day ago",
+            "data": "This is the first comment on the video"
+          },
+          {
+            "userName": "Tester 2",
+            "date": "1 minute ago",
+            "data": "This is the second comment on the video"
+          }
         ]
-
-    }
+      },
+      {
+        "number": 2,
+        "videoID": 363540035,
+        "name": "Vue Router and Its uses",
+        "comments": [
+          {
+            "userName": "Tester 1",
+            "date": "1 day ago",
+            "data": "This is the first comment on the video"
+          }
+        ]
+      },
+      {
+        "number": 3,
+        "videoID": 499908635,
+        "name": "Vuex and Global Variables",
+        "comments": [
+          {
+            "userName": "Tester 1",
+            "date": "1 day ago",
+            "data": "This is the first comment on the video"
+          }
+        ]
+      },
+      {
+        "number": 4,
+        "Test": [
+          {
+            "Q": "How are you?",
+            "A": ["True", "False"]
+          },
+          {
+            "Q": "Choose the Best out of the below answers.",
+            "A": [
+              "Sleeping For 8 hours",
+              "Eating your favourite food",
+              "Enjoying the company of friends"
+            ]
+          },
+          {
+            "Q": "How are you again?",
+            "A": ["True", "False"]
+          },
+          {
+            "Q": "Choose the Best out of the below answers.",
+            "A": [
+              "Why are you asking again?",
+              "I already answered!!",
+              "This is a wierd test."
+            ]
+          }
+        ],
+        "name": "Test",
+        "comments": [
+          {
+            "userName": "Tester 1",
+            "date": "1 day ago",
+            "data": "This is the first comment on the video"
+          }
+        ]
+      },
+      {
+        "number": 5,
+        "Test": [
+          {
+            "Q": "How are you?",
+            "A": ["True", "False"]
+          },
+          {
+            "Q": "Choose the Best out of the below answers.",
+            "A": [
+              "Sleeping For 8 hours",
+              "Eating your favourite food",
+              "Enjoying the company of friends"
+            ]
+          },
+          {
+            "Q": "How are you again?",
+            "A": ["True", "False"]
+          },
+          {
+            "Q": "Choose the Best out of the below answers.",
+            "A": [
+              "Why are you asking again?",
+              "I already answered!!",
+              "This is a wierd test."
+            ]
+          }
+        ],
+        "name": "Second Test",
+        "comments": [
+          {
+            "userName": "Tester 1",
+            "date": "1 day ago",
+            "data": "This is the first comment on the video"
+          }
+        ]
+      }
+    ]
+  }
 ]

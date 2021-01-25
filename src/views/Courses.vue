@@ -133,7 +133,7 @@ export default {
       },
       {
         image: img4,
-        Name: "React Course",
+        Name: "React Course and other stuff",
         Author: "Mohamed Elsharbawy",
         text: "Explore the hidden waterfall deep inside the Amazon jungle",
         color: "blue"

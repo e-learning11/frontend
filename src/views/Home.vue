@@ -376,10 +376,11 @@ export default {
   components: { Footer, CourseCard },
   methods: {
     scrollto(el) {
-      var element = document.getElementById(el);
-      var headerOffset = 80;
-      var elementPosition = element.getBoundingClientRect().top;
-      var offsetPosition = elementPosition - headerOffset;
+      let bodyRect = document.body.getBoundingClientRect().top;
+      let element = document.getElementById(el);
+      let headerOffset = 80;
+      let elementPosition = element.getBoundingClientRect().top;
+      let offsetPosition = elementPosition - bodyRect - headerOffset;
 
       window.scrollTo({
         top: offsetPosition,
