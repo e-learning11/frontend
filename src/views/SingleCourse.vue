@@ -264,7 +264,7 @@
                   </v-col>
                   <v-col cols="10" class="pl-3">
                     <h3 class="text-h6 font-weight-medium">
-                      {{ currentUser.name }}
+                      {{ $store.state.currentUser.name }}
                     </h3>
                     <v-textarea
                       filled
@@ -350,7 +350,6 @@ export default {
     return {
       CourseComponent: null,
       course: null,
-      currentUser: null,
       currentComponent: 1,
       canView: true,
       validForm: false,
@@ -392,7 +391,7 @@ export default {
     },
     registerCourse() {
       // if there is no user redirect him to login
-      if (this.currentUser == null) this.$router.push("/login");
+      if (this.$store.state.currentUser == null) this.$router.push("/login");
       // @TODO Send the request to register the user
       this.canView = true;
     }
@@ -430,10 +429,8 @@ export default {
       this.CourseComponent = this.course.components[
         this.$route.params.componentNumber - 1
       ];
-      // Get the currentUser from localstorage
-      this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
       //Check if there isnt a user logged or the user has registered this course
-      if (this.currentUser == null || !this.course.registered) {
+      if (this.$store.state.currentUser == null || !this.course.registered) {
         // Set can View to false and push the router to the first page of course
         this.canView = false;
         if (Number(this.$route.params.componentNumber) !== 1)

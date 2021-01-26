@@ -2,7 +2,7 @@
   "email": "admin@admin.com",
   "password": "admin",
   "data": {
-    "type": "user",
+    "type": "Teacher",
     "image": null,
     "name": "Admin",
     "email": "admin@admin.com"

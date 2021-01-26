@@ -9,6 +9,7 @@
       bottom
       v-if="$vuetify.breakpoint.smAndDown"
     >
+      <!--Unregistered User Navigation Drawer buttons-->
       <ul
         v-if="$store.state.currentUser == null"
         class="Drawer-list mt-10 pl-0"
@@ -33,6 +34,8 @@
           </v-col></v-btn
         >
       </ul>
+
+      <!--registered User Navigation Drawer buttons-->
       <template v-else>
         <v-row no-gutters class="mt-5 mx-5" justify="center">
           <v-col cols="12" class="text-center">
@@ -46,6 +49,24 @@
         </v-row>
 
         <ul class="Drawer-list mt-5 pl-0">
+          <v-btn
+            class="nav-btn text-none text-h6 font-weight-light"
+            type="li"
+            text
+            x-large
+            color="white"
+            active-class="logo-active"
+            :to="loggedButtons[3].route"
+            width="220px"
+            v-if="$store.state.currentUser.type == 'Teacher'"
+          >
+            <v-col>
+              <v-icon>{{ loggedButtons[3].icon }}</v-icon>
+            </v-col>
+            <v-col>
+              {{ loggedButtons[3].name }}
+            </v-col></v-btn
+          >
           <v-btn
             v-for="j in userButtons.length"
             :key="j"
@@ -66,7 +87,7 @@
             </v-col></v-btn
           >
           <v-btn
-            v-for="i in loggedButtons.length"
+            v-for="i in loggedButtons.length - 1"
             :key="i + userButtons.length"
             class="nav-btn text-none text-h6 font-weight-light"
             type="li"
@@ -108,6 +129,7 @@
           </v-col>
           <!-- Navigation list -->
           <v-col cols="7" v-if="$vuetify.breakpoint.mdAndUp">
+            <!--Unregistered User Navigation List buttons-->
             <ul class="Nav-list" v-if="$store.state.currentUser == null">
               <li v-for="i in buttons.length - 1" :key="i">
                 <v-btn
@@ -122,8 +144,27 @@
                 >
               </li>
             </ul>
+
+            <!--registered User Navigation List buttons-->
             <ul class="Nav-list" v-else>
-              <li v-for="i in loggedButtons.length" :key="i" class="list-item">
+              <li class="list-item">
+                <v-btn
+                  class="nav-btn text-none text-h6 font-weight-light"
+                  text
+                  x-large
+                  color="white"
+                  :active-class="loggedButtons[3].activeclass"
+                  :to="loggedButtons[3].route"
+                  v-if="$store.state.currentUser.type == 'Teacher'"
+                >
+                  {{ loggedButtons[3].name }}</v-btn
+                >
+              </li>
+              <li
+                v-for="i in loggedButtons.length - 1"
+                :key="i"
+                class="list-item"
+              >
                 <v-btn
                   class="nav-btn text-none text-h6 font-weight-light"
                   text
@@ -223,28 +264,24 @@ export default {
         name: "Home",
         route: "/",
         icon: "mdi-home",
-        logged: 0,
         activeclass: "btn-active"
       },
       {
         name: "Courses",
         route: "/courses",
         icon: "mdi-book",
-        logged: 0,
         activeclass: "btn-active"
       },
       {
         name: "Login",
         route: "/login",
         icon: "mdi-login-variant",
-        logged: 1,
         activeclass: "btn-active"
       },
       {
         name: "Register",
         route: "/register",
         icon: "mdi-pencil",
-        logged: 1,
         activeclass: "btn-active"
       }
     ],
@@ -253,7 +290,7 @@ export default {
         name: "Home",
         route: "/",
         icon: "mdi-home",
-        logged: 0,
+        isTeacher: true,
         activeclass: "btn-active",
         action: false
       },
@@ -261,7 +298,7 @@ export default {
         name: "Courses",
         route: "/courses",
         icon: "mdi-book",
-        logged: 0,
+        isTeacher: true,
         activeclass: "btn-active",
         action: false
       },
@@ -269,8 +306,17 @@ export default {
         name: "Log Out",
         route: "/",
         icon: "mdi-login",
+        isTeacher: true,
         activeclass: "logo-active",
         action: true
+      },
+      {
+        name: "Create Course",
+        route: "/createcourse",
+        icon: "mdi-bank-plus",
+        isTeacher: true,
+        activeclass: "btn-active",
+        action: false
       }
     ],
     userButtons: [
