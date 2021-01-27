@@ -51,7 +51,7 @@
           >
             <router-link class="list-item" to="/">Contact</router-link>
             <router-link class="list-item" to="/">Support</router-link>
-            <router-link class="list-item" to="/">Destiantions</router-link>
+            <router-link class="list-item" to="/">Destinations</router-link>
             <router-link class="list-item" to="/">Sponsorships</router-link>
           </v-list>
         </v-col>

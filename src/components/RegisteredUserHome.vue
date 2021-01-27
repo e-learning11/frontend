@@ -49,7 +49,15 @@
 
       <!--Current Enrolled/Teached Courses-->
       <v-row v-if="Courses.length">
-        <v-col v-for="i in 2" :key="i" cols="6" class="mb-10">
+        <v-col
+          v-for="i in 2"
+          :key="i"
+          :class="{
+            'col-6': $vuetify.breakpoint.smAndUp,
+            'col-12': $vuetify.breakpoint.xs
+          }"
+          class="mb-10"
+        >
           <CourseCard :height="height" :CardData="Courses[i - 1]"></CourseCard>
         </v-col>
       </v-row>

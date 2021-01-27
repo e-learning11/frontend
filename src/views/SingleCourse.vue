@@ -407,7 +407,7 @@ export default {
         date: "Now",
         data: this.newCommentText
       };
-      // @Todo Send the request to add comment
+      // @TODO Send the request to add comment
 
       // If successful add the comment to the data
       this.newCommentText = "";

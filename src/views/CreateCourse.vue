@@ -2,7 +2,11 @@
   <div>
     <v-container fluid id="mycourses-section">
       <v-container fill-height class="new-container mt-5 mb-5">
-        <v-card width="100%" class="px-10 pt-5" color="#F5F5F5">
+        <v-card
+          width="100%"
+          :class="{ 'px-10': $vuetify.breakpoint.smAndUp }"
+          color="#F5F5F5"
+        >
           <!--Header-->
           <v-row
             class="mb-10"
@@ -24,14 +28,25 @@
                 Create Course
               </h2>
             </v-col>
-            <v-col cols="12" class="text-center">
+            <v-col
+              v-for="(tab, i) in tabs"
+              :key="i"
+              :class="{
+                'col-auto': $vuetify.breakpoint.smAndUp,
+                'col-12': $vuetify.breakpoint.xs
+              }"
+              class="text-center"
+            >
               <!--Form Components-->
               <v-btn
                 :outlined="currentTab != tab.component"
                 color="blue darken-1"
                 class="mx-1 white--text"
-                v-for="(tab, i) in tabs"
-                :key="i"
+                :class="{
+                  'col-auto': $vuetify.breakpoint.smAndUp,
+                  'col-10': $vuetify.breakpoint.xs,
+                  'text-body': $vuetify.breakpoint.xs
+                }"
                 @click="currentTab = tab.component"
               >
                 {{ tab.name }}
@@ -41,7 +56,12 @@
 
           <!--New Course Cards-->
           <v-row justify="center">
-            <v-col cols="10">
+            <v-col
+              :class="{
+                'col-10': $vuetify.breakpoint.smAndUp,
+                'col-11': $vuetify.breakpoint.xs
+              }"
+            >
               <v-fade-transition>
                 <component :is="currentTab"></component>
               </v-fade-transition>

@@ -2,9 +2,22 @@
   <div>
     <!--New section Card Either a Quiz or A video-->
     <v-form ref="VideoForm">
-      <v-card shaped color="white" class="pa-8">
+      <v-card
+        shaped
+        color="white"
+        class="pb-5"
+        :class="{
+          'pa-8': $vuetify.breakpoint.smAndUp,
+          'pa-3': $vuetify.breakpoint.xs
+        }"
+      >
         <v-row justify="center" class="mb-5">
-          <v-col cols="6">
+          <v-col
+            :class="{
+              'cols-6': $vuetify.breakpoint.smAndUp,
+              'cols-12': $vuetify.breakpoint.xs
+            }"
+          >
             <h2 class="text-center text-h4 font-weight-light">
               New Video
             </h2></v-col
@@ -46,7 +59,7 @@
     <!-- Add Course Button-->
     <v-row class="mb-10 mt-10" justify="center" align="center">
       <v-btn
-        x-large
+        large
         color="red darken-3"
         outlined
         class="white--text text-none text-h6 mr-5"
@@ -54,7 +67,7 @@
         >Reset</v-btn
       >
       <v-btn
-        x-large
+        large
         color="blue darken-2"
         outlined
         @click="AddVideo"
@@ -92,7 +105,7 @@ export default {
       this.$root.$emit("NewComponent", this.VideoInfo);
       this.$store.state.CourseInfo.components.push({
         ...this.VideoInfo,
-        type: "video"
+        type: "Video"
       });
       //Call Reset
       this.Reset();
