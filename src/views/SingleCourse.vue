@@ -273,6 +273,7 @@
                       label="Share a Comment"
                       class="mt-7 mb-0"
                       auto-grow
+                      v-model="newCommentText"
                     ></v-textarea>
                   </v-col>
                 </v-row>
@@ -282,6 +283,7 @@
                     outlined
                     color="blue darken-2"
                     class="text-h5 white--text mb-5 text-none"
+                    @click="addComment"
                   >
                     Add Comment
                   </v-btn>
@@ -353,6 +355,7 @@ export default {
       currentComponent: 1,
       canView: true,
       validForm: false,
+      newCommentText: "",
       TestData: {
         finalAnswers: [],
         takeTest: true,
@@ -394,6 +397,21 @@ export default {
       if (this.$store.state.currentUser == null) this.$router.push("/login");
       // @TODO Send the request to register the user
       this.canView = true;
+    },
+    addComment() {
+      // if There is no data in the comment return
+      if (this.newCommentText === "") return;
+      //Get the Comment data from the page
+      const newComment = {
+        userName: this.$store.state.currentUser.name,
+        date: "Now",
+        data: this.newCommentText
+      };
+      // @Todo Send the request to add comment
+
+      // If successful add the comment to the data
+      this.newCommentText = "";
+      this.CourseComponent.comments.push(newComment);
     }
   },
 

@@ -9,7 +9,17 @@ export default new Vuex.Store({
       state: false,
       Message: "Hey! Nice to Have you here"
     },
-    currentUser: null
+    currentUser: null,
+    CourseInfo: {
+      Name: "",
+      Description: "",
+      photo: null,
+      Gender: null,
+      Prerequisites: [],
+      URL: null,
+      Age: [0, 70],
+      components: []
+    }
   },
   mutations: {},
   actions: {},
