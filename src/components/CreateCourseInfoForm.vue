@@ -206,6 +206,21 @@
       <v-col cols="auto">
         <v-btn
           large
+          color="green darken-3"
+          outlined
+          class="white--text text-none"
+          :class="{
+            'text-h6': $vuetify.breakpoint.smAndUp,
+            'mr-5': $vuetify.breakpoint.smAndUp,
+            'text-body': $vuetify.breakpoint.xs
+          }"
+          @click="SaveProgress"
+          >Save Progress</v-btn
+        >
+      </v-col>
+      <v-col cols="auto">
+        <v-btn
+          large
           color="blue darken-2"
           outlined
           class="white--text text-none"
@@ -243,6 +258,7 @@ export default {
         Age: [0, 70],
         components: []
       };
+      localStorage.removeItem("CourseInfo");
     },
     SubmitCourse() {
       // Check for validation
@@ -260,6 +276,12 @@ export default {
       this.$store.state.newNotification.Message =
         "New Course Added Successfuly";
       this.$store.state.newNotification.state = true;
+    },
+    SaveProgress() {
+      localStorage.setItem(
+        "CourseInfo",
+        JSON.stringify(this.$store.state.CourseInfo)
+      );
     },
     RemoveComponent(CNumber) {
       //Remove component from Array

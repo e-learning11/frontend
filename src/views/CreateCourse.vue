@@ -111,6 +111,9 @@ export default {
     this.$root.$on("NewComponent", () => {
       this.currentTab = "MainInfo";
     });
+    // Check if CourseInfo is in LocalStorage
+    let CourseInfo = JSON.parse(localStorage.getItem("CourseInfo"));
+    if (CourseInfo != null) this.$store.state.CourseInfo = CourseInfo;
   },
   beforeRouteEnter(to, from, next) {
     const currentUser = JSON.parse(localStorage.getItem("currentUser"));

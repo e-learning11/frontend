@@ -14,7 +14,7 @@
       <!--Test Form section-->
       <v-container
         class="test-section new-container mt-10 mb-10"
-        v-if="!CourseComponent.videoID"
+        v-if="CourseComponent.type === 'Test'"
       >
         <v-card
           color="white"
@@ -95,8 +95,66 @@
         </v-card>
       </v-container>
 
+      <!--Assignmet Section-->
+      <v-container
+        class="test-section new-container mt-10 mb-10"
+        v-if="CourseComponent.type === 'Assignment'"
+      >
+        <v-card
+          color="white"
+          shaped
+          elevation="2"
+          class="pa-10"
+          max-width="900"
+        >
+          <v-row justify="center">
+            <v-col cols="12">
+              <h3 class="text-center text-h4">{{ CourseComponent.name }}</h3>
+            </v-col>
+            <v-col cols="12" class="text-center">
+              <v-btn
+                large
+                outlined
+                color="blue darken-2"
+                class="text-h6 white--text mt-5 text-none"
+                @click="DownloadFile"
+              >
+                Download Assignment
+              </v-btn>
+
+              <v-divider class="mt-5"></v-divider>
+            </v-col>
+            <v-col cols="10" class="mt-10 text-center">
+              <v-form ref="AssignmentForm" v-model="validAssignment">
+                <v-file-input
+                  label="Upload your work"
+                  dense
+                  v-model="AssignmentFile"
+                  :rules="[v => !!v || 'No Work Submitted']"
+                ></v-file-input>
+              </v-form>
+
+              <v-btn
+                large
+                outlined
+                color="blue darken-2"
+                class="text-h6 white--text mt-5 text-none"
+                :disabled="!validAssignment"
+                @click="SubmitAssignmet"
+              >
+                Submit
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-container>
+
       <!--Video Section-->
-      <v-container fluid class="video-container" v-if="CourseComponent.videoID">
+      <v-container
+        fluid
+        class="video-container"
+        v-if="CourseComponent.type === 'Video'"
+      >
         <div id="video-wrapper">
           <iframe
             :src="videoURL"
@@ -360,7 +418,9 @@ export default {
         finalAnswers: [],
         takeTest: true,
         currentScore: 0
-      }
+      },
+      AssignmentFile: null,
+      validAssignment: false
     };
   },
   computed: {
@@ -412,6 +472,16 @@ export default {
       // If successful add the comment to the data
       this.newCommentText = "";
       this.CourseComponent.comments.push(newComment);
+    },
+    SubmitAssignmet() {
+      // Validate the form
+      if (!this.$refs.AssignmentForm.validate()) return;
+
+      //@TODO Send the request of Assignment
+      //@TODO check How the Assignment Would be graded
+    },
+    DownloadFile() {
+      //@TODO Check how the file will come from request and Download
     }
   },
 
@@ -423,12 +493,13 @@ export default {
       ];
     }
     // @TODO Take values from request
-    // Reset test Values
+    // Reset test Values and Assignment Files
     this.TestData = {
       finalAnswers: [],
       takeTest: true,
       currentScore: 0
     };
+    this.AssignmentFile = null;
     // call next
     next();
   },

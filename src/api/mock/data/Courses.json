@@ -7,6 +7,7 @@
       {
         "number": 1,
         "videoID": 48815306,
+        "type": "Video",
         "name": "Introduction",
         "comments": [
           {
@@ -24,6 +25,7 @@
       {
         "number": 2,
         "videoID": 363540035,
+        "type": "Video",
         "name": "Vue Router and Its uses",
         "comments": [
           {
@@ -36,6 +38,7 @@
       {
         "number": 3,
         "videoID": 499908635,
+        "type": "Video",
         "name": "Vuex and Global Variables",
         "comments": [
           {
@@ -47,6 +50,7 @@
       },
       {
         "number": 4,
+        "type": "Test",
         "Test": [
           {
             "Q": "How are you?",
@@ -84,6 +88,7 @@
       },
       {
         "number": 5,
+        "type": "Test",
         "Test": [
           {
             "Q": "How are you?",
@@ -118,6 +123,12 @@
             "data": "This is the first comment on the video"
           }
         ]
+      },
+      {
+        "number": 6,
+        "name": "First Assignment",
+        "type": "Assignment",
+        "File": null
       }
     ]
   }
