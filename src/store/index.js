@@ -13,6 +13,7 @@ export default new Vuex.Store({
     CourseInfo: {
       Name: "",
       Description: "",
+      Summary: "",
       photo: null,
       Gender: null,
       Prerequisites: [],

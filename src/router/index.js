@@ -6,7 +6,8 @@ import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import Profile from "../views/Profile.vue";
 import EditProfile from "../views/EditProfile.vue";
-import SingleCourse from "../views/SingleCourse.vue";
+import CourseContent from "../views/CourseContent.vue";
+import CourseMain from "../views/CourseMain.vue";
 import CreateCourse from "../views/CreateCourse.vue";
 import NotFound from "../views/NotFound.vue";
 
@@ -44,9 +45,14 @@ const routes = [
     component: EditProfile
   },
   {
+    path: "/course/:courseId/",
+    name: "CourseMain",
+    component: CourseMain
+  },
+  {
     path: "/course/:courseId/:componentNumber",
-    name: "SingleCourse",
-    component: SingleCourse
+    name: "CourseContent",
+    component: CourseContent
   },
   {
     path: "/createcourse",

@@ -58,6 +58,23 @@
               'text-subtitle-1': $vuetify.breakpoint.xs
             }"
           >
+            <div class="mr-5 font-weight-bold">Course Summary :</div>
+            <v-textarea
+              filled
+              full-width
+              :rules="[rules.Required]"
+              class="mt-5 mb-0"
+              auto-grow
+              v-model="$store.state.CourseInfo['Summary']"
+            ></v-textarea>
+          </v-col>
+          <v-col
+            cols="12"
+            :class="{
+              'text-h6': $vuetify.breakpoint.smAndUp,
+              'text-subtitle-1': $vuetify.breakpoint.xs
+            }"
+          >
             <div class="mr-5 font-weight-bold">Photo :</div>
             <v-file-input
               label="Upload An Image"
@@ -338,6 +355,7 @@ export default {
       this.$store.state.CourseInfo = {
         Name: "",
         Description: "",
+        Summary: "",
         photo: null,
         Gender: null,
         Prerequisites: [],

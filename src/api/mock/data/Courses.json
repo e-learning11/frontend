@@ -3,6 +3,14 @@
     "id": 100,
     "name": "Explore Vue 3 (Including Router and Vuex)",
     "registered": false,
+    "Summary": "Learn HTML, CSS , Javascript and Much more in this Free Course, Made for you and your knowledge",
+    "Description": " Learn HTML, CSS , Javascript and Much more in this Free Course. Made for you and your knowledge. Hello and Welcome to the Course, This is your instructor saluting you.",
+    "Instructor": {
+      "name": "We Love Teaching",
+      "about": "The Purpose of Teaching is Delivering and Enjoymnet of passing Knowledge"
+    },
+    "Language": "English",
+    "Date": "1/1/2021",
     "components": [
       {
         "number": 1,
@@ -92,7 +100,8 @@
         "Test": [
           {
             "Q": "How are you?",
-            "A": ["True", "False"]
+            "A": ["True", "False"],
+            "type": "TorF"
           },
           {
             "Q": "Choose the Best out of the below answers.",
@@ -100,11 +109,13 @@
               "Sleeping For 8 hours",
               "Eating your favourite food",
               "Enjoying the company of friends"
-            ]
+            ],
+            "type": "MCQ"
           },
           {
             "Q": "How are you again?",
-            "A": ["True", "False"]
+            "A": ["True", "False"],
+            "type": "TorF"
           },
           {
             "Q": "Choose the Best out of the below answers.",
@@ -112,7 +123,12 @@
               "Why are you asking again?",
               "I already answered!!",
               "This is a wierd test."
-            ]
+            ],
+            "type": "MCQ"
+          },
+          {
+            "Q": "Talk About your Hobbies.",
+            "type": "Essay"
           }
         ],
         "name": "Second Test",

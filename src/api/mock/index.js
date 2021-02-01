@@ -43,12 +43,9 @@ export default {
     }
   },
 
-  async getCourseByid(CourseID, componentNumber) {
+  async getCourseByid(CourseID) {
     const Courses = await fetch(mockCourses, 1000);
-    if (
-      componentNumber <= Courses[0].components.length &&
-      CourseID == Courses[0].id
-    ) {
+    if (CourseID == Courses[0].id) {
       return { status: 200, data: Courses[0] };
     }
 
