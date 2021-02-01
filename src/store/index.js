@@ -18,7 +18,8 @@ export default new Vuex.Store({
       Prerequisites: [],
       URL: null,
       Age: [0, 70],
-      components: []
+      components: [],
+      sections: []
     }
   },
   mutations: {},

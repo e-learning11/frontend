@@ -9,6 +9,7 @@
           'pa-3': $vuetify.breakpoint.xs
         }"
       >
+        <!--Course Info Header-->
         <v-row class="mb-5">
           <v-col cols="12">
             <h2 class="text-center text-h4 font-weight-light">
@@ -16,6 +17,8 @@
             </h2></v-col
           >
         </v-row>
+
+        <!--Course Data Input-->
         <v-row>
           <v-col
             cols="12"
@@ -141,6 +144,8 @@
               </template>
             </v-range-slider>
           </v-col>
+
+          <!--Course Components-->
           <v-col
             cols="12"
             class="mb-0 pb-0"
@@ -182,6 +187,88 @@
               </v-btn>
             </v-col>
           </v-row>
+
+          <!--Sections Of Components-->
+          <v-col
+            cols="12"
+            class="mb-0 pb-0 mt-5"
+            :class="{
+              'text-h6': $vuetify.breakpoint.smAndUp,
+              'text-subtitle-1': $vuetify.breakpoint.xs
+            }"
+          >
+            <h3 class="text-center">Sections</h3>
+          </v-col>
+          <v-col
+            cols="12"
+            v-if="$store.state.CourseInfo.sections.length == 0"
+            class="mt-3 pt-0"
+          >
+            <p class="text-center text-h6 font-weight-light mb-0">
+              There are no sections yet
+            </p>
+            <p class="text-center text-subtitle-1 font-weight-bold mt-0">
+              Sections Must Cover All Components Created
+            </p>
+          </v-col>
+          <v-row class="mt-5" justify="center">
+            <v-col
+              cols="10"
+              v-for="(section, i) in $store.state.CourseInfo.sections"
+              :key="i"
+              class="text-h6 font-weight-light component-entry px-5 mb-5 text-center"
+            >
+              <div>
+                Section {{ i + 1 }}
+                <v-btn icon @click="DeleteSection(i)">
+                  <v-icon color="red">mdi-close-circle-outline</v-icon>
+                </v-btn>
+              </div>
+              <v-text-field
+                placeholder="Section Name"
+                class="mx-5"
+                v-model="$store.state.CourseInfo.sections[i].Name"
+                :rules="[rules.Required]"
+              ></v-text-field>
+
+              <v-row justify="center">
+                <v-col cols="auto">
+                  Start:
+                  <span class="font-weight-bold mr-3">{{ section.start }}</span>
+                  <v-btn icon @click="ChangeSection(i, 0, 1)">
+                    <v-icon color="black">mdi-arrow-up-circle</v-icon>
+                  </v-btn>
+                  <v-btn icon @click="ChangeSection(i, 0, -1)">
+                    <v-icon color="black">mdi-arrow-down-circle</v-icon>
+                  </v-btn>
+                </v-col>
+                <v-col cols="auto">
+                  End:
+                  <span class="font-weight-bold mr-3">{{ section.end }}</span>
+                  <v-btn icon @click="ChangeSection(i, 1, 1)">
+                    <v-icon color="black">mdi-arrow-up-circle</v-icon>
+                  </v-btn>
+                  <v-btn icon @click="ChangeSection(i, 1, -1)">
+                    <v-icon color="black">mdi-arrow-down-circle</v-icon>
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-col>
+          </v-row>
+          <v-col cols="12" class="text-center">
+            <v-btn
+              large
+              color="blue darken-3"
+              outlined
+              :disabled="
+                $store.state.CourseInfo.components.length <=
+                  $store.state.CourseInfo.sections.length
+              "
+              @click="AddSection"
+              class="white--text text-none text-h6"
+              >Add Section</v-btn
+            >
+          </v-col>
         </v-row>
       </v-card>
     </v-form>
@@ -256,7 +343,8 @@ export default {
         Prerequisites: [],
         URL: null,
         Age: [0, 70],
-        components: []
+        components: [],
+        sections: []
       };
       localStorage.removeItem("CourseInfo");
     },
@@ -264,7 +352,8 @@ export default {
       // Check for validation
       if (
         !this.$refs.InfoForm.validate() ||
-        this.$store.state.CourseInfo.components.length == 0
+        this.$store.state.CourseInfo.components.length == 0 ||
+        !this.ValidateSections()
       )
         return;
       //@TODO Should Send the Request
@@ -302,6 +391,105 @@ export default {
       tempArray[CNumber] = temp;
       // Set the Array After Swap
       this.$store.state.CourseInfo.components = tempArray;
+    },
+    AddSection() {
+      // Add a new section
+      let newSection;
+      //Special case: First Section
+      if (this.$store.state.CourseInfo.sections.length === 0) {
+        newSection = {
+          Name: "",
+          start: 1,
+          end: this.$store.state.CourseInfo.components.length
+        };
+      }
+      //Normal Case
+      // Its end is always the last component available
+      // And the beginning is the end of its previous section
+      else {
+        newSection = {
+          Name: "",
+          start: this.$store.state.CourseInfo.components.length,
+          end: this.$store.state.CourseInfo.components.length
+        };
+      }
+      this.$store.state.CourseInfo.sections.push(newSection);
+    },
+    ChangeSection(SNumber, Case, offset) {
+      //Change the start and end of the sections
+      // Case 0 is start
+      if (Case === 0) {
+        const newValue =
+          this.$store.state.CourseInfo.sections[SNumber].start + offset;
+        // return if start + offset is less than 1 or more than end
+        if (
+          newValue < 1 ||
+          newValue > this.$store.state.CourseInfo.sections[SNumber].end
+        )
+          return;
+        // Update Value
+        this.$store.state.CourseInfo.sections[SNumber].start = newValue;
+      }
+
+      // Case 1 is end
+      else {
+        const newValue =
+          this.$store.state.CourseInfo.sections[SNumber].end + offset;
+        // return if end + offset is less than start or more than length of components
+        if (
+          newValue < this.$store.state.CourseInfo.sections[SNumber].start ||
+          newValue > this.$store.state.CourseInfo.components.length
+        )
+          return;
+        // Update Value
+        this.$store.state.CourseInfo.sections[SNumber].end = newValue;
+      }
+    },
+    DeleteSection(SNumber) {
+      //Remove a certain section
+      this.$store.state.CourseInfo.sections.splice(SNumber, 1);
+    },
+    ValidateSections() {
+      const errorInSections = () => {
+        // Display an Error Notification
+        this.$store.state.newNotification.Message =
+          "Sections Do not Cover All Created Components Correctly";
+        this.$store.state.newNotification.state = true;
+        return false;
+      };
+      //Create temp Variable
+      const tempArray = [...this.$store.state.CourseInfo.sections];
+      // if Empty return false
+      if (tempArray.length === 0) return errorInSections();
+      // Validate form
+      if (!this.$refs.SectionsForm.validate()) return false;
+      //Special case if length is 1
+      if (tempArray.length === 1) {
+        if (
+          tempArray[0].start === 1 &&
+          tempArray[0].end === this.$store.state.CourseInfo.components.length
+        )
+          return true;
+        return errorInSections();
+      }
+      //Loop through sections to check if they cover all components correctly
+      for (let i = 0; i < tempArray.length - 1; i++) {
+        // If first element check that begin is 1
+        if (i === 0 && tempArray[0].start !== 1) return errorInSections();
+
+        // Regular case
+        if (tempArray[i].end + 1 !== tempArray[i + 1].start)
+          return errorInSections();
+      }
+      // If Last element check that end is components length
+      if (
+        tempArray[tempArray.length - 1].end !==
+        this.$store.state.CourseInfo.components.length
+      )
+        return errorInSections();
+
+      // All checks successful
+      return true;
     }
   },
   created() {

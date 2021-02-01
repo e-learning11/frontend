@@ -59,11 +59,11 @@
                   ><span class="font-weight-bold">Question {{ i + 1 }} : </span>
                   {{ Item.Q }}
                 </v-col>
-                <v-col cols="12" class="pa-1">
+                <v-col cols="12" class="pa-1" v-if="Item.correctAnswer">
                   <span class="font-weight-bold">Correct Answer :</span>
                   {{ Item.correctAnswer }}
                 </v-col>
-                <v-col cols="12" class="pa-1">
+                <v-col cols="12" class="pa-1" v-if="Item.A.length > 0">
                   <v-row class="text-center" justify="center">
                     <v-col cols="auto" class="font-weight-bold"
                       >Answers :</v-col
@@ -119,6 +119,7 @@
             >
               <v-radio label="True or False" value="TorF"></v-radio>
               <v-radio label="MCQ" value="MCQ"></v-radio>
+              <v-radio label="Essay" value="Essay"></v-radio>
             </v-radio-group>
           </v-col>
           <v-col
@@ -167,7 +168,7 @@
               ></v-text-field>
             </v-col>
           </template>
-          <template v-else>
+          <template v-else-if="NewQuestion.type === 'TorF'">
             <v-col
               cols="12"
               :class="{
@@ -256,8 +257,8 @@ export default {
       // If True or false Add Answers
       if (this.NewQuestion.type === "TorF")
         this.NewQuestion.A = ["True", "False"];
-      // Else add correct Answer to Ansers
-      else {
+      // Else if MCQ add correct Answer to Answers
+      else if (this.NewQuestion.type === "MCQ") {
         this.NewQuestion.A.push(this.NewQuestion.correctAnswer);
       }
 

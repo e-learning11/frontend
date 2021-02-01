@@ -52,6 +52,38 @@
               dense
             ></v-text-field>
           </v-col>
+          <v-col
+            cols="12"
+            :class="{
+              'text-h6': $vuetify.breakpoint.smAndUp,
+              'text-subtitle-1': $vuetify.breakpoint.xs
+            }"
+          >
+            <div class="mr-5 font-weight-bold">Video Description :</div>
+            <v-textarea
+              filled
+              full-width
+              class="mt-5 mb-0"
+              auto-grow
+              v-model="VideoInfo.Description"
+              :rules="[rules.Required]"
+            ></v-textarea>
+          </v-col>
+          <v-col
+            cols="12"
+            class="mb-3"
+            :class="{
+              'text-h6': $vuetify.breakpoint.smAndUp,
+              'text-subtitle-1': $vuetify.breakpoint.xs
+            }"
+          >
+            <div class="mr-5 font-weight-bold">Attach a File :</div>
+            <v-file-input
+              label="Upload A File"
+              dense
+              v-model="VideoInfo.File"
+            ></v-file-input>
+          </v-col>
         </v-row>
       </v-card>
     </v-form>
@@ -84,7 +116,9 @@ export default {
     return {
       VideoInfo: {
         Title: "",
-        URL: ""
+        URL: "",
+        File: null,
+        Description: ""
       },
       rules: {
         Required: value => !!value || "Required."
