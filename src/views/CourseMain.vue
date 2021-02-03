@@ -9,11 +9,32 @@
       <v-container fluid class="IntroSection pt-0 pb-0">
         <v-container class="new-container">
           <v-row justify="center" class="mt-5 mb-3">
-            <v-col cols="8" class="white--text text-left px-10">
-              <h2 class="text-h4 font-weight-medium mb-3 mt-5">
+            <v-col
+              :class="{
+                'col-8': $vuetify.breakpoint.mdAndUp,
+                'col-12': $vuetify.breakpoint.smAndDown,
+                'px-10': $vuetify.breakpoint.smAndUp
+              }"
+              class="white--text text-left"
+            >
+              <h2
+                :class="{
+                  'text-h4': $vuetify.breakpoint.smAndUp,
+                  'mt-5': $vuetify.breakpoint.smAndUp,
+                  'text-h5': $vuetify.breakpoint.xs,
+                  'mt-0': $vuetify.breakpoint.xs
+                }"
+                class="font-weight-medium mb-3"
+              >
                 {{ course.name }}
               </h2>
-              <div class="text-h6 font-weight-thin mb-3">
+              <div
+                :class="{
+                  'text-h6': $vuetify.breakpoint.smAndUp,
+                  'text-subtitle-1': $vuetify.breakpoint.xs
+                }"
+                class="font-weight-thin mb-3"
+              >
                 {{ course.Summary }}
               </div>
               <div class="text-body font-weight-light mb-3">
@@ -39,8 +60,15 @@
                 <span class="font-weight-medium ml-3"> {{ course.Date }}</span>
               </div>
             </v-col>
-            <v-col cols="4" class="pa-0 text-center">
-              <v-card flat height="100%" class="pa-1 rounded-lg">
+            <v-col
+              :class="{
+                'col-4': $vuetify.breakpoint.mdAndUp,
+                'col-8': $vuetify.breakpoint.sm,
+                'col-12': $vuetify.breakpoint.xs
+              }"
+              class="pa-0 text-center"
+            >
+              <v-card elevation="10" height="100%" class="pa-1 rounded-lg">
                 <div class="iframe-container">
                   <iframe
                     :src="videoURL"
@@ -89,17 +117,33 @@
       </v-container>
 
       <!--About Course-->
-      <v-container class="new-container mb-10 px-3">
+      <v-container
+        class="new-container px-3"
+        :class="{
+          'mb-10': $vuetify.breakpoint.smAndUp,
+          'mb-0': $vuetify.breakpoint.xs
+        }"
+      >
         <v-row justify="center" class="mt-5 mb-5">
-          <v-col cols="7" class="text-left px-5">
-            <h3 class="font-weight-bold text-h5 mb-3 header-text">
+          <v-col
+            :class="{
+              'col-7': $vuetify.breakpoint.mdAndUp,
+              'col-12': $vuetify.breakpoint.smAndDown
+            }"
+            class="text-left px-5"
+          >
+            <h3 class="font-weight-medium text-h4 mb-5 header-text text-center">
               Course Content
             </h3>
-            <v-card>
-              Hello
-            </v-card>
+            <CourseComponents :sections="course.sections"></CourseComponents>
           </v-col>
-          <v-col cols="5" class="text-left px-5 ">
+          <v-col
+            :class="{
+              'col-5': $vuetify.breakpoint.mdAndUp,
+              'col-12': $vuetify.breakpoint.smAndDown
+            }"
+            class="text-left px-5 "
+          >
             <v-card outlined class="pa-5 mb-5 rounded-xl">
               <h3 class="font-weight-bold text-h5 mb-3 header-text text-center">
                 Description
@@ -113,7 +157,7 @@
                 Instructor
               </h3>
               <v-row justify="center" align="center">
-                <v-col cols="4" class="pa-5">
+                <v-col cols="auto" class="pa-5">
                   <v-img
                     width="100"
                     height="100"
@@ -121,7 +165,12 @@
                     src="..\assets\user-img.jpg"
                   ></v-img>
                 </v-col>
-                <v-col cols="8">
+                <v-col
+                  :class="{
+                    'col-8': $vuetify.breakpoint.mdAndUp,
+                    'col-11': $vuetify.breakpoint.smAndDown
+                  }"
+                >
                   <div class="font-weight-bold text-subtitle-1">
                     {{ course.Instructor.name }}
                   </div>
@@ -132,15 +181,23 @@
               </v-row>
             </v-card>
 
-            <div v-if="course.prerequisites">
-              <h3 class="font-weight-bold text-h5 mb-3">Prerequisites</h3>
-              <p>you need to have Finished the Following Courses:</p>
-              <ul>
-                <li v-for="i in course.prerequisites" :key="i">
-                  {{ i }}
+            <v-card
+              outlined
+              class="pa-5 mb-5 rounded-xl"
+              v-if="course.prerequisites"
+            >
+              <h3 class="font-weight-bold text-h5 mb-3 header-text text-center">
+                Prerequisites
+              </h3>
+              <p class="font-weight-light text-subtitle-1 mb-3">
+                You need to have Finished the Following Courses :
+              </p>
+              <ul class="font-weight-bold ml-3">
+                <li v-for="(obj, i) in course.prerequisites" :key="i">
+                  {{ obj }}
                 </li>
               </ul>
-            </div>
+            </v-card>
           </v-col>
         </v-row>
       </v-container>
@@ -154,16 +211,16 @@
 <script>
 import Footer from "@/components/footer.vue";
 import Loading from "@/components/Loading.vue";
+import CourseComponents from "@/components/CourseComponents.vue";
 //import Player from "@vimeo/player";
 import api from "api-client";
 
 export default {
-  components: { Footer, Loading },
+  components: { Footer, Loading, CourseComponents },
   data() {
     return {
       CourseComponent: null,
-      course: null,
-      validForm: false
+      course: null
     };
   },
   computed: {
@@ -188,12 +245,7 @@ export default {
       // whole course data
       this.course = response.data;
       // First component of the course
-      this.CourseComponent = this.course.components[0];
-      //Check if there isnt a user logged or the user has registered this course
-      if (this.$store.state.currentUser == null || !this.course.registered) {
-        // Set can View to false
-        this.canView = false;
-      }
+      this.CourseComponent = this.course.sections[0].components[0];
     }
     // Else route to Not found
     else {
@@ -222,11 +274,12 @@ export default {
   border: 1px solid #000;
 }
 .header-text {
-  color: #0d47a1;
-  opacity: 0.9;
+  color: #000;
+  opacity: 0.8;
 }
 .IntroSection {
   background-color: #0d47a1;
+  opacity: 0.95;
 }
 @media (min-width: 1904px) {
   .new-container {

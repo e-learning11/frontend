@@ -111,7 +111,7 @@
     </v-navigation-drawer>
 
     <!-- Navigation Bar -->
-    <v-app-bar app flat color="black" height="80">
+    <v-app-bar app flat color="black" height="80" clipped-right>
       <v-container fluid>
         <v-row>
           <!-- Logo and Name -->

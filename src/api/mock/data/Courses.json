@@ -2,149 +2,170 @@
   {
     "id": 100,
     "name": "Explore Vue 3 (Including Router and Vuex)",
-    "registered": false,
+    "registered": true,
     "Summary": "Learn HTML, CSS , Javascript and Much more in this Free Course, Made for you and your knowledge",
     "Description": " Learn HTML, CSS , Javascript and Much more in this Free Course. Made for you and your knowledge. Hello and Welcome to the Course, This is your instructor saluting you.",
     "Instructor": {
       "name": "We Love Teaching",
       "about": "The Purpose of Teaching is Delivering and Enjoymnet of passing Knowledge"
     },
+    "prerequisites": ["HTML5", "CSS3", "Javascript"],
     "Language": "English",
     "Date": "1/1/2021",
-    "components": [
+    "sections": [
       {
-        "number": 1,
-        "videoID": 48815306,
-        "type": "Video",
         "name": "Introduction",
-        "comments": [
+        "start": 1,
+        "end": 3,
+        "components": [
           {
-            "userName": "Tester 1",
-            "date": "1 day ago",
-            "data": "This is the first comment on the video"
+            "number": 1,
+            "videoID": 48815306,
+            "type": "Video",
+            "name": "Introduction"
           },
           {
-            "userName": "Tester 2",
-            "date": "1 minute ago",
-            "data": "This is the second comment on the video"
+            "number": 2,
+            "videoID": 363540035,
+            "type": "Video",
+            "name": "Vue Router and Its uses"
+          },
+          {
+            "number": 3,
+            "videoID": 499908635,
+            "type": "Video",
+            "name": "Vuex and Global Variables"
           }
         ]
       },
       {
-        "number": 2,
-        "videoID": 363540035,
-        "type": "Video",
-        "name": "Vue Router and Its uses",
-        "comments": [
+        "name": "More Topics to Talk About",
+        "start": 4,
+        "end": 5,
+        "components": [
           {
-            "userName": "Tester 1",
-            "date": "1 day ago",
-            "data": "This is the first comment on the video"
-          }
-        ]
-      },
-      {
-        "number": 3,
-        "videoID": 499908635,
-        "type": "Video",
-        "name": "Vuex and Global Variables",
-        "comments": [
-          {
-            "userName": "Tester 1",
-            "date": "1 day ago",
-            "data": "This is the first comment on the video"
-          }
-        ]
-      },
-      {
-        "number": 4,
-        "type": "Test",
-        "Test": [
-          {
-            "Q": "How are you?",
-            "A": ["True", "False"]
-          },
-          {
-            "Q": "Choose the Best out of the below answers.",
-            "A": [
-              "Sleeping For 8 hours",
-              "Eating your favourite food",
-              "Enjoying the company of friends"
-            ]
-          },
-          {
-            "Q": "How are you again?",
-            "A": ["True", "False"]
-          },
-          {
-            "Q": "Choose the Best out of the below answers.",
-            "A": [
-              "Why are you asking again?",
-              "I already answered!!",
-              "This is a wierd test."
-            ]
-          }
-        ],
-        "name": "Test",
-        "comments": [
-          {
-            "userName": "Tester 1",
-            "date": "1 day ago",
-            "data": "This is the first comment on the video"
-          }
-        ]
-      },
-      {
-        "number": 5,
-        "type": "Test",
-        "Test": [
-          {
-            "Q": "How are you?",
-            "A": ["True", "False"],
-            "type": "TorF"
-          },
-          {
-            "Q": "Choose the Best out of the below answers.",
-            "A": [
-              "Sleeping For 8 hours",
-              "Eating your favourite food",
-              "Enjoying the company of friends"
+            "number": 4,
+            "type": "Test",
+            "Test": [
+              {
+                "Q": "How are you?",
+                "A": ["True", "False"]
+              },
+              {
+                "Q": "Choose the Best out of the below answers.",
+                "A": [
+                  "Sleeping For 8 hours",
+                  "Eating your favourite food",
+                  "Enjoying the company of friends"
+                ]
+              },
+              {
+                "Q": "How are you again?",
+                "A": ["True", "False"]
+              },
+              {
+                "Q": "Choose the Best out of the below answers.",
+                "A": [
+                  "Why are you asking again?",
+                  "I already answered!!",
+                  "This is a wierd test."
+                ]
+              }
             ],
-            "type": "MCQ"
+            "name": "Test"
           },
           {
-            "Q": "How are you again?",
-            "A": ["True", "False"],
-            "type": "TorF"
-          },
-          {
-            "Q": "Choose the Best out of the below answers.",
-            "A": [
-              "Why are you asking again?",
-              "I already answered!!",
-              "This is a wierd test."
+            "number": 5,
+            "type": "Test",
+            "Test": [
+              {
+                "Q": "How are you?",
+                "A": ["True", "False"],
+                "type": "TorF"
+              },
+              {
+                "Q": "Choose the Best out of the below answers.",
+                "A": [
+                  "Sleeping For 8 hours",
+                  "Eating your favourite food",
+                  "Enjoying the company of friends"
+                ],
+                "type": "MCQ"
+              },
+              {
+                "Q": "How are you again?",
+                "A": ["True", "False"],
+                "type": "TorF"
+              },
+              {
+                "Q": "Choose the Best out of the below answers.",
+                "A": [
+                  "Why are you asking again?",
+                  "I already answered!!",
+                  "This is a wierd test."
+                ],
+                "type": "MCQ"
+              },
+              {
+                "Q": "Talk About your Hobbies.",
+                "type": "Essay"
+              }
             ],
-            "type": "MCQ"
-          },
-          {
-            "Q": "Talk About your Hobbies.",
-            "type": "Essay"
-          }
-        ],
-        "name": "Second Test",
-        "comments": [
-          {
-            "userName": "Tester 1",
-            "date": "1 day ago",
-            "data": "This is the first comment on the video"
+            "name": "Second Test"
           }
         ]
       },
       {
-        "number": 6,
         "name": "First Assignment",
-        "type": "Assignment",
-        "File": null
+        "start": 6,
+        "end": 6,
+        "components": [
+          {
+            "number": 6,
+            "name": "First Assignment",
+            "type": "Assignment",
+            "File": null
+          }
+        ]
+      },
+      {
+        "name": "Second Assignment",
+        "start": 7,
+        "end": 7,
+        "components": [
+          {
+            "number": 7,
+            "name": "First Assignment",
+            "type": "Assignment",
+            "File": null
+          }
+        ]
+      },
+      {
+        "name": "Third Assignment",
+        "start": 8,
+        "end": 8,
+        "components": [
+          {
+            "number": 8,
+            "name": "First Assignment",
+            "type": "Assignment",
+            "File": null
+          }
+        ]
+      },
+      {
+        "name": "Fourth Assignment",
+        "start": 9,
+        "end": 9,
+        "components": [
+          {
+            "number": 9,
+            "name": "First Assignment",
+            "type": "Assignment",
+            "File": null
+          }
+        ]
       }
     ]
   }

@@ -2,7 +2,7 @@
   <v-container class="cover">
     <v-progress-circular
       :size="300"
-      color="blue"
+      color="blue darken-3"
       indeterminate
     ></v-progress-circular>
 
