@@ -20,19 +20,19 @@
         "components": [
           {
             "number": 1,
-            "videoID": 48815306,
+            "videoID": "https://player.vimeo.com/video/48815306",
             "type": "Video",
             "name": "Introduction"
           },
           {
             "number": 2,
-            "videoID": 363540035,
+            "videoID": "https://player.vimeo.com/video/363540035",
             "type": "Video",
-            "name": "Vue Router and Its uses"
+            "name": "Vue Router and Its uses: An Intro to the Same name"
           },
           {
             "number": 3,
-            "videoID": 499908635,
+            "videoID": "https://player.vimeo.com/video/499908635",
             "type": "Video",
             "name": "Vuex and Global Variables"
           }

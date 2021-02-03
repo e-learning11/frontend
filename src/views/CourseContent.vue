@@ -12,6 +12,7 @@
         right
         color="#fbfbf8"
         width="25%"
+        v-if="$vuetify.breakpoint.mdAndUp"
       >
         <v-card
           flat
@@ -22,11 +23,16 @@
           <v-icon size="25" color="grey darken-3" class="mr-3">mdi-book</v-icon>
           Course Content
         </v-card>
-        <CourseComponents :sections="course.sections"></CourseComponents>
+        <CourseComponents
+          :sections="course.sections"
+          PageType="Content"
+          :CourseNumber="Number($route.params.courseId)"
+          :currentComponent="currentComponent"
+        ></CourseComponents>
       </v-navigation-drawer>
 
       <!--Main Content Container-->
-      <v-row>
+      <v-row no-gutters>
         <v-col cols="12">
           <v-container
             class="test-section new-container mt-10 mb-10"
@@ -37,7 +43,10 @@
               color="white"
               shaped
               elevation="2"
-              class="pa-10"
+              :class="{
+                'pa-10': $vuetify.breakpoint.smAndUp,
+                'pa-4': $vuetify.breakpoint.xs
+              }"
               max-width="900"
             >
               <v-row justify="center" align="center" class="mb-2">
@@ -54,7 +63,12 @@
                 ref="testForm"
                 v-if="TestData.takeTest"
               >
-                <v-row class="px-16">
+                <v-row
+                  :class="{
+                    'px-16': $vuetify.breakpoint.smAndUp,
+                    'px-4': $vuetify.breakpoint.xs
+                  }"
+                >
                   <v-col
                     cols="12"
                     v-for="(Question, i) in CourseComponent.Test"
@@ -140,7 +154,10 @@
               color="white"
               shaped
               elevation="2"
-              class="pa-10"
+              :class="{
+                'pa-10': $vuetify.breakpoint.smAndUp,
+                'pa-1': $vuetify.breakpoint.xs
+              }"
               max-width="900"
             >
               <v-row justify="center">
@@ -190,7 +207,11 @@
           <!--Video Section-->
           <v-container
             fluid
-            class="video-container pa-0"
+            class="video-container pt-0 pb-0"
+            :class="{
+              'px-12': $vuetify.breakpoint.mdAndUp,
+              'px-0': $vuetify.breakpoint.smAndDown
+            }"
             v-if="CourseComponent.type === 'Video'"
           >
             <div class="iframe-container">
@@ -206,39 +227,225 @@
         </v-col>
       </v-row>
       <!--Next and Previous button-->
-      <v-row justify="center" no-gutters class="common-background">
-        <v-col cols="6" class="arrow">
+      <v-row
+        justify="center"
+        align="center"
+        no-gutters
+        class="common-background"
+      >
+        <v-col
+          class="arrow"
+          :class="{
+            'col-4': $vuetify.breakpoint.smAndUp,
+            'col-12': $vuetify.breakpoint.xs
+          }"
+        >
           <v-btn
             x-large
             tile
             text
-            color="grey"
+            color="grey darken-2"
+            class="text-none"
             :disabled="Number($route.params.componentNumber) === 1"
             :to="calcRoute(Number($route.params.componentNumber) - 1)"
           >
-            <v-icon size="40" color="grey">mdi-chevron-left</v-icon>
+            <v-icon size="40" color="grey darken-2">mdi-chevron-left</v-icon>
             Previous
           </v-btn>
         </v-col>
-        <v-col cols="6" class="arrow">
+        <v-col
+          class="arrow"
+          :class="{
+            'col-auto': $vuetify.breakpoint.smAndUp,
+            'col-12': $vuetify.breakpoint.xs
+          }"
+        >
+          <v-btn
+            color="grey darken-2"
+            tile
+            text
+            x-large
+            class="text-body-1 white--text text-none"
+            v-if="Number($route.params.componentNumber) === currentComponent"
+            @click="MarkAsRead"
+          >
+            Mark As Done
+            <v-icon class="ml-2">mdi-sticker-check-outline</v-icon>
+          </v-btn>
+          <v-btn
+            v-else
+            tile
+            text
+            x-large
+            color="grey darken-2"
+            class="text-body-1 white--text text-none text-center"
+            disabled
+          >
+            Done
+            <v-icon class="ml-2">mdi-sticker-check-outline</v-icon>
+          </v-btn>
+        </v-col>
+        <v-col
+          :class="{
+            'col-4': $vuetify.breakpoint.smAndUp,
+            'col-12': $vuetify.breakpoint.xs
+          }"
+          class="arrow"
+        >
           <v-btn
             x-large
             tile
-            color="grey"
+            color="grey darken-2"
             text
+            class="text-none"
+            :disabled="
+              Number($route.params.componentNumber) === currentComponent
+            "
             :to="calcRoute(Number($route.params.componentNumber) + 1)"
           >
             Next
-            <v-icon size="40" color="grey">mdi-chevron-right</v-icon>
+            <v-icon size="40" color="grey darken-2">mdi-chevron-right</v-icon>
           </v-btn>
         </v-col>
       </v-row>
 
       <!--Toolbar to change sections-->
-      <v-toolbar outlined flat></v-toolbar>
+      <v-card outlined flat class="pa-0">
+        <v-btn
+          v-for="(Tab, i) in Tabs"
+          :key="i"
+          height="60px"
+          tile
+          text
+          class="text-none px-10 text-body-1 font-weight-black"
+          :class="{ 'btn-active': Tab === currentTab }"
+          @click="currentTab = Tab"
+        >
+          {{ Tab }}
+        </v-btn>
+        <v-btn
+          height="60px"
+          tile
+          text
+          class="text-none px-10 text-body-1 font-weight-black"
+          :class="{ 'btn-active': 'Sections' === currentTab }"
+          @click="currentTab = 'Sections'"
+          v-if="$vuetify.breakpoint.smAndDown"
+        >
+          Sections
+        </v-btn>
+      </v-card>
 
-      <!--Main Section-->
-      <v-container class="new-container mb-10 px-3"> </v-container>
+      <!--Information Section-->
+      <v-container class="new-container mb-10 mt-5 px-5">
+        <v-row justify="center">
+          <v-col cols="10">
+            <!--About Section-->
+            <template v-if="currentTab === 'About'">
+              <v-row justify="center" class="mb-3 mt-2">
+                <v-col cols="12" class="text-center pa-0">
+                  <h2
+                    :class="{
+                      'text-h5': $vuetify.breakpoint.smAndUp,
+                      'text-h6': $vuetify.breakpoint.xs
+                    }"
+                    class="font-weight-medium"
+                  >
+                    {{ course.name }}
+                  </h2>
+                </v-col>
+                <v-col cols="12" class="text-center">
+                  <h2
+                    :class="{
+                      'text-h6': $vuetify.breakpoint.smAndUp,
+                      'text-h6': $vuetify.breakpoint.xs
+                    }"
+                    class="font-weight-light mb-3"
+                  >
+                    <span class="font-weight-medium"
+                      >Episode {{ CourseComponent.number }}:</span
+                    >
+                    {{ CourseComponent.name }}
+                  </h2>
+                </v-col>
+                <v-col
+                  :class="{
+                    'col-8': $vuetify.breakpoint.smAndUp,
+                    'col-12': $vuetify.breakpoint.xs
+                  }"
+                  class="text-center"
+                >
+                  <div
+                    :class="{
+                      'text-h6': $vuetify.breakpoint.smAndUp,
+                      'text-subtitle-1': $vuetify.breakpoint.xs
+                    }"
+                    class="font-weight-thin mb-3"
+                  >
+                    {{ course.Summary }}
+                  </div>
+                </v-col>
+                <v-row justify="center" align="center">
+                  <v-col cols="auto" class="text-left">
+                    <div class="text-subtitle-2 font-weight-thin">
+                      <v-icon size="16" class="mr-2" color="black"
+                        >mdi-translate</v-icon
+                      >
+                      Language :
+                      <span class="font-weight-medium ml-3">
+                        {{ course.Language }}</span
+                      >
+                    </div>
+                  </v-col>
+                  <v-col cols="auto" class="text-left">
+                    <div class="text-subtitle-2 font-weight-thin">
+                      <v-icon size="16" class="mr-2" color="black"
+                        >mdi-cloud-upload-outline</v-icon
+                      >
+                      Upload Date :
+                      <span class="font-weight-medium ml-3">
+                        {{ course.Date }}</span
+                      >
+                    </div>
+                  </v-col>
+                </v-row>
+              </v-row>
+            </template>
+            <!--Teacher Section-->
+            <template v-if="currentTab === 'Teacher'">
+              <v-row justify="center" align="center">
+                <v-col cols="auto" class="pa-5 text-center">
+                  <v-img
+                    width="100"
+                    height="100"
+                    class="rounded-circle"
+                    src="..\assets\user-img.jpg"
+                  ></v-img>
+                </v-col>
+                <v-col cols="12">
+                  <h3 class="font-weight-bold text-h5 mb-3 text-center">
+                    {{ course.Instructor.name }}
+                  </h3>
+                </v-col>
+
+                <v-col cols="12">
+                  <div class="font-weight-light text-body-1 text-center">
+                    {{ course.Instructor.about }}
+                  </div>
+                </v-col>
+              </v-row>
+            </template>
+            <!--Nav Section-->
+            <CourseComponents
+              v-if="$vuetify.breakpoint.smAndDown && currentTab === 'Sections'"
+              :sections="course.sections"
+              PageType="Content"
+              :CourseNumber="Number($route.params.courseId)"
+              :currentComponent="currentComponent"
+            ></CourseComponents>
+          </v-col>
+        </v-row>
+      </v-container>
     </template>
 
     <!--Footer-->
@@ -269,12 +476,14 @@ export default {
         currentScore: 0
       },
       AssignmentFile: null,
-      validAssignment: false
+      validAssignment: false,
+      currentTab: "About",
+      Tabs: ["About", "Teacher"]
     };
   },
   computed: {
     videoURL() {
-      return "https://player.vimeo.com/video/" + this.CourseComponent.videoID;
+      return this.CourseComponent.videoID;
     }
   },
   methods: {
@@ -310,6 +519,10 @@ export default {
     },
     DownloadFile() {
       //@TODO Check how the file will come from request and Download
+    },
+    MarkAsRead() {
+      //@TODO Should send a request
+      this.currentComponent++;
     }
   },
 
@@ -368,6 +581,10 @@ export default {
 </script>
 
 <style scoped>
+.center-horizontally {
+  display: flex;
+  justify-content: center;
+}
 .new-container {
   background-color: #ffffff;
 }
@@ -401,11 +618,14 @@ export default {
   border: 1px solid rgba(237, 237, 237, 1);
   margin: 5px;
 }
+.btn-active {
+  border-bottom: 2px solid grey;
+}
 .header-text {
   color: #2196f3;
 }
 .common-background {
-  background-color: #fff;
+  background-color: rgba(237, 237, 237, 1);
 }
 .arrow {
   display: flex;

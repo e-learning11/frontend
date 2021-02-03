@@ -135,7 +135,10 @@
             <h3 class="font-weight-medium text-h4 mb-5 header-text text-center">
               Course Content
             </h3>
-            <CourseComponents :sections="course.sections"></CourseComponents>
+            <CourseComponents
+              :sections="course.sections"
+              PageType="Main"
+            ></CourseComponents>
           </v-col>
           <v-col
             :class="{
@@ -225,7 +228,7 @@ export default {
   },
   computed: {
     videoURL() {
-      return "https://player.vimeo.com/video/" + this.CourseComponent.videoID;
+      return this.CourseComponent.videoID;
     }
   },
   methods: {
