@@ -61,7 +61,7 @@
               cols="12"
               v-for="(component, j) in section.components"
               :key="j"
-              class="text-body-2 font-weight-light link-wrapper mb-2"
+              class="text-body-2 font-weight-light link-wrapper mb-2 rounded-lg"
               :class="{
                 'disabled-link': component.number > currentComponent,
                 'active-link':

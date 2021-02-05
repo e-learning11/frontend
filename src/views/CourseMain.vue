@@ -79,7 +79,10 @@
                     allowfullscreen
                   ></iframe>
                 </div>
-                <div class="pa-3" v-if="!course.registered">
+                <div
+                  class="pa-3"
+                  v-if="!course.registered || $store.state.currentUser === null"
+                >
                   <h4 class="font-weight-light mt-5 mb-3 grey--text">
                     <v-icon color="grey darken-3"
                       >mdi-information-outline</v-icon

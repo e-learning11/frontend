@@ -56,10 +56,10 @@ export default {
     const Courses = await fetch(mockCourses, 800);
     let score = 0;
     let index = 0;
-    FinalAnswers.forEach(element => {
-      if (element === Courses[0].components[3].Test[index].A[0]) score++;
-      index++;
-    });
+    if (Courses) {
+      index = FinalAnswers.length;
+    }
+    score = Math.round(Math.random() * index);
     return { status: 200, data: score };
   }
 };

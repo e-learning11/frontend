@@ -12,9 +12,10 @@
     "prerequisites": ["HTML5", "CSS3", "Javascript"],
     "Language": "English",
     "Date": "1/1/2021",
+    "currentComponent": 5,
     "sections": [
       {
-        "name": "Introduction",
+        "name": "Introduction", 
         "start": 1,
         "end": 3,
         "components": [

@@ -374,15 +374,17 @@ export default {
         !this.ValidateSections()
       )
         return;
-      //@TODO Should Send the Request
+      //@TODO process the components to be under the correct section
+      this.ProcessSections();
+      //@TODO Should Send the Request and remove components property
       console.log(this.$store.state.CourseInfo);
       // Reset the data and Route to Home
-      this.ResetAll();
-      this.$router.push("/");
-      // Display a Success Notification
-      this.$store.state.newNotification.Message =
-        "New Course Added Successfuly";
-      this.$store.state.newNotification.state = true;
+      // this.ResetAll();
+      // this.$router.push("/");
+      // // Display a Success Notification
+      // this.$store.state.newNotification.Message =
+      //   "New Course Added Successfuly";
+      // this.$store.state.newNotification.state = true;
     },
     SaveProgress() {
       localStorage.setItem(
@@ -479,8 +481,6 @@ export default {
       const tempArray = [...this.$store.state.CourseInfo.sections];
       // if Empty return false
       if (tempArray.length === 0) return errorInSections();
-      // Validate form
-      if (!this.$refs.SectionsForm.validate()) return false;
       //Special case if length is 1
       if (tempArray.length === 1) {
         if (
@@ -508,6 +508,18 @@ export default {
 
       // All checks successful
       return true;
+    },
+    ProcessSections() {
+      // Processes the Components to be under the correct Section
+      this.$store.state.CourseInfo.sections.forEach(section => {
+        section.components = [];
+        for (let i = section.start - 1; i < section.end; i++) {
+          //Add Number to component
+          this.$store.state.CourseInfo.components[i].Number = i + 1;
+          // Push the component to the section
+          section.components.push(this.$store.state.CourseInfo.components[i]);
+        }
+      });
     }
   },
   created() {
