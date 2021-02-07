@@ -1,7 +1,11 @@
 <template>
   <div>
     <v-container fluid id="mycourses-section">
-      <v-container fill-height class="new-container mt-5 mb-5">
+      <!--Loading Till request finishes if is an edit-->
+      <Loading
+        v-if="this.$route.name === 'EditCourse' && !requestFinished"
+      ></Loading>
+      <v-container v-else fill-height class="new-container mt-5 mb-5">
         <!--Header-->
         <v-row class="mb-5">
           <v-col cols="12">
@@ -94,41 +98,59 @@
 
 <script>
 import Footer from "@/components/footer.vue";
+import Loading from "@/components/Loading.vue";
 import MainInfo from "@/components/CreateCourseInfoForm";
 import TestForm from "@/components/CreateCourseTestForm";
 import VideoForm from "@/components/CreateCourseVideoForm";
 import AssignForm from "@/components/CreateCourseAssignForm";
 
 export default {
-  components: { MainInfo, TestForm, VideoForm, AssignForm, Footer },
+  components: { MainInfo, TestForm, VideoForm, AssignForm, Footer, Loading },
   methods: {
-    GetCourseInfo() {
+    async GetCourseInfo() {
       // Get the Course Info
       if (this.$route.name === "CreateCourse") {
         // Check if CourseInfo is in LocalStorage
         let CourseInfo = JSON.parse(localStorage.getItem("CourseInfo"));
         if (CourseInfo != null) this.$store.state.CourseInfo = CourseInfo;
+        else
+          this.$store.state.CourseInfo = {
+            Name: "",
+            Description: "",
+            Summary: "",
+            photo: null,
+            Gender: null,
+            Prerequisites: [],
+            URL: null,
+            Age: [0, 70],
+            components: [],
+            sections: []
+          };
       } else if (this.$route.name === "EditCourse") {
         // @TODO Send Request to get course
-        // Set the value with the one gotten from the Server
-        this.$store.state.CourseInfo = {
-          Name: "From Server",
-          Description: "",
-          Summary: "",
-          photo: null,
-          Gender: null,
-          Prerequisites: [],
-          URL: null,
-          Age: [0, 70],
-          components: [],
-          sections: []
-        };
+        await setTimeout(() => {
+          this.requestFinished = true;
+          // Set the value with the one gotten from the Server
+          this.$store.state.CourseInfo = {
+            Name: "From Server",
+            Description: "",
+            Summary: "",
+            photo: null,
+            Gender: null,
+            Prerequisites: [],
+            URL: null,
+            Age: [0, 70],
+            components: [],
+            sections: []
+          };
+        }, 1000);
       }
     }
   },
   data() {
     return {
       ComponentToEdit: -1,
+      requestFinished: false,
       currentTab: "MainInfo",
       tabs: [
         {

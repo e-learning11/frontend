@@ -1,5 +1,6 @@
 import mockuser from "./data/users.json";
 import mockCourses from "./data/Courses.json";
+import TestReview from "./data/TestReview.json";
 
 const fetch = (mockData, time = 0) =>
   new Promise(resolve => {
@@ -50,6 +51,11 @@ export default {
     }
 
     return { status: 404 };
+  },
+
+  async getCourseTests() {
+    const Course = await fetch(TestReview, 1000);
+    return { status: 200, data: Course };
   },
 
   async getTestScore(FinalAnswers) {
