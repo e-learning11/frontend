@@ -220,7 +220,17 @@
         outlined
         class="white--text text-none text-h6"
         @click="AddTest"
+        v-if="ComponentToEdit === -1"
         >Add Test</v-btn
+      >
+      <v-btn
+        x-large
+        color="blue darken-2"
+        outlined
+        class="white--text text-none text-h6"
+        @click="AddTest"
+        v-else
+        >Finish Edit</v-btn
       >
     </v-row>
   </div>
@@ -228,6 +238,9 @@
 
 <script>
 export default {
+  props: {
+    ComponentToEdit: Number
+  },
   data() {
     return {
       rules: {
@@ -284,13 +297,34 @@ export default {
         return;
       //Add the Test to the Components
       this.$root.$emit("NewComponent", this.NewTest);
-      this.$store.state.CourseInfo.components.push({
-        ...this.NewTest,
-        type: "Test"
-      });
+      // If not an Edit push the value
+      if (this.ComponentToEdit === -1) {
+        this.$store.state.CourseInfo.components.push({
+          ...this.NewTest,
+          type: "Test"
+        });
+      }
+      // Else change it
+      else {
+        this.$store.state.CourseInfo.components[this.ComponentToEdit] = {
+          ...this.NewTest,
+          type: "Test"
+        };
+      }
       //Call Reset
       this.ResetTest();
     }
+  },
+  created() {
+    // check if prop is not -1 then set the value to the component
+    if (this.ComponentToEdit !== -1) {
+      this.NewTest = this.$store.state.CourseInfo.components[
+        this.ComponentToEdit
+      ];
+    }
+  },
+  destroyed() {
+    this.$root.$emit("FinishEdit");
   }
 };
 </script>

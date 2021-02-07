@@ -199,6 +199,9 @@
               <v-btn icon @click="SwitchComponent(i, 1)">
                 <v-icon color="black">mdi-arrow-down-circle</v-icon>
               </v-btn>
+              <v-btn icon @click="EditComponent(i)">
+                <v-icon color="grey darken-2">mdi-pen</v-icon>
+              </v-btn>
               <v-btn icon @click="RemoveComponent(i)">
                 <v-icon color="red">mdi-close-circle-outline</v-icon>
               </v-btn>
@@ -307,7 +310,7 @@
           >Reset All</v-btn
         >
       </v-col>
-      <v-col cols="auto">
+      <v-col cols="auto" v-if="!this.isEdit">
         <v-btn
           large
           color="green darken-3"
@@ -342,12 +345,16 @@
 
 <script>
 export default {
+  props: {
+    PageType: String
+  },
   data() {
     return {
       rules: {
         Required: value => !!value || "Required."
       },
-      allCourses: ["Entry1", "Entry2"]
+      allCourses: ["Entry1", "Entry2"],
+      isEdit: false
     };
   },
   methods: {
@@ -364,7 +371,7 @@ export default {
         components: [],
         sections: []
       };
-      localStorage.removeItem("CourseInfo");
+      if (!this.isEdit) localStorage.removeItem("CourseInfo");
     },
     SubmitCourse() {
       // Check for validation
@@ -374,27 +381,40 @@ export default {
         !this.ValidateSections()
       )
         return;
-      //@TODO process the components to be under the correct section
+      //process the components to be under the correct section
       this.ProcessSections();
       //@TODO Should Send the Request and remove components property
+      //@TODO Send Two different Requests one for edit and other for Create
       console.log(this.$store.state.CourseInfo);
       // Reset the data and Route to Home
-      // this.ResetAll();
-      // this.$router.push("/");
-      // // Display a Success Notification
-      // this.$store.state.newNotification.Message =
-      //   "New Course Added Successfuly";
-      // this.$store.state.newNotification.state = true;
+      this.ResetAll();
+      this.$router.push("/");
+      // Display a Success Notification
+      this.$store.state.newNotification.Message =
+        "New Course Added Successfuly";
+      this.$store.state.newNotification.state = true;
     },
     SaveProgress() {
       localStorage.setItem(
         "CourseInfo",
         JSON.stringify(this.$store.state.CourseInfo)
       );
+
+      // Display a Success Notification
+      this.$store.state.newNotification.Message = "Progress Saved";
+      this.$store.state.newNotification.state = true;
     },
     RemoveComponent(CNumber) {
       //Remove component from Array
       this.$store.state.CourseInfo.components.splice(CNumber, 1);
+    },
+    EditComponent(CNumber) {
+      // Emit an event to Main Component
+      const Payload = {
+        Number: CNumber,
+        Type: this.$store.state.CourseInfo.components[CNumber].type
+      };
+      this.$root.$emit("EditComponent", Payload);
     },
     SwitchComponent(CNumber, offset) {
       // Check if out of bounds
@@ -522,7 +542,15 @@ export default {
       });
     }
   },
+  beforeUpdate() {
+    //Check if the Page is an Edit
+    if (this.PageType === "EditCourse") this.isEdit = true;
+    else this.isEdit = false;
+  },
   created() {
+    //Check if the Page is an Edit
+    if (this.PageType === "EditCourse") this.isEdit = true;
+    else this.isEdit = false;
     //@TODO Send request to get all the courses for allCourses
   }
 };

@@ -119,6 +119,21 @@
         </v-container>
       </v-container>
 
+      <v-row v-if="OwnsCourse"
+        ><v-col cols="12" class="text-center mt-10 mb-0">
+          <v-btn
+            x-large
+            outlined
+            class="text-h6"
+            color="blue darken-3"
+            append
+            to="overview"
+          >
+            Course Overview
+          </v-btn>
+        </v-col>
+      </v-row>
+
       <!--About Course-->
       <v-container
         class="new-container px-3"
@@ -226,7 +241,8 @@ export default {
   data() {
     return {
       CourseComponent: null,
-      course: null
+      course: null,
+      OwnsCourse: false
     };
   },
   computed: {
@@ -252,6 +268,8 @@ export default {
       this.course = response.data;
       // First component of the course
       this.CourseComponent = this.course.sections[0].components[0];
+      // @TODO check if user is the Teacher that owns the course
+      this.OwnsCourse = false;
     }
     // Else route to Not found
     else {

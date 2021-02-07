@@ -100,7 +100,21 @@
             'text-body': $vuetify.breakpoint.xs
           }"
           @click="AddAssign"
+          v-if="ComponentToEdit === -1"
           >Add Assignment</v-btn
+        >
+        <v-btn
+          x-large
+          color="blue darken-2"
+          outlined
+          class="white--text text-none"
+          :class="{
+            'text-h6': $vuetify.breakpoint.smAndUp,
+            'text-body': $vuetify.breakpoint.xs
+          }"
+          @click="AddAssign"
+          v-else
+          >Finish Edit</v-btn
         >
       </v-col>
     </v-row>
@@ -109,6 +123,9 @@
 
 <script>
 export default {
+  props: {
+    ComponentToEdit: Number
+  },
   data() {
     return {
       AssignInfo: {
@@ -134,13 +151,34 @@ export default {
       if (!this.$refs.AssignForm.validate()) return;
       //Emit event to parent to recive data and Set component
       this.$root.$emit("NewComponent", this.AssignInfo);
-      this.$store.state.CourseInfo.components.push({
-        ...this.AssignInfo,
-        type: "Assignment"
-      });
+      // If not an Edit push the value
+      if (this.ComponentToEdit === -1) {
+        this.$store.state.CourseInfo.components.push({
+          ...this.AssignInfo,
+          type: "Assignment"
+        });
+      }
+      // Else change it
+      else {
+        this.$store.state.CourseInfo.components[this.ComponentToEdit] = {
+          ...this.AssignInfo,
+          type: "Assignment"
+        };
+      }
       //Call Reset
       this.Reset();
     }
+  },
+  created() {
+    // check if prop is not -1 then set the value to the component
+    if (this.ComponentToEdit !== -1) {
+      this.AssignInfo = {
+        ...this.$store.state.CourseInfo.components[this.ComponentToEdit]
+      };
+    }
+  },
+  destroyed() {
+    this.$root.$emit("FinishEdit");
   }
 };
 </script>

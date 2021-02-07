@@ -104,7 +104,17 @@
         outlined
         @click="AddVideo"
         class="white--text text-none text-h6"
+        v-if="ComponentToEdit === -1"
         >Add Video</v-btn
+      >
+      <v-btn
+        large
+        color="blue darken-2"
+        outlined
+        @click="AddVideo"
+        class="white--text text-none text-h6"
+        v-else
+        >Finish Edit</v-btn
       >
     </v-row>
   </div>
@@ -112,6 +122,9 @@
 
 <script>
 export default {
+  props: {
+    ComponentToEdit: Number
+  },
   data() {
     return {
       VideoInfo: {
@@ -129,7 +142,9 @@ export default {
     Reset() {
       this.VideoInfo = {
         Title: "",
-        URL: ""
+        URL: "",
+        File: null,
+        Description: ""
       };
     },
     AddVideo() {
@@ -137,13 +152,34 @@ export default {
       if (!this.$refs.VideoForm.validate()) return;
       //Emit event to parent to recive data and Set component
       this.$root.$emit("NewComponent", this.VideoInfo);
-      this.$store.state.CourseInfo.components.push({
-        ...this.VideoInfo,
-        type: "Video"
-      });
+      // If not an Edit push the value
+      if (this.ComponentToEdit === -1) {
+        this.$store.state.CourseInfo.components.push({
+          ...this.VideoInfo,
+          type: "Video"
+        });
+      }
+      // Else change it
+      else {
+        this.$store.state.CourseInfo.components[this.ComponentToEdit] = {
+          ...this.VideoInfo,
+          type: "Video"
+        };
+      }
       //Call Reset
       this.Reset();
     }
+  },
+  created() {
+    // check if prop is not -1 then set the value to the component
+    if (this.ComponentToEdit !== -1) {
+      this.VideoInfo = this.$store.state.CourseInfo.components[
+        this.ComponentToEdit
+      ];
+    }
+  },
+  destroyed() {
+    this.$root.$emit("FinishEdit");
   }
 };
 </script>

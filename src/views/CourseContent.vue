@@ -249,7 +249,7 @@
             :disabled="Number($route.params.componentNumber) === 1"
             :to="calcRoute(Number($route.params.componentNumber) - 1)"
           >
-            <v-icon size="40" color="grey darken-2">mdi-chevron-left</v-icon>
+            <v-icon size="30" color="grey darken-2">mdi-chevron-left</v-icon>
             Previous
           </v-btn>
         </v-col>
@@ -304,7 +304,7 @@
             :to="calcRoute(Number($route.params.componentNumber) + 1)"
           >
             Next
-            <v-icon size="40" color="grey darken-2">mdi-chevron-right</v-icon>
+            <v-icon size="30" color="grey darken-2">mdi-chevron-right</v-icon>
           </v-btn>
         </v-col>
       </v-row>

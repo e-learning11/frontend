@@ -2,12 +2,38 @@
   <div>
     <v-container fluid id="mycourses-section">
       <v-container fill-height class="new-container mt-5 mb-5">
+        <!--Header-->
+        <v-row class="mb-5">
+          <v-col cols="12">
+            <h1
+              class="text-center font-weight-light"
+              :class="{
+                'text-h5': $vuetify.breakpoint.xs,
+                'text-h4': $vuetify.breakpoint.sm,
+                'text-h3': $vuetify.breakpoint.mdAndUp
+              }"
+              v-if="$route.name === 'CreateCourse'"
+            >
+              Create Course
+            </h1>
+            <h1
+              class="text-center font-weight-light"
+              :class="{
+                'text-h5': $vuetify.breakpoint.xs,
+                'text-h4': $vuetify.breakpoint.sm,
+                'text-h3': $vuetify.breakpoint.mdAndUp
+              }"
+              v-if="$route.name === 'EditCourse'"
+            >
+              Edit Course
+            </h1>
+          </v-col></v-row
+        >
         <v-card
           width="100%"
           :class="{ 'px-10': $vuetify.breakpoint.smAndUp }"
           color="#F5F5F5"
         >
-          <!--Header-->
           <v-row
             class="mb-10"
             justify="center"
@@ -16,18 +42,6 @@
               'mt-3': $vuetify.breakpoint.mdAndUp
             }"
           >
-            <v-col cols="12">
-              <h2
-                class="text-center font-weight-light"
-                :class="{
-                  'text-h5': $vuetify.breakpoint.xs,
-                  'text-h4': $vuetify.breakpoint.sm,
-                  'text-h3': $vuetify.breakpoint.mdAndUp
-                }"
-              >
-                Create Course
-              </h2>
-            </v-col>
             <v-col
               v-for="(tab, i) in tabs"
               :key="i"
@@ -63,7 +77,11 @@
               }"
             >
               <v-fade-transition>
-                <component :is="currentTab"></component>
+                <component
+                  :ComponentToEdit="ComponentToEdit"
+                  :PageType="$route.name"
+                  :is="currentTab"
+                ></component>
               </v-fade-transition>
             </v-col>
           </v-row>
@@ -83,8 +101,34 @@ import AssignForm from "@/components/CreateCourseAssignForm";
 
 export default {
   components: { MainInfo, TestForm, VideoForm, AssignForm, Footer },
+  methods: {
+    GetCourseInfo() {
+      // Get the Course Info
+      if (this.$route.name === "CreateCourse") {
+        // Check if CourseInfo is in LocalStorage
+        let CourseInfo = JSON.parse(localStorage.getItem("CourseInfo"));
+        if (CourseInfo != null) this.$store.state.CourseInfo = CourseInfo;
+      } else if (this.$route.name === "EditCourse") {
+        // @TODO Send Request to get course
+        // Set the value with the one gotten from the Server
+        this.$store.state.CourseInfo = {
+          Name: "From Server",
+          Description: "",
+          Summary: "",
+          photo: null,
+          Gender: null,
+          Prerequisites: [],
+          URL: null,
+          Age: [0, 70],
+          components: [],
+          sections: []
+        };
+      }
+    }
+  },
   data() {
     return {
+      ComponentToEdit: -1,
       currentTab: "MainInfo",
       tabs: [
         {
@@ -107,17 +151,27 @@ export default {
     };
   },
   mounted() {
+    this.GetCourseInfo();
     // Change to Main Info on New component
     this.$root.$on("NewComponent", () => {
       this.currentTab = "MainInfo";
     });
-    // Check if CourseInfo is in LocalStorage
-    let CourseInfo = JSON.parse(localStorage.getItem("CourseInfo"));
-    if (CourseInfo != null) this.$store.state.CourseInfo = CourseInfo;
+    this.$root.$on("EditComponent", data => {
+      // Send the correct prop
+      this.ComponentToEdit = data.Number;
+      // Change to the tab That is needed
+      if (data.Type === "Video") this.currentTab = "VideoForm";
+      else if (data.Type === "Test") this.currentTab = "TestForm";
+      else this.currentTab = "AssignForm";
+    });
+    this.$root.$on("FinishEdit", () => {
+      this.ComponentToEdit = -1;
+    });
   },
   beforeRouteEnter(to, from, next) {
     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-    if (currentUser && currentUser.type === "Teacher") next();
+    if (currentUser && currentUser.type === "Teacher")
+      next(vm => vm.GetCourseInfo());
     else next("/");
   }
 };

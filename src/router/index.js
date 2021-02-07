@@ -8,7 +8,8 @@ import Profile from "../views/Profile.vue";
 import EditProfile from "../views/EditProfile.vue";
 import CourseContent from "../views/CourseContent.vue";
 import CourseMain from "../views/CourseMain.vue";
-import CreateCourse from "../views/CreateCourse.vue";
+import CreateAndEditCourse from "../views/CreateAndEditCourse.vue";
+import CourseOverview from "../views/CourseOverview.vue";
 import NotFound from "../views/NotFound.vue";
 
 Vue.use(VueRouter);
@@ -50,6 +51,16 @@ const routes = [
     component: CourseMain
   },
   {
+    path: "/course/:courseId/overview",
+    name: "CourseOverview",
+    component: CourseOverview
+  },
+  {
+    path: "/course/:courseId/edit",
+    name: "EditCourse",
+    component: CreateAndEditCourse
+  },
+  {
     path: "/course/:courseId/:componentNumber",
     name: "CourseContent",
     component: CourseContent
@@ -57,7 +68,7 @@ const routes = [
   {
     path: "/createcourse",
     name: "CreateCourse",
-    component: CreateCourse
+    component: CreateAndEditCourse
   },
   {
     path: "*",
