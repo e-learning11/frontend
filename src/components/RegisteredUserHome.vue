@@ -1,6 +1,7 @@
 <template>
   <v-container fluid id="mycourses-section">
-    <v-container fill-height class="new-container">
+    <Loading type="content" v-if="Courses === null"></Loading>
+    <v-container v-else fill-height class="new-container">
       <v-row
         no-gutters
         justify="center"
@@ -27,7 +28,7 @@
           <v-divider></v-divider>
         </v-col>
         <v-col
-          v-if="$store.state.currentUser.type == 'Teacher'"
+          v-if="$store.state.currentUser.type == 'teacher'"
           cols="12"
           class="mt-5 center-horizontally"
         >
@@ -64,16 +65,8 @@
 
       <!--No Available courses-->
       <v-row v-else>
-        <v-col
-          cols="12"
-          class="text-center font-weight-medium mt-10 mb-10"
-          :class="{
-            'text-h6': $vuetify.breakpoint.xs,
-            'text-h5': $vuetify.breakpoint.sm,
-            'text-h4': $vuetify.breakpoint.mdAndUp
-          }"
-        >
-          <h3>Oops! It seems you have No Courses yet</h3>
+        <v-col cols="12" class="text-center font-weight-light mt-10 mb-10">
+          <h3 class="text-overline">Oops! It seems you have No Courses yet</h3>
         </v-col>
       </v-row>
     </v-container>
@@ -82,30 +75,32 @@
 
 <script>
 import CourseCard from "@/components/CoursesCard.vue";
-import img1 from "@/assets/img-4.jpg";
-import img2 from "@/assets/img-5.jpg";
+import Loading from "@/components/Loading.vue";
+import api from "api-client";
 
 export default {
-  components: { CourseCard },
+  components: { CourseCard, Loading },
   data: () => ({
     height: 250,
-    Courses: [
-      {
-        image: img1,
-        Name: "React Course",
-        Author: "Mohamed Elsharbawy",
-        text: "Explore the hidden waterfall deep inside the Amazon jungle",
-        color: "blue"
-      },
-      {
-        image: img2,
-        Name: "React Course",
-        Author: "Mohamed Elsharbawy",
-        text: "Explore the hidden waterfall deep inside the Amazon jungle",
-        color: "blue"
-      }
-    ]
-  })
+    Courses: null
+  }),
+  async created() {
+    let response;
+    // Get User Courses according to type
+    if (this.$store.state.currentUser.type === "teacher") {
+      response = await api.getCreatedCourses(
+        JSON.parse(localStorage.getItem("userToken"))
+      );
+    } else if (this.$store.state.currentUser.type === "student") {
+      response = await api.getEnrolledCourses(
+        JSON.parse(localStorage.getItem("userToken"))
+      );
+    }
+
+    if (response.status === 200) {
+      this.Courses = response.data;
+    }
+  }
 };
 </script>
 

@@ -192,7 +192,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-    if (currentUser && currentUser.type === "Teacher")
+    if (currentUser && currentUser.type === "teacher")
       next(vm => vm.GetCourseInfo());
     else next("/");
   }

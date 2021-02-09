@@ -1,5 +1,5 @@
 <template>
-  <v-container class="mt-10">
+  <v-container class="mt-10 mb-10">
     <v-row justify="center" align="center">
       <v-col
         :class="{
@@ -27,6 +27,21 @@
         <v-row class="mt-10" justify="center" align="center">
           <v-col md="8" sm="12" class="px-0">
             <v-form ref="Registerform" class="form-center" v-model="valid">
+              <v-row justify="center" align="center" class="mb-5">
+                <v-col cols="auto">
+                  <v-avatar size="120">
+                    <v-img :src="UserImage"></v-img>
+                  </v-avatar>
+                </v-col>
+                <v-col cols="auto">
+                  <v-file-input
+                    accept="image/*"
+                    prepend-icon="mdi-camera"
+                    v-model="Userform.image"
+                    hide-input
+                  ></v-file-input>
+                </v-col>
+              </v-row>
               <v-row dense>
                 <v-col md="6" cols="12">
                   <v-text-field
@@ -88,6 +103,61 @@
                 @click:append="showConfirmPassword = !showConfirmPassword"
               ></v-text-field>
 
+              <v-text-field
+                outlined
+                color="blue darken-3"
+                label="Age"
+                required
+                type="Number"
+                max="70"
+                v-model="Userform.age"
+                :rules="[rules.required, rules.correctAge]"
+              ></v-text-field>
+
+              <v-text-field
+                outlined
+                color="blue darken-3"
+                label="Phone Number"
+                v-model="Userform.phone"
+                :rules="[rules.correctPhone]"
+              ></v-text-field>
+
+              <v-row no-gutters>
+                <v-col
+                  cols="12"
+                  class="text-h6 font-weight-light mr-5 grey--text"
+                  >Gender</v-col
+                >
+
+                <v-radio-group
+                  v-model="Userform.gender"
+                  mandatory
+                  row
+                  class="mt-0"
+                >
+                  <v-radio label="Male" :value="Number(1)"></v-radio>
+                  <v-radio label="Female" :value="Number(2)"></v-radio>
+                </v-radio-group>
+              </v-row>
+
+              <v-row no-gutters>
+                <v-col
+                  cols="12"
+                  class="text-h6 font-weight-light mr-5 grey--text"
+                  >Account Type</v-col
+                >
+
+                <v-radio-group
+                  v-model="Userform.type"
+                  mandatory
+                  row
+                  class="mt-0"
+                >
+                  <v-radio label="Teacher" value="teacher"></v-radio>
+                  <v-radio label="Student" value="student"></v-radio>
+                </v-radio-group>
+              </v-row>
+
               <v-btn
                 x-large
                 color="blue darken-3"
@@ -106,6 +176,7 @@
 
 <script>
 import api from "api-client";
+import tempImage from "@/assets/user-img2.jpg";
 
 export default {
   data() {
@@ -114,11 +185,16 @@ export default {
       showPassword: false,
       showConfirmPassword: false,
       Userform: {
+        image: null,
         firstName: "",
         lastName: "",
         email: "",
+        phone: "",
+        type: "",
         password: "",
-        confirmpassword: ""
+        confirmpassword: "",
+        gender: "",
+        age: ""
       },
       rules: {
         required: value => !!value || "Required.",
@@ -127,9 +203,22 @@ export default {
           return pattern.test(value) || "Not a valid Email";
         },
         Matchingchar: (Confirmpassword, password) =>
-          this.IsMatching(Confirmpassword, password) || "Passwords Must Match"
+          this.IsMatching(Confirmpassword, password) || "Passwords Must Match",
+        correctAge: value =>
+          (value >= 5 && value <= 100) || "Age must be between 5 and 100",
+        correctPhone: value => {
+          if (value === "") return true;
+          const pattern = /^(\d{10}|\d{11}|\d{12})$/;
+          return pattern.test(value) || "Please write 10, 11 or 12 Numbers";
+        }
       }
     };
+  },
+  computed: {
+    UserImage() {
+      if (this.Userform.image === null) return tempImage;
+      return URL.createObjectURL(this.Userform.image);
+    }
   },
   methods: {
     async validate() {
@@ -137,28 +226,42 @@ export default {
       if (!this.$refs.Registerform.validate()) return;
 
       // Send the request
-      const response = await api.RegisterUser({
-        email: this.Userform.email,
-        password: this.Userform.password,
-        name: this.Userform.firstName + this.Userform.lastName
-      });
+      const registerResponse = await api.RegisterUser({ ...this.Userform });
 
       // If the request was successful,
-      // add the currentUser to localStorage
-      // and route to home
-      // 200 OK
-      if (response.status === 200) {
-        const currentUser = response.data;
-        localStorage.setItem("currentUser", JSON.stringify(currentUser));
-        this.$store.state.currentUser = currentUser;
+      if (registerResponse.status === 200) {
+        // Save the token
+        const token = registerResponse.data;
+        localStorage.setItem("userToken", JSON.stringify(token));
 
-        // Display welcome Message
-        this.$store.state.newNotification.Message = "Welcome! Nice to Have you";
-        this.$store.state.newNotification.state = true;
+        // Send the Request to get the User profile Info
+        const profileResponse = await api.getUserProfile(
+          JSON.parse(localStorage.getItem("userToken"))
+        );
 
-        this.$router.push("/");
+        // If the request was successful,
+        // add the currentUser to localStorage
+        // and route to home
+        // 200 OK
+        if (profileResponse.status === 200) {
+          // Get User info using the token
+          const currentUser = profileResponse.data;
+          localStorage.setItem("currentUser", JSON.stringify(currentUser));
+          this.$store.state.currentUser = currentUser;
+
+          // Display welcome Message
+          this.$store.state.newNotification.Message =
+            "Account Created Successfuly";
+          this.$store.state.newNotification.state = true;
+          this.$router.push("/");
+        } else {
+          this.$store.state.newNotification.Message =
+            "Account Created, Please Login";
+          this.$store.state.newNotification.state = true;
+          this.$router.push("/login");
+        }
       } else {
-        this.$store.state.newNotification.Message = response.data.message;
+        this.$store.state.newNotification.Message = registerResponse.data;
         this.$store.state.newNotification.state = true;
       }
     },

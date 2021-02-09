@@ -126,7 +126,7 @@
           'pa-2': $vuetify.breakpoint.smAndDown
         }"
       >
-        <v-col cols="12 pb-1">
+        <v-col cols="12">
           <h2
             :class="{
               'text-h5': $vuetify.breakpoint.smAndUp,
@@ -137,7 +137,12 @@
             Review Tests
           </h2>
         </v-col>
-        <v-col cols="6">
+        <v-col
+          :class="{
+            'col-6': $vuetify.breakpoint.mdAndUp,
+            'col-12': $vuetify.breakpoint.smAndDown
+          }"
+        >
           <!-- Component Choice-->
           <v-responsive max-width="400" class="mx-auto mb-4">
             <v-combobox
@@ -188,7 +193,12 @@
           </v-card>
         </v-col>
         <!-- View Selected Test and Grade-->
-        <v-col cols="6">
+        <v-col
+          :class="{
+            'col-6': $vuetify.breakpoint.mdAndUp,
+            'col-12': $vuetify.breakpoint.smAndDown
+          }"
+        >
           <v-card height="100%">
             <v-row justify="center" align="center"></v-row>
             <v-col cols="auto">
@@ -373,6 +383,11 @@ export default {
     else {
       this.$router.push("/404");
     }
+  },
+  beforeRouteEnter(to, from, next) {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if (currentUser && currentUser.type === "teacher") next();
+    else next("/");
   }
 };
 </script>

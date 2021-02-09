@@ -8,6 +8,7 @@ import Profile from "../views/Profile.vue";
 import EditProfile from "../views/EditProfile.vue";
 import CourseContent from "../views/CourseContent.vue";
 import CourseMain from "../views/CourseMain.vue";
+import CourseForum from "../views/CourseForum.vue";
 import CreateAndEditCourse from "../views/CreateAndEditCourse.vue";
 import CourseOverview from "../views/CourseOverview.vue";
 import NotFound from "../views/NotFound.vue";
@@ -59,6 +60,11 @@ const routes = [
     path: "/course/:courseId/edit",
     name: "EditCourse",
     component: CreateAndEditCourse
+  },
+  {
+    path: "/course/:courseId/forum",
+    name: "CourseForum",
+    component: CourseForum
   },
   {
     path: "/course/:courseId/:componentNumber",

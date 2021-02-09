@@ -335,7 +335,7 @@
                   </v-col>
                   <v-col cols="10" class="pl-3">
                     <h3 class="text-h6 font-weight-medium">
-                      {{ $store.state.currentUser.name }}
+                      {{ $store.state.currentUser.firstName }}
                     </h3>
                     <v-textarea
                       filled
@@ -476,7 +476,7 @@ export default {
       if (this.newCommentText === "") return;
       //Get the Comment data from the page
       const newComment = {
-        userName: this.$store.state.currentUser.name,
+        userName: this.$store.state.currentUser.firstName,
         date: "Now",
         data: this.newCommentText
       };

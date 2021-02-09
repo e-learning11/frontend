@@ -37,13 +37,15 @@
 
       <!--registered User Navigation Drawer buttons-->
       <template v-else>
-        <v-row no-gutters class="mt-5 mx-5" justify="center">
-          <v-col cols="12" class="text-center">
-            <v-icon size="30" color="white">mdi-account</v-icon>
+        <v-row no-gutters class="mt-8 mx-5" justify="center">
+          <v-col cols="12" class="text-center mb-5">
+            <v-avatar size="90" color="white">
+              <v-img :src="UserImage"></v-img>
+            </v-avatar>
           </v-col>
           <v-col cols="12">
             <h2 class="white--text text-center font-weight-light">
-              {{ $store.state.currentUser.name || "John Doe" }}
+              {{ $store.state.currentUser.firstName || "John Doe" }}
             </h2>
           </v-col>
         </v-row>
@@ -58,7 +60,7 @@
             active-class="logo-active"
             :to="loggedButtons[3].route"
             width="220px"
-            v-if="$store.state.currentUser.type == 'Teacher'"
+            v-if="$store.state.currentUser.type == 'teacher'"
           >
             <v-col>
               <v-icon>{{ loggedButtons[3].icon }}</v-icon>
@@ -155,7 +157,7 @@
                   color="white"
                   :active-class="loggedButtons[3].activeclass"
                   :to="loggedButtons[3].route"
-                  v-if="$store.state.currentUser.type == 'Teacher'"
+                  v-if="$store.state.currentUser.type == 'teacher'"
                 >
                   {{ loggedButtons[3].name }}</v-btn
                 >
@@ -188,7 +190,7 @@
             <v-btn
               x-large
               outlined
-              v-if="$store.state.currentUser == null"
+              v-if="$store.state.currentUser === null"
               tile
               to="/Register"
               class="text-none text-h6"
@@ -203,14 +205,12 @@
                   v-on="on"
                   class="text-none pl-2 pr-2"
                   x-large
-                  ><v-avatar size="30" class="mr-1 ml-0"
-                    ><v-icon size="30" color="white"
-                      >mdi-account-circle</v-icon
-                    ></v-avatar
-                  >
+                  ><v-avatar size="30" class="mr-1 ml-0" color="white">
+                    <v-img :src="UserImage"></v-img
+                  ></v-avatar>
                   <v-spacer></v-spacer>
                   <div class="mr-5 ml-5 text-subtitle-1 font-weight-medium">
-                    {{ $store.state.currentUser.name || "John Doe" }}
+                    {{ $store.state.currentUser.firstName || "John Doe" }}
                   </div>
                   <v-spacer></v-spacer>
                   <v-avatar size="20" class="mx-1">
@@ -330,22 +330,21 @@ export default {
     ],
     drawer: false
   }),
-
   methods: {
     async logOut(flag) {
       if (flag) {
-        // Send a request to logout
-        const response = await api.logoutUser();
-
-        if (response.status === 200) {
-          localStorage.removeItem("currentUser");
-          this.$store.state.newNotification.state = false;
-          this.$store.state.currentUser = null;
-        }
+        localStorage.removeItem("currentUser");
+        localStorage.removeItem("userToken");
+        this.$store.state.newNotification.state = false;
+        this.$store.state.currentUser = null;
       }
     }
   },
-
+  computed: {
+    UserImage() {
+      return api.getImageSource(this.$store.state.currentUser.id, "user");
+    }
+  },
   created() {
     this.$store.state.currentUser = JSON.parse(
       localStorage.getItem("currentUser")

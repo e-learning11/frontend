@@ -61,7 +61,8 @@
 
     <!-- Courses Section -->
     <v-container fluid class="courses-container">
-      <v-container fill-height class="courses-section new-container">
+      <Loading type="content" v-if="Courses === null"></Loading>
+      <v-container v-else fill-height class="courses-section new-container">
         <v-row
           no-gutters
           justify="center"
@@ -85,9 +86,16 @@
             </h2>
           </v-col>
         </v-row>
-        <v-row>
+        <v-row v-if="Courses.length === 0">
+          <v-col cols="12">
+            <h2 class="text-overline">
+              No Courses Found
+            </h2>
+          </v-col>
+        </v-row>
+        <v-row v-else>
           <v-col
-            v-for="i in 5"
+            v-for="(course, i) in Courses"
             :key="i"
             :md="CardHeights[i - 1].cols"
             sm="12"
@@ -111,19 +119,15 @@
 
 <script>
 import Footer from "@/components/footer.vue";
+import Loading from "@/components/Loading.vue";
 import CourseCard from "@/components/CoursesCard.vue";
 import NewUserHome from "@/components/NewUserHome.vue";
 import RegisteredUserHome from "@/components/RegisteredUserHome.vue";
-
-import img1 from "@/assets/img-4.jpg";
-import img2 from "@/assets/img-5.jpg";
-import img3 from "@/assets/img-6.jpg";
-import img4 from "@/assets/img-7.jpg";
-import img5 from "@/assets/img-8.jpg";
+import api from "api-client";
 
 export default {
   name: "Home",
-  components: { Footer, CourseCard, NewUserHome, RegisteredUserHome },
+  components: { Footer, CourseCard, NewUserHome, RegisteredUserHome, Loading },
   methods: {
     scrollto(el, secondaryel) {
       let bodyRect = document.body.getBoundingClientRect().top;
@@ -140,43 +144,7 @@ export default {
     }
   },
   data: () => ({
-    Courses: [
-      {
-        image: img1,
-        Name: "React Course",
-        Author: "Mohamed Elsharbawy",
-        text: "Explore the hidden waterfall deep inside the Amazon jungle",
-        color: "blue"
-      },
-      {
-        image: img2,
-        Name: "React Course",
-        Author: "Mohamed Elsharbawy",
-        text: "Explore the hidden waterfall deep inside the Amazon jungle",
-        color: "blue"
-      },
-      {
-        image: img3,
-        Name: "React Course",
-        Author: "Mohamed Elsharbawy",
-        text: "Explore the hidden waterfall deep inside the Amazon jungle",
-        color: "blue"
-      },
-      {
-        image: img4,
-        Name: "React Course",
-        Author: "Mohamed Elsharbawy",
-        text: "Explore the hidden waterfall deep inside the Amazon jungle",
-        color: "blue"
-      },
-      {
-        image: img5,
-        Name: "React Course",
-        Author: "Mohamed Elsharbawy",
-        text: "Explore the hidden waterfall deep inside the Amazon jungle",
-        color: "blue"
-      }
-    ],
+    Courses: null,
     CardHeights: [
       { height: 400, cols: 6 },
       { height: 400, cols: 6 },
@@ -184,7 +152,15 @@ export default {
       { height: 260, cols: 4 },
       { height: 260, cols: 4 }
     ]
-  })
+  }),
+  async created() {
+    // Get Random courses to display
+    const courseCount = 5;
+    const response = await api.getRandomCourses(courseCount);
+    if (response.status === 200) {
+      this.Courses = response.data;
+    }
+  }
 };
 </script>
 

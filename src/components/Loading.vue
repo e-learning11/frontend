@@ -1,21 +1,26 @@
 <template>
-  <v-container class="cover">
-    <v-progress-circular
-      :size="300"
-      color="blue darken-3"
-      indeterminate
-    ></v-progress-circular>
-
-    <!-- <v-row dense>
-      <v-col cols="12">
-        <v-skeleton-loader type="image,card-avatar,image"></v-skeleton-loader>
+  <div>
+    <v-row dense justify="center" class="pa-10" v-if="type === 'content'">
+      <v-col cols="10">
+        <v-skeleton-loader type="card-avatar,image"></v-skeleton-loader>
       </v-col>
-    </v-row> -->
-  </v-container>
+    </v-row>
+    <v-container v-else class="cover">
+      <v-progress-circular
+        :size="300"
+        color="blue darken-3"
+        indeterminate
+      ></v-progress-circular>
+    </v-container>
+  </div>
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    type: String
+  }
+};
 </script>
 
 <style scoped>

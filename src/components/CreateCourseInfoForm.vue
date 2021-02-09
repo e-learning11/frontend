@@ -344,6 +344,8 @@
 </template>
 
 <script>
+import api from "api-client";
+
 export default {
   props: {
     PageType: String
@@ -353,7 +355,7 @@ export default {
       rules: {
         Required: value => !!value || "Required."
       },
-      allCourses: ["Entry1", "Entry2"],
+      allCourses: [],
       isEdit: false
     };
   },
@@ -547,11 +549,15 @@ export default {
     if (this.PageType === "EditCourse") this.isEdit = true;
     else this.isEdit = false;
   },
-  created() {
+  async created() {
     //Check if the Page is an Edit
     if (this.PageType === "EditCourse") this.isEdit = true;
     else this.isEdit = false;
-    //@TODO Send request to get all the courses for allCourses
+    //Send request to get all the courses for allCourses
+    const response = api.getAllCourses(0, 20);
+    if (response.status === 200) {
+      this.allCourses = response.data;
+    }
   }
 };
 </script>

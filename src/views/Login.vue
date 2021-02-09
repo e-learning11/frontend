@@ -122,27 +122,44 @@ export default {
       if (!this.$refs.Loginform.validate()) return;
 
       // Send the request
-      const response = await api.loginUser({
+      const loginResponse = await api.loginUser({
         email: this.email,
         password: this.password
       });
 
       // If the request was successful,
-      // add the currentUser to localStorage
-      // and route to home
-      // 200 OK
-      if (response.status === 200) {
-        const currentUser = response.data.data;
-        localStorage.setItem("currentUser", JSON.stringify(currentUser));
-        this.$store.state.currentUser = currentUser;
+      if (loginResponse.status === 200) {
+        // Save the token
+        const token = loginResponse.data;
+        localStorage.setItem("userToken", JSON.stringify(token));
 
-        // Display welcome Message
-        this.$store.state.newNotification.Message = "Welcome! Nice to Have you";
-        this.$store.state.newNotification.state = true;
+        // Send the Request to get the User profile Info
+        const profileResponse = await api.getUserProfile(
+          JSON.parse(localStorage.getItem("userToken"))
+        );
 
-        this.$router.push("/");
+        // If the request was successful,
+        // add the currentUser to localStorage
+        // and route to home
+        // 200 OK
+        if (profileResponse.status === 200) {
+          // Get User info using the token
+          const currentUser = profileResponse.data;
+          localStorage.setItem("currentUser", JSON.stringify(currentUser));
+          this.$store.state.currentUser = currentUser;
+
+          // Display welcome Message
+          this.$store.state.newNotification.Message =
+            "Welcome! Nice to Have you";
+          this.$store.state.newNotification.state = true;
+          this.$router.push("/");
+        } else {
+          this.$store.state.newNotification.Message =
+            "Something went wrong. Please Try again";
+          this.$store.state.newNotification.state = true;
+        }
       } else {
-        this.$store.state.newNotification.Message = response.data.message;
+        this.$store.state.newNotification.Message = "Wrong Email or Password";
         this.$store.state.newNotification.state = true;
       }
     }

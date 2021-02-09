@@ -36,6 +36,7 @@ export default {
   },
 
   async RegisterUser(NewUser) {
+    console.log("Mock");
     await fetch(true, 800);
     if (NewUser !== null) {
       return { status: 200, data: NewUser };
