@@ -1,5 +1,4 @@
 import axios from "axios";
-
 const Base_URL = `${process.env.VUE_APP_API_HOST}`;
 
 export default {
@@ -20,7 +19,6 @@ export default {
   },
 
   async RegisterUser(DataObject) {
-    console.log(DataObject);
     let data = new FormData();
     for (let key in DataObject) {
       data.append(key, DataObject[key]);
@@ -65,6 +63,43 @@ export default {
 
   getImageSource(id, type) {
     return `${Base_URL}/api/image?id=${id}&owner=${type}`;
+  },
+
+  async CreateCourse(DataObject, UserToken) {
+    // Process the DataObject
+    // Add date
+    const date = new Date();
+    DataObject.date =
+      date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+    // Add private
+    DataObject.private = false;
+    // Add Language
+    DataObject.language = "English";
+
+    //Remove components
+    delete DataObject.components;
+
+    //copy Image from Object and delete it
+    const tempImage = DataObject.photo;
+    delete DataObject.photo;
+
+    // Create the form Data
+    let data = new FormData();
+    data.append("json", `${JSON.stringify(DataObject)}`);
+    data.append("image", tempImage);
+    data.append("vidoeFile", null);
+    data.append("assignmentFile", null);
+
+    const config = {
+      headers: {
+        "x-auth-token": `${UserToken}`
+      }
+    };
+    const response = await axios
+      .post(`${Base_URL}/api/course/create`, data, config)
+      .then(res => res)
+      .catch(err => err.response);
+    return response;
   },
 
   async getRandomCourses(count) {

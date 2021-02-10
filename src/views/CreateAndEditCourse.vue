@@ -112,8 +112,14 @@ export default {
       if (this.$route.name === "CreateCourse") {
         // Check if CourseInfo is in LocalStorage
         let CourseInfo = JSON.parse(localStorage.getItem("CourseInfo"));
-        if (CourseInfo != null) this.$store.state.CourseInfo = CourseInfo;
-        else
+        if (CourseInfo != null) {
+          this.$store.state.CourseInfo = CourseInfo;
+
+          // Display a Notification
+          this.$store.state.newNotification.Message =
+            "Progress Recovered, Please reupload all files";
+          this.$store.state.newNotification.state = true;
+        } else
           this.$store.state.CourseInfo = {
             Name: "",
             Description: "",

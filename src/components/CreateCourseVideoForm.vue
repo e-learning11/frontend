@@ -33,7 +33,7 @@
           >
             <div class="mr-5 font-weight-bold">Video Title :</div>
             <v-text-field
-              v-model="VideoInfo.Title"
+              v-model="VideoInfo.name"
               :rules="[rules.Required]"
               dense
             ></v-text-field>
@@ -47,7 +47,7 @@
           >
             <div class="mr-5 font-weight-bold">Video URL :</div>
             <v-text-field
-              v-model="VideoInfo.URL"
+              v-model="VideoInfo.videoID"
               :rules="[rules.Required]"
               dense
             ></v-text-field>
@@ -65,7 +65,7 @@
               full-width
               class="mt-5 mb-0"
               auto-grow
-              v-model="VideoInfo.Description"
+              v-model="VideoInfo.description"
               :rules="[rules.Required]"
             ></v-textarea>
           </v-col>
@@ -128,10 +128,10 @@ export default {
   data() {
     return {
       VideoInfo: {
-        Title: "",
-        URL: "",
+        name: "",
+        videoID: "",
         File: null,
-        Description: ""
+        description: ""
       },
       rules: {
         Required: value => !!value || "Required."
@@ -141,10 +141,10 @@ export default {
   methods: {
     Reset() {
       this.VideoInfo = {
-        Title: "",
-        URL: "",
+        name: "",
+        videoID: "",
         File: null,
-        Description: ""
+        description: ""
       };
     },
     AddVideo() {

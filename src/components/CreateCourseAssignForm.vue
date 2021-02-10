@@ -33,7 +33,7 @@
             <div class="mr-5 font-weight-bold">Assignment Title :</div>
             <v-text-field
               dense
-              v-model="AssignInfo.Title"
+              v-model="AssignInfo.name"
               :rules="[rules.Required]"
             ></v-text-field>
           </v-col>
@@ -129,8 +129,8 @@ export default {
   data() {
     return {
       AssignInfo: {
-        Title: "",
-        Description: "",
+        name: "",
+        description: "",
         File: null
       },
       rules: {
@@ -141,7 +141,7 @@ export default {
   methods: {
     Reset() {
       this.AssignInfo = {
-        Title: "",
+        name: "",
         Description: "",
         File: null
       };

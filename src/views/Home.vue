@@ -97,15 +97,15 @@
           <v-col
             v-for="(course, i) in Courses"
             :key="i"
-            :md="CardHeights[i - 1].cols"
+            :md="CardHeights[i].cols"
             sm="12"
             class="mb-10"
           >
             <CourseCard
               :height="
-                $vuetify.breakpoint.smAndDown ? 250 : CardHeights[i - 1].height
+                $vuetify.breakpoint.smAndDown ? 250 : CardHeights[i].height
               "
-              :CardData="Courses[i - 1]"
+              :CardData="Courses[i]"
             ></CourseCard>
           </v-col>
         </v-row>

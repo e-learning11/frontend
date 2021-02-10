@@ -20,8 +20,26 @@
           >
             <div class="mr-5 font-weight-bold">Test Title :</div>
             <v-text-field
-              v-model="NewTest.Title"
+              v-model="NewTest.name"
               :rules="[rules.Required]"
+              dense
+            ></v-text-field>
+          </v-col>
+          <v-col
+            cols="12"
+            :class="{
+              'text-h6': $vuetify.breakpoint.smAndUp,
+              'text-subtitle-1': $vuetify.breakpoint.xs
+            }"
+          >
+            <div class="mr-5 font-weight-bold">Passing Grade :</div>
+            <v-text-field
+              v-model="NewTest.passingGrade"
+              :rules="[
+                rules.Required,
+                rules.grade(NewTest.passingGrade, NewTest.test.length)
+              ]"
+              type="Number"
               dense
             ></v-text-field>
           </v-col>
@@ -34,7 +52,7 @@
           >
             <div class="mr-5 font-weight-bold">Questions :</div>
           </v-col>
-          <v-col cols="12" v-if="NewTest.Questions.length === 0">
+          <v-col cols="12" v-if="NewTest.test.length === 0">
             <p class="text-center text-subtitle-1 font-weight-light mb-0">
               Added Questions will Appear here
             </p>
@@ -52,7 +70,7 @@
             >
               <v-row
                 class="mb-3 mt-3 text-center single-question pt-5 pb-3"
-                v-for="(Item, i) in NewTest.Questions"
+                v-for="(Item, i) in NewTest.test"
                 :key="i"
               >
                 <v-col cols="12" class="pa-1"
@@ -244,17 +262,20 @@ export default {
   data() {
     return {
       rules: {
-        Required: value => !!value || "Required."
+        Required: value => !!value || "Required.",
+        grade: (currentGrade, maxGrade) =>
+          (currentGrade >= 0 && currentGrade <= maxGrade) ||
+          "Grade must be between Zero and Number of total Questions"
       },
       NewQuestion: {
         type: "TorF",
         Q: "",
-        correctAnswer: "",
+        correctAnswer: 0,
         A: []
       },
       NewTest: {
-        Title: "",
-        Questions: []
+        name: "",
+        test: []
       }
     };
   },
@@ -268,32 +289,35 @@ export default {
       //check the Validation
       if (!this.$refs.QuestionForm.validate()) return;
       // If True or false Add Answers
-      if (this.NewQuestion.type === "TorF")
-        this.NewQuestion.A = ["True", "False"];
+      if (this.NewQuestion.type === "TorF") {
+        if (this.NewQuestion.correctAnswer === "False")
+          this.NewQuestion.A = ["True", "False"];
+        else this.NewQuestion.A = ["False", "True"];
+      }
       // Else if MCQ add correct Answer to Answers
       else if (this.NewQuestion.type === "MCQ") {
         this.NewQuestion.A.push(this.NewQuestion.correctAnswer);
       }
-
+      this.NewQuestion.correctAnswer = this.NewQuestion.A.length - 1;
       // Add the New Question to Array
-      this.NewTest.Questions.push({
+      this.NewTest.test.push({
         ...this.NewQuestion
       });
     },
     RemoveQuestion(QNumber) {
       //Remove the Selected Question
-      this.NewTest.Questions.splice(QNumber, 1);
+      this.NewTest.test.splice(QNumber, 1);
     },
     ResetTest() {
       //Reset the Test Form
       this.NewTest = {
-        Title: "",
-        Questions: []
+        name: "",
+        test: []
       };
     },
     AddTest() {
       // Check if the form is valid
-      if (!this.$refs.TestForm.validate() || this.NewTest.Questions.length == 0)
+      if (!this.$refs.TestForm.validate() || this.NewTest.test.length == 0)
         return;
       //Add the Test to the Components
       this.$root.$emit("NewComponent", this.NewTest);

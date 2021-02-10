@@ -1,21 +1,19 @@
 [
   {
-    "id": 100,
+    "gender": 3,
+    "private": false,
+    "age": 20,
     "name": "Explore Vue 3 (Including Router and Vuex)",
-    "registered": true,
-    "Summary": "Learn HTML, CSS , Javascript and Much more in this Free Course, Made for you and your knowledge",
-    "Description": " Learn HTML, CSS , Javascript and Much more in this Free Course. Made for you and your knowledge. Hello and Welcome to the Course, This is your instructor saluting you.",
-    "Instructor": {
-      "name": "We Love Teaching",
-      "about": "The Purpose of Teaching is Delivering and Enjoymnet of passing Knowledge"
-    },
-    "prerequisites": ["HTML5", "CSS3", "Javascript"],
-    "Language": "English",
-    "Date": "1/1/2021",
-    "currentComponent": 5,
+    "summary": "Learn HTML, CSS , Javascript and Much more in this Free Course, Made for you and your knowledge",
+    "description": " Learn HTML, CSS , Javascript and Much more in this Free Course. Made for you and your knowledge. Hello and Welcome to the Course, This is your instructor saluting you.",
+
+    "prerequisites": [],
+    "language": "English",
+    "date": "1/1/2021",
+
     "sections": [
       {
-        "name": "Introduction", 
+        "name": "Introduction",
         "start": 1,
         "end": 3,
         "components": [
@@ -23,7 +21,8 @@
             "number": 1,
             "videoID": "https://player.vimeo.com/video/48815306",
             "type": "Video",
-            "name": "Introduction"
+            "name": "Introduction",
+            "File": null
           },
           {
             "number": 2,
@@ -45,12 +44,14 @@
         "end": 5,
         "components": [
           {
+            "passingGrade": 2,
             "number": 4,
             "type": "Test",
-            "Test": [
+            "test": [
               {
                 "Q": "How are you?",
-                "A": ["True", "False"]
+                "A": ["True", "False"],
+                "correctAnswer": 0
               },
               {
                 "Q": "Choose the Best out of the below answers.",
@@ -58,11 +59,13 @@
                   "Sleeping For 8 hours",
                   "Eating your favourite food",
                   "Enjoying the company of friends"
-                ]
+                ],
+                "correctAnswer": 0
               },
               {
                 "Q": "How are you again?",
-                "A": ["True", "False"]
+                "A": ["True", "False"],
+                "correctAnswer": 0
               },
               {
                 "Q": "Choose the Best out of the below answers.",
@@ -70,7 +73,8 @@
                   "Why are you asking again?",
                   "I already answered!!",
                   "This is a wierd test."
-                ]
+                ],
+                "correctAnswer": 1
               }
             ],
             "name": "Test"
@@ -78,11 +82,12 @@
           {
             "number": 5,
             "type": "Test",
-            "Test": [
+            "test": [
               {
                 "Q": "How are you?",
                 "A": ["True", "False"],
-                "type": "TorF"
+                "type": "TorF",
+                "correctAnswer": 0
               },
               {
                 "Q": "Choose the Best out of the below answers.",
@@ -91,12 +96,14 @@
                   "Eating your favourite food",
                   "Enjoying the company of friends"
                 ],
-                "type": "MCQ"
+                "type": "MCQ",
+                "correctAnswer": 2
               },
               {
                 "Q": "How are you again?",
                 "A": ["True", "False"],
-                "type": "TorF"
+                "type": "TorF",
+                "correctAnswer": 0
               },
               {
                 "Q": "Choose the Best out of the below answers.",
@@ -105,7 +112,8 @@
                   "I already answered!!",
                   "This is a wierd test."
                 ],
-                "type": "MCQ"
+                "type": "MCQ",
+                "correctAnswer": 0
               },
               {
                 "Q": "Talk About your Hobbies.",
@@ -122,10 +130,10 @@
         "end": 6,
         "components": [
           {
+            "passingGrade": 100,
             "number": 6,
             "name": "First Assignment",
-            "type": "Assignment",
-            "File": null
+            "type": "Assignment"
           }
         ]
       },
@@ -137,8 +145,7 @@
           {
             "number": 7,
             "name": "First Assignment",
-            "type": "Assignment",
-            "File": null
+            "type": "Assignment"
           }
         ]
       },
@@ -150,8 +157,7 @@
           {
             "number": 8,
             "name": "First Assignment",
-            "type": "Assignment",
-            "File": null
+            "type": "Assignment"
           }
         ]
       },
@@ -163,8 +169,7 @@
           {
             "number": 9,
             "name": "First Assignment",
-            "type": "Assignment",
-            "File": null
+            "type": "Assignment"
           }
         ]
       }

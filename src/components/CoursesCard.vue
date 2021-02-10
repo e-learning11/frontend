@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="courseLink" class="clear-text">
+  <router-link :to="courseLink" class="clear-text" v-if="CardData">
     <v-card
       class="mx-auto card"
       @mouseenter="reveal = true"
@@ -9,9 +9,9 @@
       color="white"
     >
       <div class="anchor-img">
-        <v-img :src="CardData.image" :height="height" class="zoom-img"> </v-img>
+        <v-img :src="CourseImage" :height="height" class="zoom-img"> </v-img>
         <div class="anchored-text">
-          <h2 class="font-weight-medium">{{ CardData.Name }}</h2>
+          <h2 class="font-weight-medium">{{ CardData.name }}</h2>
         </div>
       </div>
       <v-card-text class="black--text center-text">
@@ -23,7 +23,7 @@
             'text-h6': $vuetify.breakpoint.mdAndUp
           }"
         >
-          {{ CardData.text }}
+          {{ CardData.summary }}
         </h3>
         <p
           class="mx-5 text-center"
@@ -33,7 +33,7 @@
             'text-subtitle-1': $vuetify.breakpoint.mdAndUp
           }"
         >
-          {{ CardData.Author }}
+          {{ CardData.Instructor }}
         </p>
       </v-card-text>
     </v-card>
@@ -41,21 +41,22 @@
 </template>
 
 <script>
+import api from "api-client";
+
 export default {
   data: () => ({
     reveal: false
   }),
   props: {
     CardData: Object,
-    height: Number,
-    courseNumber: {
-      type: Number,
-      default: 100
-    }
+    height: Number
   },
   computed: {
     courseLink() {
-      return "/course/" + this.courseNumber;
+      return "/course/" + this.CardData.id;
+    },
+    CourseImage() {
+      return api.getImageSource(this.CardData.id, "course");
     }
   }
 };

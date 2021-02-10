@@ -31,7 +31,7 @@
             <v-text-field
               :rules="[rules.Required]"
               dense
-              v-model="$store.state.CourseInfo['Name']"
+              v-model="$store.state.CourseInfo['name']"
             ></v-text-field>
           </v-col>
           <v-col
@@ -48,7 +48,7 @@
               :rules="[rules.Required]"
               class="mt-5 mb-0"
               auto-grow
-              v-model="$store.state.CourseInfo['Description']"
+              v-model="$store.state.CourseInfo['description']"
             ></v-textarea>
           </v-col>
           <v-col
@@ -65,7 +65,7 @@
               :rules="[rules.Required]"
               class="mt-5 mb-0"
               auto-grow
-              v-model="$store.state.CourseInfo['Summary']"
+              v-model="$store.state.CourseInfo['summary']"
             ></v-textarea>
           </v-col>
           <v-col
@@ -95,11 +95,11 @@
             <v-radio-group
               :rules="[rules.Required]"
               row
-              v-model="$store.state.CourseInfo['Gender']"
+              v-model="$store.state.CourseInfo['gender']"
             >
-              <v-radio label="Male" value="Male"></v-radio>
-              <v-radio label="Female" value="Female"></v-radio>
-              <v-radio label="Both" value="Both"></v-radio>
+              <v-radio label="Male" value="1"></v-radio>
+              <v-radio label="Female" value="2"></v-radio>
+              <v-radio label="Both" value="3"></v-radio>
             </v-radio-group>
           </v-col>
           <v-col
@@ -118,7 +118,7 @@
               deletable-chips
               hint="Select Prerequisite Courses"
               persistent-hint
-              v-model="$store.state.CourseInfo['Prerequisites']"
+              v-model="$store.state.CourseInfo['prerequisites']"
             ></v-select>
           </v-col>
           <v-col
@@ -130,7 +130,6 @@
           >
             <div class="mr-5 font-weight-bold">URL :</div>
             <v-text-field
-              :rules="[rules.Required]"
               dense
               v-model="$store.state.CourseInfo['URL']"
             ></v-text-field>
@@ -147,7 +146,7 @@
               max="70"
               min="0"
               class="align-start mt-3"
-              v-model="$store.state.CourseInfo['Age']"
+              v-model="$store.state.CourseInfo['age']"
             >
               <template v-slot:prepend>
                 <p>
@@ -247,7 +246,7 @@
               <v-text-field
                 placeholder="Section Name"
                 class="mx-5"
-                v-model="$store.state.CourseInfo.sections[i].Name"
+                v-model="$store.state.CourseInfo.sections[i].name"
                 :rules="[rules.Required]"
               ></v-text-field>
 
@@ -362,20 +361,20 @@ export default {
   methods: {
     ResetAll() {
       this.$store.state.CourseInfo = {
-        Name: "",
-        Description: "",
-        Summary: "",
+        name: "",
+        description: "",
+        summary: "",
         photo: null,
-        Gender: null,
-        Prerequisites: [],
+        gender: null,
+        prerequisites: [],
         URL: null,
-        Age: [0, 70],
+        age: [0, 70],
         components: [],
         sections: []
       };
       if (!this.isEdit) localStorage.removeItem("CourseInfo");
     },
-    SubmitCourse() {
+    async SubmitCourse() {
       // Check for validation
       if (
         !this.$refs.InfoForm.validate() ||
@@ -387,14 +386,22 @@ export default {
       this.ProcessSections();
       //@TODO Should Send the Request and remove components property
       //@TODO Send Two different Requests one for edit and other for Create
-      console.log(this.$store.state.CourseInfo);
-      // Reset the data and Route to Home
-      this.ResetAll();
-      this.$router.push("/");
-      // Display a Success Notification
-      this.$store.state.newNotification.Message =
-        "New Course Added Successfuly";
-      this.$store.state.newNotification.state = true;
+      const response = await api.CreateCourse(
+        { ...this.$store.state.CourseInfo },
+        JSON.parse(localStorage.getItem("userToken"))
+      );
+      if (response.status === 200) {
+        // Reset the data and Route to Home
+        this.ResetAll();
+        this.$router.push("/");
+        // Display a Success Notification
+        this.$store.state.newNotification.Message =
+          "New Course Added Successfuly";
+        this.$store.state.newNotification.state = true;
+      } else {
+        this.$store.state.newNotification.Message = response.data;
+        this.$store.state.newNotification.state = true;
+      }
     },
     SaveProgress() {
       localStorage.setItem(
@@ -440,7 +447,7 @@ export default {
       //Special case: First Section
       if (this.$store.state.CourseInfo.sections.length === 0) {
         newSection = {
-          Name: "",
+          name: "",
           start: 1,
           end: this.$store.state.CourseInfo.components.length
         };
@@ -450,7 +457,7 @@ export default {
       // And the beginning is the end of its previous section
       else {
         newSection = {
-          Name: "",
+          name: "",
           start: this.$store.state.CourseInfo.components.length,
           end: this.$store.state.CourseInfo.components.length
         };
@@ -537,7 +544,7 @@ export default {
         section.components = [];
         for (let i = section.start - 1; i < section.end; i++) {
           //Add Number to component
-          this.$store.state.CourseInfo.components[i].Number = i + 1;
+          this.$store.state.CourseInfo.components[i].number = i + 1;
           // Push the component to the section
           section.components.push(this.$store.state.CourseInfo.components[i]);
         }
@@ -554,9 +561,12 @@ export default {
     if (this.PageType === "EditCourse") this.isEdit = true;
     else this.isEdit = false;
     //Send request to get all the courses for allCourses
-    const response = api.getAllCourses(0, 20);
+    const response = await api.getAllCourses(0, 20);
     if (response.status === 200) {
-      this.allCourses = response.data;
+      this.allCourses = response.data.map(v => ({
+        text: v.name,
+        value: v.courseId
+      }));
     }
   }
 };
