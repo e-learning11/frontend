@@ -74,6 +74,7 @@
     <!--Courses Searched section-->
     <v-container fluid class="courses-section">
       <v-container class="new-container">
+        <Loading type="content" v-if="loading"> </Loading>
         <v-row dense align="center" justify="center">
           <v-col
             cols="12"
@@ -99,95 +100,15 @@
 
 <script>
 import Footer from "@/components/footer.vue";
+import Loading from "@/components/Loading.vue";
 import CourseCard from "@/components/CoursesCard.vue";
-import img1 from "@/assets/img-4.jpg";
-import img2 from "@/assets/img-5.jpg";
-import img3 from "@/assets/img-6.jpg";
-import img4 from "@/assets/img-7.jpg";
-import img5 from "@/assets/img-8.jpg";
+import api from "api-client";
 
 export default {
-  components: { Footer, CourseCard },
+  components: { Footer, CourseCard, Loading },
   data: () => ({
-    Courses: [
-      {
-        image: img1,
-        Name: "React Course",
-        Author: "Mohamed Elsharbawy",
-        text: "Explore the hidden waterfall deep inside the Amazon jungle",
-        color: "blue"
-      },
-      {
-        image: img2,
-        Name: "React Course",
-        Author: "Mohamed Elsharbawy",
-        text: "Explore the hidden waterfall deep inside the Amazon jungle",
-        color: "blue"
-      },
-      {
-        image: img3,
-        Name: "React Course",
-        Author: "Mohamed Elsharbawy",
-        text: "Explore the hidden waterfall deep inside the Amazon jungle",
-        color: "blue"
-      },
-      {
-        image: img4,
-        Name: "React Course and other stuff",
-        Author: "Mohamed Elsharbawy",
-        text: "Explore the hidden waterfall deep inside the Amazon jungle",
-        color: "blue"
-      },
-      {
-        image: img5,
-        Name: "React Course",
-        Author: "Mohamed Elsharbawy",
-        text: "Explore the hidden waterfall deep inside the Amazon jungle",
-        color: "blue"
-      },
-      {
-        image: img5,
-        Name: "React Course",
-        Author: "Mohamed Elsharbawy",
-        text: "Explore the hidden waterfall deep inside the Amazon jungle",
-        color: "blue"
-      },
-      {
-        image: img5,
-        Name: "React Course",
-        Author: "Mohamed Elsharbawy",
-        text: "Explore the hidden waterfall deep inside the Amazon jungle",
-        color: "blue"
-      },
-      {
-        image: img5,
-        Name: "React Course",
-        Author: "Mohamed Elsharbawy",
-        text: "Explore the hidden waterfall deep inside the Amazon jungle",
-        color: "blue"
-      },
-      {
-        image: img5,
-        Name: "React Course",
-        Author: "Mohamed Elsharbawy",
-        text: "Explore the hidden waterfall deep inside the Amazon jungle",
-        color: "blue"
-      },
-      {
-        image: img5,
-        Name: "React Course",
-        Author: "Mohamed Elsharbawy",
-        text: "Explore the hidden waterfall deep inside the Amazon jungle",
-        color: "blue"
-      },
-      {
-        image: img5,
-        Name: "React Course",
-        Author: "Mohamed Elsharbawy",
-        text: "Explore the hidden waterfall deep inside the Amazon jungle",
-        color: "blue"
-      }
-    ],
+    loading: true,
+    Courses: [],
     CardHeight: 250,
     items: [
       { title: "Click Me" },
@@ -195,7 +116,18 @@ export default {
       { title: "Click Me" },
       { title: "Click Me 2" }
     ]
-  })
+  }),
+  async created() {
+    //Check if the Page is an Edit
+    if (this.PageType === "EditCourse") this.isEdit = true;
+    else this.isEdit = false;
+    //Send request to get all the courses for allCourses
+    const response = await api.getAllCourses(0, 20);
+    if (response.status === 200) {
+      this.Courses = response.data;
+      this.loading = false;
+    }
+  }
 };
 </script>
 

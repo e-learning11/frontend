@@ -384,7 +384,7 @@ export default {
         return;
       //process the components to be under the correct section
       this.ProcessSections();
-      //@TODO Should Send the Request and remove components property
+      //Sends the Request and remove components property
       //@TODO Send Two different Requests one for edit and other for Create
       const response = await api.CreateCourse(
         { ...this.$store.state.CourseInfo },

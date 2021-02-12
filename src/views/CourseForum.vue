@@ -4,8 +4,22 @@
     <v-container fluid v-else>
       <v-container class="new-container">
         <v-card outlined color="#FAFAFA" class="pa-5 rounded-t-xl" tile flat>
-          <v-row no-gutters justify="center">
-            <v-col cols="auto">Search</v-col>
+          <v-row no-gutters justify="center" align="center" class="px-5">
+            <v-col cols="6">
+              <v-responsive max-width="500px">
+                <v-text-field
+                  full-width
+                  background-color="white"
+                  class="rounded-pill pa-2"
+                  color="blue darken-3"
+                  hide-details
+                  dense
+                  outlined
+                  placeholder="Search..."
+                  append-icon="mdi-magnify"
+                ></v-text-field>
+              </v-responsive>
+            </v-col>
             <v-spacer></v-spacer>
             <v-col cols="auto" class="mx-5">
               <v-btn
@@ -18,11 +32,44 @@
             </v-col>
           </v-row>
           <v-expand-transition>
-            <v-row v-show="viewNewQuestion">
-              <v-col cols="12">
-                This is alot of text and I am going to con
-              </v-col>
-            </v-row>
+            <v-form v-show="viewNewQuestion" class="mt-10">
+              <v-row justify="center">
+                <v-col cols="12">
+                  <v-divider></v-divider>
+                </v-col>
+                <v-col cols="8">
+                  <v-text-field
+                    :rules="[rules.Required]"
+                    dense
+                    v-model="newQuestionData.title"
+                    placeholder="Question Title"
+                  ></v-text-field
+                ></v-col>
+                <v-col cols="8">
+                  <v-textarea
+                    filled
+                    full-width
+                    :rules="[rules.Required]"
+                    auto-grow
+                    v-model="newQuestionData.text"
+                    placeholder="Add your Question"
+                  ></v-textarea>
+                </v-col>
+                <v-col cols="8">
+                  <v-combobox
+                    v-model="newQuestionData.tags"
+                    :rules="[rules.Required]"
+                    :items="Tags"
+                    label="Add Tags"
+                  ></v-combobox>
+                </v-col>
+                <v-col cols="8" class="text-center">
+                  <v-btn outlined class="mx-auto">
+                    Ask Question
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-form>
           </v-expand-transition>
         </v-card>
         <v-card min-height="90vh" outlined tile flat class="rounded-b-lg">
@@ -75,9 +122,35 @@
                     </div>
                   </v-col>
                   <v-spacer></v-spacer>
+                  <v-col cols="auto">
+                    <v-card
+                      max-width="40"
+                      color="grey lighten-4"
+                      outlined
+                      flat
+                      tile
+                      class="rounded-xl"
+                    >
+                      <v-row no-gutters justify="center" align="center">
+                        <v-col cols="12" class="text-center">
+                          <v-btn icon
+                            ><v-icon>mdi-chevron-up</v-icon></v-btn
+                          ></v-col
+                        >
+                        <v-col cols="12" class="text-center">
+                          5
+                        </v-col>
+                        <v-col cols="12" class="text-center">
+                          <v-btn icon
+                            ><v-icon>mdi-chevron-down</v-icon></v-btn
+                          ></v-col
+                        >
+                      </v-row>
+                    </v-card>
+                  </v-col>
                   <v-col
                     cols="auto"
-                    class="px-10 text-center"
+                    class="px-10 text-center center-vertical"
                     :class="{
                       'green--text': i === 1
                     }"
@@ -117,13 +190,37 @@ export default {
   data() {
     return {
       viewNewQuestion: false,
-      waitRequest: false,
-      Questions: [1, 2, 3, 4]
+      waitRequest: true,
+      newQuestionData: {},
+      Questions: [1, 2, 3, 4],
+      Tags: [],
+      rules: {
+        Required: value => !!value || "Required."
+      }
     };
   },
   computed: {
     UserImage() {
       return api.getImageSource(this.$store.state.currentUser.id, "user");
+    }
+  },
+  async created() {
+    if (this.$store.state.currentUser === null) {
+      this.$router.push("/");
+      return;
+    }
+    if (this.$store.state.currentUser.type === "student") {
+      //Check if there the user has registered this course
+      let userStaterResponse = await api.getCourseUserState(
+        this.$route.params.courseId,
+        JSON.parse(localStorage.getItem("userToken"))
+      );
+
+      if (userStaterResponse.status !== 200) {
+        this.$router.push(`/course/${this.$route.params.courseId}`);
+        return;
+      }
+      this.waitRequest = false;
     }
   }
 };
@@ -137,12 +234,19 @@ export default {
   display: flex;
   justify-content: center;
 }
+.center-vertical {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 130px;
+}
 .question-link {
   color: black;
   text-decoration: none;
 }
 .question-link:hover {
   text-decoration: underline;
+  cursor: pointer;
 }
 @media (min-width: 1904px) {
   .new-container {

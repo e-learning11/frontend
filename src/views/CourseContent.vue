@@ -24,7 +24,7 @@
           Course Content
         </v-card>
         <CourseComponents
-          :sections="course.sections"
+          :sections="course.CourseSections"
           PageType="Content"
           :CourseNumber="Number($route.params.courseId)"
           :currentComponent="currentComponent"
@@ -71,7 +71,7 @@
                 >
                   <v-col
                     cols="12"
-                    v-for="(Question, i) in CourseComponent.Test"
+                    v-for="(Question, i) in CourseComponent.Questions"
                     :key="i"
                   >
                     <h3 class="text-h5 font-weight-medium mb-3">
@@ -85,10 +85,10 @@
                         v-model="TestData.finalAnswers[i]"
                       >
                         <v-radio
-                          v-for="(Answer, j) in Question.A"
+                          v-for="(Answer, j) in Question.Answers"
                           :key="j"
-                          :label="Answer"
-                          :value="Answer"
+                          :label="Answer.A"
+                          :value="Answer.A"
                         ></v-radio>
                       </v-radio-group>
                     </div>
@@ -299,7 +299,13 @@
             text
             class="text-none"
             :disabled="
-              Number($route.params.componentNumber) === currentComponent
+              Number($route.params.componentNumber) === currentComponent ||
+                Number($route.params.componentNumber) ===
+                  course.CourseSections[course.CourseSections.length - 1]
+                    .CourseSectionComponents[
+                    course.CourseSections[course.CourseSections.length - 1]
+                      .CourseSectionComponents.length - 1
+                  ].number
             "
             :to="calcRoute(Number($route.params.componentNumber) + 1)"
           >
@@ -333,6 +339,15 @@
           v-if="$vuetify.breakpoint.smAndDown"
         >
           Sections
+        </v-btn>
+        <v-btn
+          height="60px"
+          tile
+          text
+          class="text-none px-10 text-body-1 font-weight-black"
+          to="forum"
+        >
+          Forum
         </v-btn>
       </v-card>
 
@@ -382,7 +397,7 @@
                     }"
                     class="font-weight-thin mb-3"
                   >
-                    {{ course.Summary }}
+                    {{ course.summary }}
                   </div>
                 </v-col>
                 <v-row justify="center" align="center">
@@ -393,7 +408,7 @@
                       >
                       Language :
                       <span class="font-weight-medium ml-3">
-                        {{ course.Language }}</span
+                        {{ course.language }}</span
                       >
                     </div>
                   </v-col>
@@ -404,7 +419,9 @@
                       >
                       Upload Date :
                       <span class="font-weight-medium ml-3">
-                        {{ course.Date }}</span
+                        {{
+                          course.date.slice(0, course.date.indexOf("T"))
+                        }}</span
                       >
                     </div>
                   </v-col>
@@ -413,7 +430,7 @@
             </template>
             <!--Teacher Section-->
             <template v-if="currentTab === 'Teacher'">
-              <v-row justify="center" align="center">
+              <v-row justify="center" align="center" v-if="course.instructor">
                 <v-col cols="auto" class="pa-5 text-center">
                   <v-img
                     width="100"
@@ -424,13 +441,14 @@
                 </v-col>
                 <v-col cols="12">
                   <h3 class="font-weight-bold text-h5 mb-3 text-center">
-                    {{ course.Instructor.name }}
+                    {{ course.instructor.firstName }}
+                    {{ course.instructor.lastName }}
                   </h3>
                 </v-col>
 
                 <v-col cols="12">
                   <div class="font-weight-light text-body-1 text-center">
-                    {{ course.Instructor.about }}
+                    {{ course.instructor.about }}
                   </div>
                 </v-col>
               </v-row>
@@ -438,7 +456,7 @@
             <!--Nav Section-->
             <CourseComponents
               v-if="$vuetify.breakpoint.smAndDown && currentTab === 'Sections'"
-              :sections="course.sections"
+              :sections="course.CourseSections"
               PageType="Content"
               :CourseNumber="Number($route.params.courseId)"
               :currentComponent="currentComponent"
@@ -546,31 +564,38 @@ export default {
     next();
   },
   async created() {
-    // Send the request
-    const response = await api.getCourseByid(
+    //Check if there isnt a user logged or the user has registered this course
+    if (this.$store.state.currentUser == null) {
+      this.$router.push(`/course/${this.$route.params.courseId}`);
+      return;
+    }
+
+    //Check if there the user has registered this course
+    let userStaterResponse = await api.getCourseUserState(
       this.$route.params.courseId,
-      this.$route.params.componentNumber
+      JSON.parse(localStorage.getItem("userToken"))
     );
+
+    if (userStaterResponse.status !== 200) {
+      this.$router.push(`/course/${this.$route.params.courseId}`);
+      return;
+    }
+
+    // Send the request to get the Course
+    const response = await api.getCourseByid(this.$route.params.courseId);
     // If response is successful
     if (response.status === 200) {
       // Set the Data recieved from response
       // whole course data
       this.course = response.data;
-      //Check if there isnt a user logged or the user has registered this course
-      if (this.$store.state.currentUser == null || !this.course.registered) {
-        // Set can View to false and push the router to the first page of course
-        this.$router.push(`/course/${this.course.id}`);
-      }
-      // else Set the Current Component
-      else {
-        // @TODO Change this to take from the request
-        // current component of the course
-        this.CourseComponent = commonFunctions.FindComponent(
-          this.$route.params.componentNumber,
-          response.data
-        );
-        this.currentComponent = Number(this.$route.params.componentNumber);
-      }
+
+      // @TODO Change this to take from the request
+      // current component of the course
+      this.CourseComponent = commonFunctions.FindComponent(
+        this.$route.params.componentNumber,
+        response.data
+      );
+      this.currentComponent = Number(this.$route.params.componentNumber);
     }
     // Else route to Not found
     else {

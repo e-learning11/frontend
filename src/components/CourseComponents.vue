@@ -12,7 +12,7 @@
           <v-row dense class="mt-3">
             <v-col
               cols="12"
-              v-for="(component, j) in section.components"
+              v-for="(component, j) in section.CourseSectionComponents"
               :key="j"
               class="text-body-2 font-weight-light mt-1 mb-1"
             >
@@ -59,7 +59,7 @@
           <v-row no-gutters class="pt-4">
             <v-col
               cols="12"
-              v-for="(component, j) in section.components"
+              v-for="(component, j) in section.CourseSectionComponents"
               :key="j"
               class="text-body-2 font-weight-light link-wrapper mb-2 rounded-lg"
               :class="{

@@ -35,13 +35,14 @@
                 }"
                 class="font-weight-thin mb-3"
               >
-                {{ course.Summary }}
+                {{ course.summary }}
               </div>
               <div class="text-body font-weight-light mb-3">
                 Created by
-                <span class="text-body white--text font-weight-black mb-3">{{
-                  course.Instructor.name
-                }}</span>
+                <span class="text-body white--text font-weight-black mb-3"
+                  >{{ course.instructor.firstName }}
+                  {{ course.instructor.lastName }}</span
+                >
               </div>
               <div class="text-subtitle-2 font-weight-thin">
                 <v-icon size="16" class="mr-2" color="white"
@@ -49,7 +50,7 @@
                 >
                 Language :
                 <span class="font-weight-medium ml-3">
-                  {{ course.Language }}</span
+                  {{ course.language }}</span
                 >
               </div>
               <div class="text-subtitle-2 font-weight-thin mb-3">
@@ -57,7 +58,9 @@
                   >mdi-cloud-upload-outline</v-icon
                 >
                 Upload Date :
-                <span class="font-weight-medium ml-3"> {{ course.Date }}</span>
+                <span class="font-weight-medium ml-3">
+                  {{ course.date.slice(0, course.date.indexOf("T")) }}</span
+                >
               </div>
             </v-col>
             <v-col
@@ -68,51 +71,70 @@
               }"
               class="pa-0 text-center"
             >
-              <v-card elevation="10" height="100%" class="pa-1 rounded-lg">
-                <div class="iframe-container">
-                  <iframe
-                    :src="videoURL"
-                    width="560"
-                    height="315"
-                    webkitallowfullscreen
-                    mozallowfullscreen
-                    allowfullscreen
-                  ></iframe>
-                </div>
-                <div
-                  class="pa-3"
-                  v-if="!course.registered || $store.state.currentUser === null"
-                >
-                  <h4 class="font-weight-light mt-5 mb-3 grey--text">
-                    <v-icon color="grey darken-3"
-                      >mdi-information-outline</v-icon
+              <v-card
+                v-if="
+                  $store.state.currentUser.type != 'teacher' ||
+                    CourseComponent.videoID
+                "
+                elevation="10"
+                class="pa-1 rounded-lg center-vertical"
+              >
+                <v-row align="center" justify="center" no-gutters>
+                  <v-col cols="12">
+                    <div
+                      class="iframe-container"
+                      v-if="CourseComponent.videoID"
                     >
-                    You are Not Registered For This Course Yet!
-                  </h4>
-                  <v-btn
-                    large
-                    width="80%"
-                    outlined
-                    color="grey darken-4"
-                    class="white--text text-h6 mb-5 text-none"
-                    @click="registerCourse"
+                      <iframe
+                        :src="videoURL"
+                        width="560"
+                        height="315"
+                        webkitallowfullscreen
+                        mozallowfullscreen
+                        allowfullscreen
+                      ></iframe>
+                    </div>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    v-if="$store.state.currentUser.type != 'teacher'"
                   >
-                    Register Now
-                  </v-btn>
-                </div>
-                <div class="pa-3 mt-3 mb-3" v-else>
-                  <v-btn
-                    large
-                    width="80%"
-                    outlined
-                    color="grey darken-4"
-                    class="white--text text-h6 text-none"
-                    append
-                    to="1"
-                  >
-                    Go to Course
-                  </v-btn>
-                </div>
+                    <div
+                      class="pa-3"
+                      v-if="!registered || $store.state.currentUser === null"
+                    >
+                      <h4 class="font-weight-light mt-5 mb-3 grey--text">
+                        <v-icon color="grey darken-3"
+                          >mdi-information-outline</v-icon
+                        >
+                        You are Not Registered For This Course Yet!
+                      </h4>
+                      <v-btn
+                        large
+                        width="80%"
+                        outlined
+                        color="grey darken-4"
+                        class="white--text text-h6 mb-5 text-none"
+                        @click="registerCourse"
+                      >
+                        Register Now
+                      </v-btn>
+                    </div>
+                    <div class="pa-3 mt-3 mb-3" v-else>
+                      <v-btn
+                        large
+                        width="80%"
+                        outlined
+                        color="grey darken-4"
+                        class="white--text text-h6 text-none"
+                        append
+                        to="1"
+                      >
+                        Go to Course
+                      </v-btn>
+                    </div>
+                  </v-col>
+                </v-row>
               </v-card>
             </v-col>
           </v-row>
@@ -154,7 +176,7 @@
               Course Content
             </h3>
             <CourseComponents
-              :sections="course.sections"
+              :sections="course.CourseSections"
               PageType="Main"
             ></CourseComponents>
           </v-col>
@@ -170,7 +192,7 @@
                 Description
               </h3>
               <p class="font-weight-light text-subtitle-2 mb-0">
-                {{ course.Description }}
+                {{ course.description }}
               </p>
             </v-card>
             <v-card outlined class="pa-5 mb-5 rounded-xl">
@@ -191,12 +213,14 @@
                     'col-8': $vuetify.breakpoint.mdAndUp,
                     'col-11': $vuetify.breakpoint.smAndDown
                   }"
+                  v-if="course.instructor"
                 >
                   <div class="font-weight-bold text-subtitle-1">
-                    {{ course.Instructor.name }}
+                    {{ course.instructor.firstName }}
+                    {{ course.instructor.lastName }}
                   </div>
                   <div class="font-weight-light text-subtitle-2">
-                    {{ course.Instructor.about }}
+                    {{ course.instructor.about }}
                   </div>
                 </v-col>
               </v-row>
@@ -242,7 +266,8 @@ export default {
     return {
       CourseComponent: null,
       course: null,
-      OwnsCourse: false
+      OwnsCourse: false,
+      registered: false
     };
   },
   computed: {
@@ -251,11 +276,26 @@ export default {
     }
   },
   methods: {
-    registerCourse() {
+    async registerCourse() {
       // if there is no user redirect him to login
       if (this.$store.state.currentUser == null) this.$router.push("/login");
-      // @TODO Send the request to register the user
-      this.course.registered = true;
+      // Send the request to register the user
+      const response = await api.enrollUserCourse(
+        this.$route.params.courseId,
+        JSON.parse(localStorage.getItem("userToken"))
+      );
+      if (response.status === 200) {
+        // Display a Success Notification
+        this.$store.state.newNotification.Message =
+          "You are Now Registered in This Course";
+        this.$store.state.newNotification.state = true;
+        this.registered = true;
+      } else {
+        // Display a Success Notification
+        this.$store.state.newNotification.Message = response.data;
+        this.$store.state.newNotification.state = true;
+        this.registered = false;
+      }
     }
   },
   async created() {
@@ -263,11 +303,24 @@ export default {
     const response = await api.getCourseByid(this.$route.params.courseId);
     // If response is successful
     if (response.status === 200) {
+      // Send the Request to know if the User is Registered
+      if (this.$store.state.currentUser.type != "teacher") {
+        const stateResponse = await api.getCourseUserState(
+          this.$route.params.courseId,
+          JSON.parse(localStorage.getItem("userToken"))
+        );
+        if (stateResponse.status === 200) {
+          this.registered = true;
+        } else {
+          this.registered = false;
+        }
+      }
+
       // Set the Data recieved from response
       // whole course data
       this.course = response.data;
       // First component of the course
-      this.CourseComponent = this.course.sections[0].components[0];
+      this.CourseComponent = this.course.CourseSections[0].CourseSectionComponents[0];
       // @TODO check if user is the Teacher that owns the course
       this.OwnsCourse = false;
     }

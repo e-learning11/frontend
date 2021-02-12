@@ -83,6 +83,7 @@ export default {
     const tempImage = DataObject.photo;
     delete DataObject.photo;
 
+    // @TODO Process the files to be added to the Request
     // Create the form Data
     let data = new FormData();
     data.append("json", `${JSON.stringify(DataObject)}`);
@@ -171,7 +172,49 @@ export default {
     return response;
   },
 
-  async getCourseByid() {},
+  async getCourseUserState(CourseId, UserToken) {
+    const request = {
+      method: "GET",
+      url: `${Base_URL}/api/course/user-state?courseId=${CourseId}`,
+      headers: {
+        "x-auth-token": `${UserToken}`
+      }
+    };
+    const response = await axios(request)
+      .then(res => res)
+      .catch(err => err.response);
+
+    return response;
+  },
+
+  async enrollUserCourse(CourseId, UserToken) {
+    const config = {
+      headers: {
+        "x-auth-token": `${UserToken}`
+      }
+    };
+    const response = await axios
+      .post(`${Base_URL}/api/course/enroll?courseId=${CourseId}`, null, config)
+      .then(res => res)
+      .catch(err => err.response);
+
+    return response;
+  },
+
+  async getCourseByid(typeid) {
+    //check the type of url
+    let typeofCourse = "course_by_id";
+    if (isNaN(typeid)) typeofCourse = "course_by_url";
+    const request = {
+      method: "GET",
+      url: `${Base_URL}/api/course/get?type=${typeofCourse}&typeId=${typeid}`
+    };
+    const response = await axios(request)
+      .then(res => res)
+      .catch(err => err.response);
+
+    return response;
+  },
 
   async getCourseTests() {},
 

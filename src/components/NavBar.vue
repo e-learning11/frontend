@@ -128,6 +128,13 @@
               Brand
               <v-icon large>mdi-fleur-de-lis</v-icon>
             </v-btn>
+
+            <v-btn @click="changeLanguage" outlined color="white">
+              <v-icon color="white" v-if="!$vuetify.rtl"
+                >mdi-abjad-arabic</v-icon
+              >
+              <v-icon color="white" v-else>mdi-alpha-e</v-icon>
+            </v-btn>
           </v-col>
           <!-- Navigation list -->
           <v-col cols="7" v-if="$vuetify.breakpoint.mdAndUp">
@@ -338,6 +345,9 @@ export default {
         this.$store.state.newNotification.state = false;
         this.$store.state.currentUser = null;
       }
+    },
+    changeLanguage() {
+      this.$vuetify.rtl = !this.$vuetify.rtl;
     }
   },
   computed: {

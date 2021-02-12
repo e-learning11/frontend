@@ -11,29 +11,24 @@
       <div class="anchor-img">
         <v-img :src="CourseImage" :height="height" class="zoom-img"> </v-img>
         <div class="anchored-text">
-          <h2 class="font-weight-medium">{{ CardData.name }}</h2>
+          <h2 class="font-weight-light">{{ CardData.name }}</h2>
         </div>
       </div>
       <v-card-text class="black--text center-text">
-        <h3
-          class="font-weight-bold mx-5"
-          :class="{
-            'text-subtitle-1': $vuetify.breakpoint.xs,
-            'text-subtitle-1': $vuetify.breakpoint.sm,
-            'text-h6': $vuetify.breakpoint.mdAndUp
-          }"
-        >
+        <h3 class="font-weight-medium text-body-1">
           {{ CardData.summary }}
         </h3>
         <p
-          class="mx-5 text-center"
+          class="mx-5 mt-5 text-center font-weight-light"
           :class="{
             'text-subtitle-2': $vuetify.breakpoint.xs,
             'text-subtitle-2': $vuetify.breakpoint.sm,
             'text-subtitle-1': $vuetify.breakpoint.mdAndUp
           }"
+          v-if="CardData.instructor"
         >
-          {{ CardData.Instructor }}
+          {{ CardData.instructor.firstName }}
+          {{ CardData.instructor.lastName }}
         </p>
       </v-card-text>
     </v-card>
@@ -53,10 +48,13 @@ export default {
   },
   computed: {
     courseLink() {
-      return "/course/" + this.CardData.id;
+      if (this.CardData.id != null) return "/course/" + this.CardData.id;
+      return "/course/" + this.CardData.courseId;
     },
     CourseImage() {
-      return api.getImageSource(this.CardData.id, "course");
+      if (this.CardData.id != null)
+        return api.getImageSource(this.CardData.id, "course");
+      return api.getImageSource(this.CardData.courseId, "course");
     }
   }
 };
@@ -81,11 +79,11 @@ export default {
 .anchored-text {
   position: absolute;
   bottom: 0;
-  left: 15px;
+  left: 0;
   background-color: #1f98f4;
   color: white;
   font-size: 12px;
-  padding: 3px;
+  padding: 7px;
 }
 .anchor-img {
   position: relative;
