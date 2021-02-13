@@ -18,7 +18,7 @@
               }"
               v-if="$route.name === 'CreateCourse'"
             >
-              Create Course
+              {{ language.createCourse }}
             </h1>
             <h1
               class="text-center font-weight-light"
@@ -29,7 +29,7 @@
               }"
               v-if="$route.name === 'EditCourse'"
             >
-              Edit Course
+              {{ language.editCourse }}
             </h1>
           </v-col></v-row
         >
@@ -157,26 +157,33 @@ export default {
     return {
       ComponentToEdit: -1,
       requestFinished: false,
-      currentTab: "MainInfo",
-      tabs: [
+      currentTab: "MainInfo"
+    };
+  },
+  computed: {
+    language() {
+      return this.$store.state.language.createCourse;
+    },
+    tabs() {
+      return [
         {
-          name: "Main Info",
+          name: this.language.mainInfo,
           component: "MainInfo"
         },
         {
-          name: "Add Test",
+          name: this.language.addTest,
           component: "TestForm"
         },
         {
-          name: "Add Video",
+          name: this.language.addVideo,
           component: "VideoForm"
         },
         {
-          name: "Add Assignment",
+          name: this.language.addAssignment,
           component: "AssignForm"
         }
-      ]
-    };
+      ];
+    }
   },
   mounted() {
     this.GetCourseInfo();

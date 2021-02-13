@@ -3,8 +3,19 @@
     <Loading v-if="waitRequest"></Loading>
     <v-container fluid v-else>
       <v-container class="new-container">
-        <v-card outlined color="#FAFAFA" class="pa-5" tile flat>
+        <v-card
+          outlined
+          color="#FAFAFA"
+          class="pa-5 rounded-t-xl border-card"
+          tile
+          flat
+        >
           Hello
+        </v-card>
+        <v-card outlined tile flat class="rounded-b-lg pt-10 pb-12 px-5">
+          <v-row>
+            <v-col>Hey</v-col>
+          </v-row>
         </v-card>
       </v-container>
     </v-container>
@@ -64,13 +75,8 @@ export default {
   display: flex;
   justify-content: center;
 }
-.question-link {
-  color: black;
-  text-decoration: none;
-}
-.question-link:hover {
-  text-decoration: underline;
-  cursor: pointer;
+.border-card {
+  border-top: 5px solid skyblue;
 }
 @media (min-width: 1904px) {
   .new-container {

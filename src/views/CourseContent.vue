@@ -21,7 +21,7 @@
           class="font-weight-medium text-h6 pa-3 text-center"
         >
           <v-icon size="25" color="grey darken-3" class="mr-3">mdi-book</v-icon>
-          Course Content
+          {{ language.courseContent }}
         </v-card>
         <CourseComponents
           :sections="course.CourseSections"
@@ -52,7 +52,7 @@
               <v-row justify="center" align="center" class="mb-2">
                 <v-col cols="12">
                   <h2 class="text-h3 font-weight-light">
-                    Test your Understanding
+                    {{ language.testYourUnderstanding }}
                   </h2></v-col
                 >
               </v-row>
@@ -75,13 +75,13 @@
                     :key="i"
                   >
                     <h3 class="text-h5 font-weight-medium mb-3">
-                      Question {{ i + 1 }}: {{ Question.Q }}
+                      {{ language.question }} {{ i + 1 }}: {{ Question.Q }}
                     </h3>
                     <!--True or False and MCQ-->
                     <div class="ml-10" v-if="Question.type != 'Essay'">
                       <v-radio-group
                         required
-                        :rules="[v => !!v || 'Question not Answered']"
+                        :rules="[v => !!v || language.questionNotAnswered]"
                         v-model="TestData.finalAnswers[i]"
                       >
                         <v-radio
@@ -100,7 +100,7 @@
                       filled
                       full-width
                       auto-grow
-                      :rules="[v => !!v || 'Question not Answered']"
+                      :rules="[v => !!v || language.questionNotAnswered]"
                       v-model="TestData.finalAnswers[i]"
                     >
                     </v-textarea>
@@ -116,7 +116,7 @@
                       @click="validateTest"
                       :disabled="!validForm"
                     >
-                      Submit
+                      {{ language.submit }}
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -125,7 +125,9 @@
               <!--Score Screen-->
               <v-row justify="center" v-if="!TestData.takeTest">
                 <v-col cols="12">
-                  <h3 class="text-center text-h5">Your Current Score is</h3>
+                  <h3 class="text-center text-h5">
+                    {{ language.currentScore }}
+                  </h3>
                   <h4 class="text-center text-h6">
                     {{ TestData.currentScore }}
                   </h4>
@@ -138,7 +140,7 @@
                     class="text-h5 white--text mt-5 text-none"
                     @click="TestData.takeTest = true"
                   >
-                    Retake
+                    {{ language.retake }}
                   </v-btn>
                 </v-col>
               </v-row>
@@ -174,7 +176,7 @@
                     class="text-h6 white--text mt-5 text-none"
                     @click="DownloadFile"
                   >
-                    Download Assignment
+                    {{ language.downloadAssign }}
                   </v-btn>
 
                   <v-divider class="mt-5"></v-divider>
@@ -182,10 +184,10 @@
                 <v-col cols="10" class="mt-10 text-center">
                   <v-form ref="AssignmentForm" v-model="validAssignment">
                     <v-file-input
-                      label="Upload your work"
+                      :label="language.uploadWork"
                       dense
                       v-model="AssignmentFile"
-                      :rules="[v => !!v || 'No Work Submitted']"
+                      :rules="[v => !!v || language.noWork]"
                     ></v-file-input>
                   </v-form>
 
@@ -197,7 +199,7 @@
                     :disabled="!validAssignment"
                     @click="SubmitAssignmet"
                   >
-                    Submit
+                    {{ language.submit }}
                   </v-btn>
                 </v-col>
               </v-row>
@@ -250,7 +252,7 @@
             :to="calcRoute(Number($route.params.componentNumber) - 1)"
           >
             <v-icon size="30" color="grey darken-2">mdi-chevron-left</v-icon>
-            Previous
+            {{ language.previous }}
           </v-btn>
         </v-col>
         <v-col
@@ -269,7 +271,7 @@
             v-if="Number($route.params.componentNumber) === currentComponent"
             @click="MarkAsRead"
           >
-            Mark As Done
+            {{ language.mark }}
             <v-icon class="ml-2">mdi-sticker-check-outline</v-icon>
           </v-btn>
           <v-btn
@@ -281,7 +283,7 @@
             class="text-body-1 white--text text-none text-center"
             disabled
           >
-            Done
+            {{ language.done }}
             <v-icon class="ml-2">mdi-sticker-check-outline</v-icon>
           </v-btn>
         </v-col>
@@ -309,7 +311,7 @@
             "
             :to="calcRoute(Number($route.params.componentNumber) + 1)"
           >
-            Next
+            {{ language.next }}
             <v-icon size="30" color="grey darken-2">mdi-chevron-right</v-icon>
           </v-btn>
         </v-col>
@@ -338,7 +340,7 @@
           @click="currentTab = 'Sections'"
           v-if="$vuetify.breakpoint.smAndDown"
         >
-          Sections
+          {{ language.sections }}
         </v-btn>
         <v-btn
           height="60px"
@@ -347,7 +349,7 @@
           class="text-none px-10 text-body-1 font-weight-black"
           to="forum"
         >
-          Forum
+          {{ language.forum }}
         </v-btn>
       </v-card>
 
@@ -378,7 +380,8 @@
                     class="font-weight-light mb-3"
                   >
                     <span class="font-weight-medium"
-                      >Episode {{ CourseComponent.number }}:</span
+                      >{{ language.episode }}
+                      {{ CourseComponent.number }}:</span
                     >
                     {{ CourseComponent.name }}
                   </h2>
@@ -406,7 +409,7 @@
                       <v-icon size="16" class="mr-2" color="black"
                         >mdi-translate</v-icon
                       >
-                      Language :
+                      {{ language.language }}
                       <span class="font-weight-medium ml-3">
                         {{ course.language }}</span
                       >
@@ -417,7 +420,7 @@
                       <v-icon size="16" class="mr-2" color="black"
                         >mdi-cloud-upload-outline</v-icon
                       >
-                      Upload Date :
+                      {{ language.uploadDate }}
                       <span class="font-weight-medium ml-3">
                         {{
                           course.date.slice(0, course.date.indexOf("T"))
@@ -495,13 +498,18 @@ export default {
       },
       AssignmentFile: null,
       validAssignment: false,
-      currentTab: "About",
-      Tabs: ["About", "Teacher"]
+      currentTab: this.$store.state.language.courseContent.about
     };
   },
   computed: {
     videoURL() {
       return this.CourseComponent.videoID;
+    },
+    language() {
+      return this.$store.state.language.courseContent;
+    },
+    Tabs() {
+      return [this.language.about, this.language.teacher];
     }
   },
   methods: {

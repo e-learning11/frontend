@@ -15,7 +15,7 @@
                   hide-details
                   dense
                   outlined
-                  placeholder="Search..."
+                  :placeholder="language.search"
                   append-icon="mdi-magnify"
                 ></v-text-field>
               </v-responsive>
@@ -27,7 +27,7 @@
                 color="blue darken-3"
                 class="text-none white--text"
                 @click="viewNewQuestion = !viewNewQuestion"
-                >Ask</v-btn
+                >{{ language.ask }}</v-btn
               >
             </v-col>
           </v-row>
@@ -42,7 +42,7 @@
                     :rules="[rules.Required]"
                     dense
                     v-model="newQuestionData.title"
-                    placeholder="Question Title"
+                    :placeholder="language.questionTitle"
                   ></v-text-field
                 ></v-col>
                 <v-col cols="8">
@@ -52,7 +52,7 @@
                     :rules="[rules.Required]"
                     auto-grow
                     v-model="newQuestionData.text"
-                    placeholder="Add your Question"
+                    :placeholder="language.addQuestion"
                   ></v-textarea>
                 </v-col>
                 <v-col cols="8">
@@ -60,12 +60,12 @@
                     v-model="newQuestionData.tags"
                     :rules="[rules.Required]"
                     :items="Tags"
-                    label="Add Tags"
+                    :label="language.addTags"
                   ></v-combobox>
                 </v-col>
                 <v-col cols="8" class="text-center">
                   <v-btn outlined class="mx-auto">
-                    Ask Question
+                    {{ language.askQuestion }}
                   </v-btn>
                 </v-col>
               </v-row>
@@ -76,7 +76,7 @@
           <v-row v-if="Questions.length === 0">
             <v-col cols="12" class="text-center font-weight-light mt-10 mb-10">
               <h3 class="text-overline">
-                It seems that there are no Questions yet
+                {{ language.noQuestions }}
               </h3>
             </v-col>
           </v-row>
@@ -100,7 +100,8 @@
                       </router-link>
                     </div>
                     <div class="text-caption font-weight-light">
-                      Posted by <span class="font-weight-medium">Name</span>
+                      {{ language.postedBy }}
+                      <span class="font-weight-medium">Name</span>
                     </div>
                     <div class="mt-5">
                       <v-chip
@@ -161,7 +162,7 @@
                       >{{ i + 1 }}
                     </div>
                     <div class="text-caption">
-                      Answer<span v-if="i === 1">s</span>
+                      {{ language.answer }}
                     </div>
                   </v-col>
                 </v-row>
@@ -202,6 +203,9 @@ export default {
   computed: {
     UserImage() {
       return api.getImageSource(this.$store.state.currentUser.id, "user");
+    },
+    language() {
+      return this.$store.state.language.courseForum;
     }
   },
   async created() {

@@ -13,7 +13,7 @@
                 'text-h1': $vuetify.breakpoint.mdAndUp
               }"
             >
-              Adventure Awaits
+              {{ language.adventure }}
             </h1>
             <p
               class="mb-10"
@@ -23,7 +23,7 @@
                 'text-h4': $vuetify.breakpoint.mdAndUp
               }"
             >
-              What are you waiting for?
+              {{ language.what }}
             </p>
             <v-btn
               rounded
@@ -36,7 +36,7 @@
                 'text-h5': $vuetify.breakpoint.mdAndUp
               }"
               outlined
-              >Get Started</v-btn
+              >{{ language.getStarted }}</v-btn
             >
           </v-col>
           <v-col cols="12" class="center-horizontal mt-5"
@@ -82,14 +82,14 @@
                 'text-h3': $vuetify.breakpoint.mdAndUp
               }"
             >
-              Check Out These Amazing Courses
+              {{ language.checkOut }}
             </h2>
           </v-col>
         </v-row>
         <v-row v-if="Courses.length === 0">
           <v-col cols="12">
             <h2 class="text-overline">
-              No Courses Found
+              {{ language.noCourses }}
             </h2>
           </v-col>
         </v-row>
@@ -141,6 +141,11 @@ export default {
         top: offsetPosition,
         behavior: "smooth"
       });
+    }
+  },
+  computed: {
+    language() {
+      return this.$store.state.language.home;
     }
   },
   data: () => ({

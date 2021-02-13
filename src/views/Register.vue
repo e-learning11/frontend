@@ -20,7 +20,7 @@
                 'text-h1': $vuetify.breakpoint.mdAndUp
               }"
             >
-              Sign Up
+              {{ language.signup }}
             </h1>
           </v-col>
         </v-row>
@@ -47,7 +47,7 @@
                   <v-text-field
                     color="blue darken-3"
                     outlined
-                    label="First Name"
+                    :label="language.firstName"
                     required
                     v-model="Userform.firstName"
                     :rules="[rules.required]"
@@ -57,7 +57,7 @@
                   <v-text-field
                     color="blue darken-3"
                     outlined
-                    label="Last Name"
+                    :label="language.lastName"
                     required
                     v-model="Userform.lastName"
                     :rules="[rules.required]"
@@ -67,7 +67,7 @@
               <v-text-field
                 color="blue darken-3"
                 outlined
-                label="E-mail"
+                :label="language.email"
                 v-model="Userform.email"
                 required
                 :rules="[rules.required, rules.email]"
@@ -76,7 +76,7 @@
               <v-text-field
                 outlined
                 color="blue darken-3"
-                label="Password"
+                :label="language.password"
                 required
                 v-model="Userform.password"
                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -88,7 +88,7 @@
               <v-text-field
                 outlined
                 color="blue darken-3"
-                label="Confirm Password"
+                :label="language.confirmPassword"
                 required
                 v-model="Userform.confirmpassword"
                 :append-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -106,7 +106,7 @@
               <v-text-field
                 outlined
                 color="blue darken-3"
-                label="Age"
+                :label="language.age"
                 required
                 type="Number"
                 max="70"
@@ -117,7 +117,7 @@
               <v-text-field
                 outlined
                 color="blue darken-3"
-                label="Phone Number"
+                :label="language.phone"
                 v-model="Userform.phone"
                 :rules="[rules.correctPhone]"
               ></v-text-field>
@@ -126,7 +126,7 @@
                 <v-col
                   cols="12"
                   class="text-h6 font-weight-light mr-5 grey--text"
-                  >Gender</v-col
+                  >{{ language.gender }}</v-col
                 >
 
                 <v-radio-group
@@ -135,8 +135,11 @@
                   row
                   class="mt-0"
                 >
-                  <v-radio label="Male" :value="Number(1)"></v-radio>
-                  <v-radio label="Female" :value="Number(2)"></v-radio>
+                  <v-radio :label="language.male" :value="Number(1)"></v-radio>
+                  <v-radio
+                    :label="language.female"
+                    :value="Number(2)"
+                  ></v-radio>
                 </v-radio-group>
               </v-row>
 
@@ -144,7 +147,7 @@
                 <v-col
                   cols="12"
                   class="text-h6 font-weight-light mr-5 grey--text"
-                  >Account Type</v-col
+                  >{{ language.accountType }}</v-col
                 >
 
                 <v-radio-group
@@ -153,8 +156,8 @@
                   row
                   class="mt-0"
                 >
-                  <v-radio label="Teacher" value="teacher"></v-radio>
-                  <v-radio label="Student" value="student"></v-radio>
+                  <v-radio :label="language.teacher" value="teacher"></v-radio>
+                  <v-radio :label="language.student" value="student"></v-radio>
                 </v-radio-group>
               </v-row>
 
@@ -164,7 +167,7 @@
                 class="text-h5 white--text mt-5"
                 @click="validate"
               >
-                Sign Up
+                {{ language.signup }}
               </v-btn>
             </v-form>
           </v-col>
@@ -218,6 +221,9 @@ export default {
     UserImage() {
       if (this.Userform.image === null) return tempImage;
       return URL.createObjectURL(this.Userform.image);
+    },
+    language() {
+      return this.$store.state.language.register;
     }
   },
   methods: {

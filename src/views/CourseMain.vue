@@ -38,7 +38,7 @@
                 {{ course.summary }}
               </div>
               <div class="text-body font-weight-light mb-3">
-                Created by
+                {{ language.createdBy }}
                 <span class="text-body white--text font-weight-black mb-3"
                   >{{ course.instructor.firstName }}
                   {{ course.instructor.lastName }}</span
@@ -48,7 +48,7 @@
                 <v-icon size="16" class="mr-2" color="white"
                   >mdi-translate</v-icon
                 >
-                Language :
+                {{ language.language }}
                 <span class="font-weight-medium ml-3">
                   {{ course.language }}</span
                 >
@@ -57,7 +57,7 @@
                 <v-icon size="16" class="mr-2" color="white"
                   >mdi-cloud-upload-outline</v-icon
                 >
-                Upload Date :
+                {{ language.uploadDate }}
                 <span class="font-weight-medium ml-3">
                   {{ course.date.slice(0, course.date.indexOf("T")) }}</span
                 >
@@ -107,7 +107,7 @@
                         <v-icon color="grey darken-3"
                           >mdi-information-outline</v-icon
                         >
-                        You are Not Registered For This Course Yet!
+                        {{ language.notRegistered }}
                       </h4>
                       <v-btn
                         large
@@ -117,7 +117,7 @@
                         class="white--text text-h6 mb-5 text-none"
                         @click="registerCourse"
                       >
-                        Register Now
+                        {{ language.registerNow }}
                       </v-btn>
                     </div>
                     <div class="pa-3 mt-3 mb-3" v-else>
@@ -130,7 +130,7 @@
                         append
                         to="1"
                       >
-                        Go to Course
+                        {{ language.goToCourse }}
                       </v-btn>
                     </div>
                   </v-col>
@@ -151,7 +151,7 @@
             append
             to="overview"
           >
-            Course Overview
+            {{ language.courseOverview }}
           </v-btn>
         </v-col>
       </v-row>
@@ -173,7 +173,7 @@
             class="text-left px-5"
           >
             <h3 class="font-weight-medium text-h4 mb-5 header-text text-center">
-              Course Content
+              {{ language.courseContent }}
             </h3>
             <CourseComponents
               :sections="course.CourseSections"
@@ -189,7 +189,7 @@
           >
             <v-card outlined class="pa-5 mb-5 rounded-xl">
               <h3 class="font-weight-bold text-h5 mb-3 header-text text-center">
-                Description
+                {{ language.description }}
               </h3>
               <p class="font-weight-light text-subtitle-2 mb-0">
                 {{ course.description }}
@@ -197,7 +197,7 @@
             </v-card>
             <v-card outlined class="pa-5 mb-5 rounded-xl">
               <h3 class="font-weight-bold text-h5 mb-3 header-text text-center">
-                Instructor
+                {{ language.instructor }}
               </h3>
               <v-row justify="center" align="center">
                 <v-col cols="auto" class="pa-5">
@@ -232,10 +232,10 @@
               v-if="course.prerequisites"
             >
               <h3 class="font-weight-bold text-h5 mb-3 header-text text-center">
-                Prerequisites
+                {{ language.prerequisites }}
               </h3>
               <p class="font-weight-light text-subtitle-1 mb-3">
-                You need to have Finished the Following Courses :
+                {{ language.finishedCourses }}
               </p>
               <ul class="font-weight-bold ml-3">
                 <li v-for="(obj, i) in course.prerequisites" :key="i">
@@ -273,6 +273,9 @@ export default {
   computed: {
     videoURL() {
       return this.CourseComponent.videoID;
+    },
+    language() {
+      return this.$store.state.language.courseMain;
     }
   },
   methods: {
@@ -286,8 +289,7 @@ export default {
       );
       if (response.status === 200) {
         // Display a Success Notification
-        this.$store.state.newNotification.Message =
-          "You are Now Registered in This Course";
+        this.$store.state.newNotification.Message = this.language.successMessage;
         this.$store.state.newNotification.state = true;
         this.registered = true;
       } else {

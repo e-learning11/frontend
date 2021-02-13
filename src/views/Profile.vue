@@ -24,7 +24,7 @@
           <v-row justify="center" align="center" class="mb-5">
             <v-col cols="12">
               <h2 class="text-h4 font-weight-light">
-                Basic Information
+                {{ language.basicInfo }}
               </h2></v-col
             >
           </v-row>
@@ -38,7 +38,7 @@
                 'text-subtitle-1': $vuetify.breakpoint.xs
               }"
             >
-              <div class="mr-5 font-weight-light">First Name:</div>
+              <div class="mr-5 font-weight-light">{{ language.firstName }}</div>
               <p class="font-weight-medium">
                 {{ $store.state.currentUser.firstName || "John" }}
               </p></v-col
@@ -51,7 +51,7 @@
                 'text-subtitle-1': $vuetify.breakpoint.xs
               }"
             >
-              <div class="mr-5 font-weight-light">Last Name:</div>
+              <div class="mr-5 font-weight-light">{{ language.lastName }}</div>
               <p class="font-weight-medium">
                 {{ $store.state.currentUser.lastName || "John" }}
               </p></v-col
@@ -64,7 +64,7 @@
                 'text-subtitle-1': $vuetify.breakpoint.xs
               }"
             >
-              <div class="mr-5 font-weight-light">Email:</div>
+              <div class="mr-5 font-weight-light">{{ language.email }}</div>
               <p class="font-weight-medium">
                 {{ $store.state.currentUser.email || "John@Doe.com" }}
               </p></v-col
@@ -77,12 +77,14 @@
                 'text-subtitle-1': $vuetify.breakpoint.xs
               }"
             >
-              <div class="mr-5 font-weight-light">Gender:</div>
+              <div class="mr-5 font-weight-light">{{ language.gender }}</div>
               <p class="font-weight-medium">
-                <span v-if="$store.state.currentUser.gender === 1">Male</span>
-                <span v-else-if="$store.state.currentUser.gender === 2"
-                  >Female</span
-                >
+                <span v-if="$store.state.currentUser.gender === 1">{{
+                  language.male
+                }}</span>
+                <span v-else-if="$store.state.currentUser.gender === 2">{{
+                  language.female
+                }}</span>
                 <span v-else>Unknown</span>
               </p>
             </v-col>
@@ -94,7 +96,7 @@
                 'text-subtitle-1': $vuetify.breakpoint.xs
               }"
             >
-              <div class="mr-5 font-weight-light">Phone Number:</div>
+              <div class="mr-5 font-weight-light">{{ language.phone }}</div>
               <p class="font-weight-medium">
                 {{ $store.state.currentUser.phone || "01XXXXXXXXX" }}
               </p></v-col
@@ -107,7 +109,9 @@
                 'text-subtitle-1': $vuetify.breakpoint.xs
               }"
             >
-              <div class="mr-5 font-weight-light">Account Type:</div>
+              <div class="mr-5 font-weight-light">
+                {{ language.accountType }}
+              </div>
               <p class="font-weight-medium">
                 {{ $store.state.currentUser.type || "Unknown" }}
               </p></v-col
@@ -120,7 +124,7 @@
                 'text-subtitle-1': $vuetify.breakpoint.xs
               }"
             >
-              <div class="mr-5 font-weight-light">User Age:</div>
+              <div class="mr-5 font-weight-light">{{ language.age }}</div>
               <p class="font-weight-medium">
                 <span v-if="$store.state.currentUser.age !== null">
                   {{ $store.state.currentUser.age }}</span
@@ -146,7 +150,7 @@
           <v-row justify="center" align="center" class="mb-5">
             <v-col cols="12">
               <h2 class="text-h4 font-weight-light">
-                My Finished Courses
+                {{ language.finishedCourses }}
               </h2></v-col
             >
           </v-row>
@@ -156,7 +160,7 @@
           <v-row v-else-if="finishedCourses.length === 0">
             <v-col cols="12" class="text-center font-weight-light mt-10 mb-10">
               <h3 class="text-overline">
-                Oops! It seems you have No Finished Courses yet
+                {{ language.noCourses }}
               </h3>
             </v-col>
           </v-row>
@@ -194,7 +198,7 @@
             color="blue darken-2"
             outlined
             class="white--text text-none text-h6"
-            >Edit my Profile</v-btn
+            >{{ language.editProfile }}</v-btn
           >
         </v-row>
       </v-container>
@@ -222,6 +226,9 @@ export default {
   computed: {
     UserImage() {
       return api.getImageSource(this.$store.state.currentUser.id, "user");
+    },
+    language() {
+      return this.$store.state.language.profile;
     }
   },
   beforeRouteEnter(to, from, next) {

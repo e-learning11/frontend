@@ -20,7 +20,7 @@
                 'text-h1': $vuetify.breakpoint.mdAndUp
               }"
             >
-              Login
+              {{ language.login }}
             </h1>
           </v-col>
         </v-row>
@@ -30,7 +30,7 @@
               <v-text-field
                 color="blue darken-2"
                 outlined
-                label="E-mail"
+                :label="language.email"
                 v-model="email"
                 required
                 :rules="[rules.required, rules.email]"
@@ -39,7 +39,7 @@
               <v-text-field
                 outlined
                 color="blue darken-2"
-                label="Password"
+                :label="language.password"
                 required
                 v-model="password"
                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -54,27 +54,26 @@
                 class="text-h5 white--text mt-5"
                 @click="validate"
               >
-                Login
+                {{ language.login }}
               </v-btn>
             </v-form>
 
             <v-row no-gutters class="mt-3">
               <v-col
+                cols="auto"
                 :class="{
-                  'col-12': $vuetify.breakpoint.smAndDown,
-                  'col-4': $vuetify.breakpoint.mdAndUp,
                   'text-center': $vuetify.breakpoint.smAndDown,
                   'text-left': $vuetify.breakpoint.mdAndUp
                 }"
               >
-                <router-link to="#" class="link-style"
-                  >Forgot password?</router-link
-                >
+                <router-link to="#" class="link-style">{{
+                  language.forget
+                }}</router-link>
               </v-col>
+              <v-spacer></v-spacer>
               <v-col
+                cols="auto"
                 :class="{
-                  'col-12': $vuetify.breakpoint.smAndDown,
-                  'col-8': $vuetify.breakpoint.mdAndUp,
                   'text-center': $vuetify.breakpoint.smAndDown,
                   'text-right': $vuetify.breakpoint.mdAndUp
                 }"
@@ -86,7 +85,7 @@
                     'text-center': $vuetify.breakpoint.smAndDown,
                     'text-right': $vuetify.breakpoint.mdAndUp
                   }"
-                  >Don't have an account? Sign Up</router-link
+                  >{{ language.newAccount }}</router-link
                 >
               </v-col>
             </v-row>
@@ -115,6 +114,11 @@ export default {
         }
       }
     };
+  },
+  computed: {
+    language() {
+      return this.$store.state.language.login;
+    }
   },
   methods: {
     async validate() {

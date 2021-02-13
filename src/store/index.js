@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import english from "@/languages/english.json";
 
 Vue.use(Vuex);
 
@@ -21,7 +22,8 @@ export default new Vuex.Store({
       Age: [0, 70],
       components: [],
       sections: []
-    }
+    },
+    language: english
   },
   mutations: {},
   actions: {},

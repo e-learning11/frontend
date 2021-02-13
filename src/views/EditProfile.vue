@@ -7,7 +7,7 @@
           <v-row justify="center" align="center" class="mb-5">
             <v-col cols="6">
               <h2 class="text-h4 font-weight-light">
-                Edit My Profile
+                {{ language.editProfile }}
               </h2></v-col
             >
             <v-col cols="auto"
@@ -17,7 +17,7 @@
                 color="blue darken-2"
                 outlined
                 class="white--text text-none text-h6"
-                >My Profile</v-btn
+                >{{ language.myProfile }}</v-btn
               ></v-col
             >
           </v-row>
@@ -48,7 +48,7 @@
                 'text-subtitle-1': $vuetify.breakpoint.xs
               }"
             >
-              <div class="mr-5 font-weight-light">First Name:</div>
+              <div class="mr-5 font-weight-light">{{ language.firstName }}</div>
               <v-text-field
                 dense
                 v-model="NewData['firstName']"
@@ -65,13 +65,11 @@
                 'text-subtitle-1': $vuetify.breakpoint.xs
               }"
             >
-              <div class="mr-5 font-weight-light">Last Name:</div>
+              <div class="mr-5 font-weight-light">{{ language.lastName }}</div>
               <v-text-field
                 dense
                 v-model="NewData['lastName']"
-                :placeholder="
-                  $store.state.currentUser.lastName || 'No name Given'
-                "
+                :placeholder="$store.state.currentUser.lastName || '?'"
               ></v-text-field>
             </v-col>
             <v-col
@@ -82,13 +80,11 @@
                 'text-subtitle-1': $vuetify.breakpoint.xs
               }"
             >
-              <div class="mr-5 font-weight-light">Email:</div>
+              <div class="mr-5 font-weight-light">{{ language.email }}</div>
               <v-text-field
                 dense
                 v-model="NewData['email']"
-                :placeholder="
-                  $store.state.currentUser.email || 'No email Given'
-                "
+                :placeholder="$store.state.currentUser.email || '?'"
               ></v-text-field
             ></v-col>
             <v-col
@@ -99,14 +95,12 @@
                 'text-subtitle-1': $vuetify.breakpoint.xs
               }"
             >
-              <div class="mr-5 font-weight-light">User Age:</div>
+              <div class="mr-5 font-weight-light">{{ language.age }}</div>
               <v-text-field
                 dense
                 type="Number"
                 v-model="NewData['age']"
-                :placeholder="
-                  String($store.state.currentUser.age) || 'No Age Given'
-                "
+                :placeholder="String($store.state.currentUser.age) || '?'"
               ></v-text-field
             ></v-col>
             <v-col
@@ -117,13 +111,11 @@
                 'text-subtitle-1': $vuetify.breakpoint.xs
               }"
             >
-              <div class="mr-5 font-weight-light">Phone Number:</div>
+              <div class="mr-5 font-weight-light">{{ language.phone }}</div>
               <v-text-field
                 dense
                 v-model="NewData['phone']"
-                :placeholder="
-                  $store.state.currentUser.phone || 'No Phone Number Given'
-                "
+                :placeholder="$store.state.currentUser.phone || '?'"
               ></v-text-field
             ></v-col>
             <v-col
@@ -134,10 +126,10 @@
                 'text-subtitle-1': $vuetify.breakpoint.xs
               }"
             >
-              <div class="mr-5 font-weight-light">Gender:</div>
+              <div class="mr-5 font-weight-light">{{ language.gender }}</div>
               <v-radio-group v-model="NewData['gender']" mandatory row>
-                <v-radio label="Male" :value="Number(1)"></v-radio>
-                <v-radio label="Female" :value="Number(2)"></v-radio>
+                <v-radio :label="language.male" :value="Number(1)"></v-radio>
+                <v-radio :label="language.female" :value="Number(2)"></v-radio>
               </v-radio-group>
             </v-col>
           </v-row>
@@ -149,7 +141,7 @@
               class="white--text text-none text-h6"
               :disabled="areObjectsEqual($store.state.currentUser, NewData)"
               @click="EditProfile"
-              >Save Changes</v-btn
+              >{{ language.saveChanges }}</v-btn
             >
           </v-row>
         </v-form>
@@ -177,6 +169,9 @@ export default {
       if (this.NewData.image == null)
         return api.getImageSource(this.$store.state.currentUser.id, "user");
       return URL.createObjectURL(this.NewData.image);
+    },
+    language() {
+      return this.$store.state.language.editProfile;
     }
   },
   methods: {

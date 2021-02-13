@@ -13,7 +13,7 @@
                 'text-h1': $vuetify.breakpoint.mdAndUp
               }"
             >
-              Courses
+              {{ language.courses }}
             </h1>
           </v-col>
         </v-row>
@@ -25,22 +25,18 @@
       <v-container class="new-container">
         <v-row dense align="center" justify="center" class="mt-5 mb-5">
           <v-col cols="12" class="text-center text-h5 font-weight-light">
-            Showing {{ Courses.length }} Total Results
+            {{ language.showing }} {{ Courses.length }}
+            {{ language.totalResults }}
           </v-col>
           <v-col
             cols="12"
             class="text-center font-weight-medium text-subtitle-1"
           >
-            Filter by
+            {{ language.filter }}
           </v-col>
         </v-row>
         <v-row align="center" justify="center">
-          <v-col
-            v-for="i in 5"
-            :key="i"
-            cols="auto"
-            class="text-left center-horizontal"
-          >
+          <v-col cols="auto" class="text-left center-horizontal">
             <v-menu offset-y>
               <template v-slot:activator="{ on }">
                 <v-btn
@@ -52,7 +48,34 @@
                   v-on="on"
                   max-width="150"
                 >
-                  Language
+                  {{ language.age }}
+                  <v-icon class="ml-5"> mdi-chevron-down</v-icon>
+                </v-btn>
+              </template>
+              <v-list dense>
+                <li
+                  v-for="(item, index) in items"
+                  :key="index"
+                  class="list-item"
+                >
+                  <div>{{ item.title }}</div>
+                </li>
+              </v-list>
+            </v-menu>
+          </v-col>
+          <v-col cols="auto" class="text-left center-horizontal">
+            <v-menu offset-y>
+              <template v-slot:activator="{ on }">
+                <v-btn
+                  color="blue"
+                  class="black-text text-none text-left"
+                  elevation="0"
+                  tile
+                  outlined
+                  v-on="on"
+                  max-width="150"
+                >
+                  {{ language.gender }}
                   <v-icon class="ml-5"> mdi-chevron-down</v-icon>
                 </v-btn>
               </template>
@@ -110,13 +133,13 @@ export default {
     loading: true,
     Courses: [],
     CardHeight: 250,
-    items: [
-      { title: "Click Me" },
-      { title: "Click Me" },
-      { title: "Click Me" },
-      { title: "Click Me 2" }
-    ]
+    items: []
   }),
+  computed: {
+    language() {
+      return this.$store.state.language.courses;
+    }
+  },
   async created() {
     //Check if the Page is an Edit
     if (this.PageType === "EditCourse") this.isEdit = true;
