@@ -33,6 +33,8 @@
 
 <script>
 import NavBar from "@/components/NavBar.vue";
+import english from "@/languages/english.json";
+import arabic from "@/languages/arabic.json";
 
 export default {
   name: "App",
@@ -45,11 +47,23 @@ export default {
   },
   data: () => ({
     //
-  })
+  }),
+  created() {
+    // Get the currentLanguage from local storage
+    const lang = localStorage.getItem("lang");
+    // set the store with the language
+    if (lang === null || lang === "English") {
+      this.$store.state.language = english;
+      localStorage.setItem("lang", "English");
+    } else if (lang === "Arabic") {
+      this.$store.state.language = arabic;
+      this.$vuetify.rtl = true;
+    }
+  }
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .fade-enter-active,
 .fade-leave-active {
   transition-duration: 0.3s;

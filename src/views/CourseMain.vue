@@ -15,7 +15,7 @@
                 'col-12': $vuetify.breakpoint.smAndDown,
                 'px-10': $vuetify.breakpoint.smAndUp
               }"
-              class="white--text text-left"
+              class="white--text"
             >
               <h2
                 :class="{
@@ -73,7 +73,8 @@
             >
               <v-card
                 v-if="
-                  $store.state.currentUser.type != 'teacher' ||
+                  $store.state.currentUser === null ||
+                    $store.state.currentUser.type != 'teacher' ||
                     CourseComponent.videoID
                 "
                 elevation="10"
@@ -97,7 +98,10 @@
                   </v-col>
                   <v-col
                     cols="12"
-                    v-if="$store.state.currentUser.type != 'teacher'"
+                    v-if="
+                      $store.state.currentUser === null ||
+                        $store.state.currentUser.type != 'teacher'
+                    "
                   >
                     <div
                       class="pa-3"
@@ -170,7 +174,7 @@
               'col-7': $vuetify.breakpoint.mdAndUp,
               'col-12': $vuetify.breakpoint.smAndDown
             }"
-            class="text-left px-5"
+            class="px-5"
           >
             <h3 class="font-weight-medium text-h4 mb-5 header-text text-center">
               {{ language.courseContent }}
@@ -185,7 +189,7 @@
               'col-5': $vuetify.breakpoint.mdAndUp,
               'col-12': $vuetify.breakpoint.smAndDown
             }"
-            class="text-left px-5 "
+            class="px-5 "
           >
             <v-card outlined class="pa-5 mb-5 rounded-xl">
               <h3 class="font-weight-bold text-h5 mb-3 header-text text-center">
@@ -205,7 +209,7 @@
                     width="100"
                     height="100"
                     class="rounded-circle"
-                    src="..\assets\user-img.jpg"
+                    :src="instructorImage"
                   ></v-img>
                 </v-col>
                 <v-col
@@ -215,7 +219,9 @@
                   }"
                   v-if="course.instructor"
                 >
-                  <div class="font-weight-bold text-subtitle-1">
+                  <div
+                    class="font-weight-bold text-subtitle-1 mx-auto text-center"
+                  >
                     {{ course.instructor.firstName }}
                     {{ course.instructor.lastName }}
                   </div>
@@ -229,17 +235,21 @@
             <v-card
               outlined
               class="pa-5 mb-5 rounded-xl"
-              v-if="course.prerequisites"
+              v-if="course.prequisites"
             >
               <h3 class="font-weight-bold text-h5 mb-3 header-text text-center">
-                {{ language.prerequisites }}
+                {{ language.prequisites }}
               </h3>
               <p class="font-weight-light text-subtitle-1 mb-3">
                 {{ language.finishedCourses }}
               </p>
-              <ul class="font-weight-bold ml-3">
-                <li v-for="(obj, i) in course.prerequisites" :key="i">
-                  {{ obj }}
+              <ul class="font-weight-bold pa-5">
+                <li
+                  v-for="(obj, i) in course.prequisites"
+                  :key="i"
+                  class="mb-3"
+                >
+                  {{ obj.name }}
                 </li>
               </ul>
             </v-card>
@@ -274,6 +284,9 @@ export default {
     videoURL() {
       return this.CourseComponent.videoID;
     },
+    instructorImage() {
+      return api.getImageSource(this.course.instructor.id, "user");
+    },
     language() {
       return this.$store.state.language.courseMain;
     }
@@ -281,7 +294,10 @@ export default {
   methods: {
     async registerCourse() {
       // if there is no user redirect him to login
-      if (this.$store.state.currentUser == null) this.$router.push("/login");
+      if (this.$store.state.currentUser == null) {
+        this.$router.push("/login");
+        return;
+      }
       // Send the request to register the user
       const response = await api.enrollUserCourse(
         this.$route.params.courseId,
@@ -306,7 +322,10 @@ export default {
     // If response is successful
     if (response.status === 200) {
       // Send the Request to know if the User is Registered
-      if (this.$store.state.currentUser.type != "teacher") {
+      if (
+        this.$store.state.currentUser !== null &&
+        this.$store.state.currentUser.type != "teacher"
+      ) {
         const stateResponse = await api.getCourseUserState(
           this.$route.params.courseId,
           JSON.parse(localStorage.getItem("userToken"))

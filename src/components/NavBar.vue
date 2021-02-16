@@ -113,11 +113,35 @@
     </v-navigation-drawer>
 
     <!-- Navigation Bar -->
-    <v-app-bar app flat color="black" height="80" clipped-right>
-      <v-container fluid>
-        <v-row>
+    <v-app-bar
+      app
+      flat
+      color="black"
+      height="80"
+      clipped-right
+      :class="{
+        'px-0': $vuetify.breakpoint.smAndDown
+      }"
+    >
+      <v-container
+        fluid
+        :class="{
+          'px-0': $vuetify.breakpoint.smAndDown
+        }"
+      >
+        <v-row
+          :class="{
+            'px-0': $vuetify.breakpoint.smAndDown
+          }"
+        >
           <!-- Logo and Name -->
-          <v-col md="3" sm="6" class="center-horizontally center-vertically">
+          <v-col
+            :class="{
+              'col-3': $vuetify.breakpoint.mdAndUp,
+              'col-auto': $vuetify.breakpoint.smAndDown
+            }"
+            class="center-horizontally center-vertically"
+          >
             <v-btn
               to="/"
               active-class="logo-active"
@@ -129,7 +153,7 @@
               <v-icon large>mdi-fleur-de-lis</v-icon>
             </v-btn>
 
-            <v-btn @click="changeLanguage" outlined color="white">
+            <v-btn x-small @click="changeLanguage" outlined color="white">
               <v-icon color="white" v-if="!$vuetify.rtl"
                 >mdi-abjad-arabic</v-icon
               >
@@ -202,8 +226,9 @@
               to="/Register"
               class="text-none text-h6"
               color="white"
-              >Register</v-btn
             >
+              {{ $store.state.language.navbar.register }}
+            </v-btn>
             <v-menu v-else offset-y>
               <template v-slot:activator="{ on }">
                 <v-btn
@@ -265,78 +290,80 @@
 import api from "api-client";
 
 export default {
-  data: () => ({
-    buttons: [
-      {
-        name: "Home",
-        route: "/",
-        icon: "mdi-home",
-        activeclass: "btn-active"
-      },
-      {
-        name: "Courses",
-        route: "/courses",
-        icon: "mdi-book",
-        activeclass: "btn-active"
-      },
-      {
-        name: "Login",
-        route: "/login",
-        icon: "mdi-login-variant",
-        activeclass: "btn-active"
-      },
-      {
-        name: "Register",
-        route: "/register",
-        icon: "mdi-pencil",
-        activeclass: "btn-active"
-      }
-    ],
-    loggedButtons: [
-      {
-        name: "Home",
-        route: "/",
-        icon: "mdi-home",
-        isTeacher: true,
-        activeclass: "btn-active",
-        action: false
-      },
-      {
-        name: "Courses",
-        route: "/courses",
-        icon: "mdi-book",
-        isTeacher: true,
-        activeclass: "btn-active",
-        action: false
-      },
-      {
-        name: "Log Out",
-        route: "/",
-        icon: "mdi-login",
-        isTeacher: true,
-        activeclass: "logo-active",
-        action: true
-      },
-      {
-        name: "Create Course",
-        route: "/createcourse",
-        icon: "mdi-bank-plus",
-        isTeacher: true,
-        activeclass: "btn-active",
-        action: false
-      }
-    ],
-    userButtons: [
-      {
-        name: "Profile",
-        route: "/profile",
-        icon: "mdi-account-cog",
-        activeclass: "logo-active",
-        action: true
-      }
-    ],
-    drawer: false
-  }),
+  data() {
+    return {
+      buttons: [
+        {
+          name: this.$store.state.language.navbar.home,
+          route: "/",
+          icon: "mdi-home",
+          activeclass: "btn-active"
+        },
+        {
+          name: this.$store.state.language.navbar.courses,
+          route: "/courses",
+          icon: "mdi-book",
+          activeclass: "btn-active"
+        },
+        {
+          name: this.$store.state.language.navbar.login,
+          route: "/login",
+          icon: "mdi-login-variant",
+          activeclass: "btn-active"
+        },
+        {
+          name: this.$store.state.language.navbar.register,
+          route: "/register",
+          icon: "mdi-pencil",
+          activeclass: "btn-active"
+        }
+      ],
+      loggedButtons: [
+        {
+          name: this.$store.state.language.navbar.home,
+          route: "/",
+          icon: "mdi-home",
+          isTeacher: true,
+          activeclass: "btn-active",
+          action: false
+        },
+        {
+          name: this.$store.state.language.navbar.courses,
+          route: "/courses",
+          icon: "mdi-book",
+          isTeacher: true,
+          activeclass: "btn-active",
+          action: false
+        },
+        {
+          name: this.$store.state.language.navbar.logout,
+          route: "/",
+          icon: "mdi-login",
+          isTeacher: true,
+          activeclass: "logo-active",
+          action: true
+        },
+        {
+          name: this.$store.state.language.navbar.createCourse,
+          route: "/createcourse",
+          icon: "mdi-bank-plus",
+          isTeacher: true,
+          activeclass: "btn-active",
+          action: false
+        }
+      ],
+      userButtons: [
+        {
+          name: this.$store.state.language.navbar.profile,
+          route: "/profile",
+          icon: "mdi-account-cog",
+          activeclass: "logo-active",
+          action: true
+        }
+      ],
+      drawer: false
+    };
+  },
   methods: {
     async logOut(flag) {
       if (flag) {
@@ -347,7 +374,12 @@ export default {
       }
     },
     changeLanguage() {
-      this.$vuetify.rtl = !this.$vuetify.rtl;
+      // change the current language in local storage
+      if (localStorage.getItem("lang") === "English")
+        localStorage.setItem("lang", "Arabic");
+      else localStorage.setItem("lang", "English");
+      // reload page
+      this.$router.go();
     }
   },
   computed: {

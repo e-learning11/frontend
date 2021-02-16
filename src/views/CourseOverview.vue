@@ -57,7 +57,7 @@
                     <span class="font-weight-light"> {{ course.Summary }}</span>
                   </div>
                 </v-col>
-                <v-col cols="12" class="text-left">
+                <v-col cols="12">
                   <h2 class="font-weight-medium text-body-1">
                     Language:
                     <span class="font-weight-light">
@@ -65,7 +65,7 @@
                     >
                   </h2>
                 </v-col>
-                <v-col cols="12" class="text-left">
+                <v-col cols="12">
                   <h2 class="font-weight-medium text-body-1">
                     Upload Date:
                     <span class="font-weight-light"> {{ course.Date }}</span>
@@ -83,7 +83,7 @@
             'col-5': $vuetify.breakpoint.mdAndUp,
             'col-12': $vuetify.breakpoint.smAndDown
           }"
-          class="text-left px-5"
+          class="px-5"
         >
           <v-row class="mt-2 mb-3">
             <v-col cols="12 pb-1">

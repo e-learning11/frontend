@@ -115,10 +115,10 @@ export default {
     return response;
   },
 
-  async getAllCourses(offset, limit) {
+  async getAllCourses(offset, limit, data) {
     const request = {
       method: "GET",
-      url: `${Base_URL}/api/courses?limit=${limit}&offset=${offset}`
+      url: `${Base_URL}/api/courses?limit=${limit}&offset=${offset}&language=${data.language}&gender=${data.gender}&sortOrder=${data.sortOrder}&sort=${data.sortType}`
     };
     const response = await axios(request)
       .then(res => res)
@@ -127,10 +127,10 @@ export default {
     return response;
   },
 
-  async getEnrolledCourses(UserToken) {
+  async getEnrolledCourses(UserToken, limits) {
     const request = {
       method: "GET",
-      url: `${Base_URL}/api/courses/enrolled`,
+      url: `${Base_URL}/api/courses/enrolled?limit=${limits.limit}&offset=${limits.offset}`,
       headers: {
         "x-auth-token": `${UserToken}`
       }
@@ -142,10 +142,10 @@ export default {
     return response;
   },
 
-  async getCreatedCourses(UserToken) {
+  async getCreatedCourses(UserToken, limits) {
     const request = {
       method: "GET",
-      url: `${Base_URL}/api/courses/created`,
+      url: `${Base_URL}/api/courses/created?limit=${limits.limit}&offset=${limits.offset}`,
       headers: {
         "x-auth-token": `${UserToken}`
       }
@@ -157,10 +157,10 @@ export default {
     return response;
   },
 
-  async getFinishedCourses(UserToken) {
+  async getFinishedCourses(UserToken, limits) {
     const request = {
       method: "GET",
-      url: `${Base_URL}/api/courses/finished`,
+      url: `${Base_URL}/api/courses/finished?limit=${limits.limit}&offset=${limits.offset}`,
       headers: {
         "x-auth-token": `${UserToken}`
       }

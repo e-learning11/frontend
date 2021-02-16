@@ -48,7 +48,7 @@
                 'text-subtitle-1': $vuetify.breakpoint.xs
               }"
             >
-              <div class="mr-5 font-weight-light">{{ language.firstName }}</div>
+              <div class=" font-weight-light">{{ language.firstName }}</div>
               <v-text-field
                 dense
                 v-model="NewData['firstName']"
@@ -65,7 +65,7 @@
                 'text-subtitle-1': $vuetify.breakpoint.xs
               }"
             >
-              <div class="mr-5 font-weight-light">{{ language.lastName }}</div>
+              <div class=" font-weight-light">{{ language.lastName }}</div>
               <v-text-field
                 dense
                 v-model="NewData['lastName']"
@@ -80,7 +80,7 @@
                 'text-subtitle-1': $vuetify.breakpoint.xs
               }"
             >
-              <div class="mr-5 font-weight-light">{{ language.email }}</div>
+              <div class=" font-weight-light">{{ language.email }}</div>
               <v-text-field
                 dense
                 v-model="NewData['email']"
@@ -95,7 +95,7 @@
                 'text-subtitle-1': $vuetify.breakpoint.xs
               }"
             >
-              <div class="mr-5 font-weight-light">{{ language.age }}</div>
+              <div class=" font-weight-light">{{ language.age }}</div>
               <v-text-field
                 dense
                 type="Number"
@@ -111,7 +111,7 @@
                 'text-subtitle-1': $vuetify.breakpoint.xs
               }"
             >
-              <div class="mr-5 font-weight-light">{{ language.phone }}</div>
+              <div class=" font-weight-light">{{ language.phone }}</div>
               <v-text-field
                 dense
                 v-model="NewData['phone']"
@@ -126,7 +126,7 @@
                 'text-subtitle-1': $vuetify.breakpoint.xs
               }"
             >
-              <div class="mr-5 font-weight-light">{{ language.gender }}</div>
+              <div class=" font-weight-light">{{ language.gender }}</div>
               <v-radio-group v-model="NewData['gender']" mandatory row>
                 <v-radio :label="language.male" :value="Number(1)"></v-radio>
                 <v-radio :label="language.female" :value="Number(2)"></v-radio>

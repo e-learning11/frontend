@@ -78,7 +78,13 @@
                       {{ language.question }} {{ i + 1 }}: {{ Question.Q }}
                     </h3>
                     <!--True or False and MCQ-->
-                    <div class="ml-10" v-if="Question.type != 'Essay'">
+                    <div
+                      :class="{
+                        'mx-10': $vuetify.breakpoint.smAndUp,
+                        'mx-2': $vuetify.breakpoint.xs
+                      }"
+                      v-if="Question.type != 'Essay'"
+                    >
                       <v-radio-group
                         required
                         :rules="[v => !!v || language.questionNotAnswered]"
@@ -87,6 +93,9 @@
                         <v-radio
                           v-for="(Answer, j) in Question.Answers"
                           :key="j"
+                          :class="{
+                            'text-right': $vuetify.rtl
+                          }"
                           :label="Answer.A"
                           :value="Answer.A"
                         ></v-radio>
@@ -95,7 +104,10 @@
                     <!--Essay Questions-->
                     <v-textarea
                       v-else
-                      class="ml-10"
+                      :class="{
+                        'mx-10': $vuetify.breakpoint.smAndUp,
+                        'mx-2': $vuetify.breakpoint.xs
+                      }"
                       required
                       filled
                       full-width
@@ -251,7 +263,12 @@
             :disabled="Number($route.params.componentNumber) === 1"
             :to="calcRoute(Number($route.params.componentNumber) - 1)"
           >
-            <v-icon size="30" color="grey darken-2">mdi-chevron-left</v-icon>
+            <v-icon size="30" color="grey darken-2" v-if="!$vuetify.rtl"
+              >mdi-chevron-left</v-icon
+            >
+            <v-icon size="30" color="grey darken-2" v-else
+              >mdi-chevron-right</v-icon
+            >
             {{ language.previous }}
           </v-btn>
         </v-col>
@@ -272,7 +289,7 @@
             @click="MarkAsRead"
           >
             {{ language.mark }}
-            <v-icon class="ml-2">mdi-sticker-check-outline</v-icon>
+            <v-icon class="mx-2">mdi-sticker-check-outline</v-icon>
           </v-btn>
           <v-btn
             v-else
@@ -284,7 +301,7 @@
             disabled
           >
             {{ language.done }}
-            <v-icon class="ml-2">mdi-sticker-check-outline</v-icon>
+            <v-icon class="mx-2">mdi-sticker-check-outline</v-icon>
           </v-btn>
         </v-col>
         <v-col
@@ -311,8 +328,13 @@
             "
             :to="calcRoute(Number($route.params.componentNumber) + 1)"
           >
-            {{ language.next }}
-            <v-icon size="30" color="grey darken-2">mdi-chevron-right</v-icon>
+            {{ language.next
+            }}<v-icon size="30" color="grey darken-2" v-if="$vuetify.rtl"
+              >mdi-chevron-left</v-icon
+            >
+            <v-icon size="30" color="grey darken-2" v-else
+              >mdi-chevron-right</v-icon
+            >
           </v-btn>
         </v-col>
       </v-row>
@@ -326,10 +348,10 @@
           tile
           text
           class="text-none px-10 text-body-1 font-weight-black"
-          :class="{ 'btn-active': Tab === currentTab }"
-          @click="currentTab = Tab"
+          :class="{ 'btn-active': Tab.value === currentTab }"
+          @click="currentTab = Tab.value"
         >
-          {{ Tab }}
+          {{ Tab.name }}
         </v-btn>
         <v-btn
           height="60px"
@@ -404,24 +426,24 @@
                   </div>
                 </v-col>
                 <v-row justify="center" align="center">
-                  <v-col cols="auto" class="text-left">
+                  <v-col cols="auto">
                     <div class="text-subtitle-2 font-weight-thin">
                       <v-icon size="16" class="mr-2" color="black"
                         >mdi-translate</v-icon
                       >
                       {{ language.language }}
-                      <span class="font-weight-medium ml-3">
+                      <span class="font-weight-medium mx-3">
                         {{ course.language }}</span
                       >
                     </div>
                   </v-col>
-                  <v-col cols="auto" class="text-left">
+                  <v-col cols="auto">
                     <div class="text-subtitle-2 font-weight-thin">
                       <v-icon size="16" class="mr-2" color="black"
                         >mdi-cloud-upload-outline</v-icon
                       >
                       {{ language.uploadDate }}
-                      <span class="font-weight-medium ml-3">
+                      <span class="font-weight-medium mx-3">
                         {{
                           course.date.slice(0, course.date.indexOf("T"))
                         }}</span
@@ -439,7 +461,7 @@
                     width="100"
                     height="100"
                     class="rounded-circle"
-                    src="..\assets\user-img.jpg"
+                    :src="instructorImage"
                   ></v-img>
                 </v-col>
                 <v-col cols="12">
@@ -498,18 +520,30 @@ export default {
       },
       AssignmentFile: null,
       validAssignment: false,
-      currentTab: this.$store.state.language.courseContent.about
+      currentTab: "About"
     };
   },
   computed: {
     videoURL() {
       return this.CourseComponent.videoID;
     },
+    instructorImage() {
+      return api.getImageSource(this.course.instructor.id, "user");
+    },
     language() {
       return this.$store.state.language.courseContent;
     },
     Tabs() {
-      return [this.language.about, this.language.teacher];
+      return [
+        {
+          name: this.language.about,
+          value: "About"
+        },
+        {
+          name: this.language.teacher,
+          value: "Teacher"
+        }
+      ];
     }
   },
   methods: {

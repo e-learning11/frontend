@@ -13,7 +13,7 @@
         <v-row class="mb-5">
           <v-col cols="12">
             <h2 class="text-center text-h4 font-weight-light">
-              Course Information
+              {{ language.courseInfo }}
             </h2></v-col
           >
         </v-row>
@@ -27,7 +27,7 @@
               'text-subtitle-1': $vuetify.breakpoint.xs
             }"
           >
-            <div class="font-weight-bold">Name :</div>
+            <div class="font-weight-bold mr-5">{{ language.name }}</div>
             <v-text-field
               :rules="[rules.Required]"
               dense
@@ -41,7 +41,7 @@
               'text-subtitle-1': $vuetify.breakpoint.xs
             }"
           >
-            <div class="mr-5 font-weight-bold">Description :</div>
+            <div class="mr-5 font-weight-bold">{{ language.description }}</div>
             <v-textarea
               filled
               full-width
@@ -58,7 +58,7 @@
               'text-subtitle-1': $vuetify.breakpoint.xs
             }"
           >
-            <div class="mr-5 font-weight-bold">Course Summary :</div>
+            <div class="mr-5 font-weight-bold">{{ language.summary }}</div>
             <v-textarea
               filled
               full-width
@@ -75,7 +75,7 @@
               'text-subtitle-1': $vuetify.breakpoint.xs
             }"
           >
-            <div class="mr-5 font-weight-bold">Photo :</div>
+            <div class="mr-5 font-weight-bold">{{ language.photo }}</div>
             <v-file-input
               label="Upload An Image"
               dense
@@ -91,15 +91,15 @@
               'text-subtitle-1': $vuetify.breakpoint.xs
             }"
           >
-            <div class="mr-5 font-weight-bold">Gender :</div>
+            <div class="mr-5 font-weight-bold">{{ language.gender }}</div>
             <v-radio-group
               :rules="[rules.Required]"
               row
               v-model="$store.state.CourseInfo['gender']"
             >
-              <v-radio label="Male" value="1"></v-radio>
-              <v-radio label="Female" value="2"></v-radio>
-              <v-radio label="Both" value="3"></v-radio>
+              <v-radio :label="language.male" value="1"></v-radio>
+              <v-radio :label="language.female" value="2"></v-radio>
+              <v-radio :label="language.both" value="3"></v-radio>
             </v-radio-group>
           </v-col>
           <v-col
@@ -109,14 +109,16 @@
               'text-subtitle-1': $vuetify.breakpoint.xs
             }"
           >
-            <div class="mr-5 font-weight-bold">Prerequisites :</div>
+            <div class="mr-5 font-weight-bold">
+              {{ language.prerequisites }}
+            </div>
             <v-select
               :items="allCourses"
               multiple
               chips
               clearable
               deletable-chips
-              hint="Select Prerequisite Courses"
+              :hint="language.selectPrerequisites"
               persistent-hint
               v-model="$store.state.CourseInfo['prerequisites']"
             ></v-select>
@@ -128,7 +130,7 @@
               'text-subtitle-1': $vuetify.breakpoint.xs
             }"
           >
-            <div class="mr-5 font-weight-bold">URL :</div>
+            <div class="mr-5 font-weight-bold">{{ language.URL }}</div>
             <v-text-field
               dense
               v-model="$store.state.CourseInfo['URL']"
@@ -141,7 +143,7 @@
               'text-subtitle-1': $vuetify.breakpoint.xs
             }"
           >
-            <div class="mr-5 font-weight-bold">Age :</div>
+            <div class="mr-5 font-weight-bold">{{ language.age }}</div>
             <v-range-slider
               max="70"
               min="0"
@@ -170,7 +172,7 @@
               'text-subtitle-1': $vuetify.breakpoint.xs
             }"
           >
-            <h3 class="text-center">Components</h3>
+            <h3 class="text-center">{{ language.components }}</h3>
           </v-col>
           <v-col
             cols="12"
@@ -178,10 +180,10 @@
             class="mt-3 pt-0"
           >
             <p class="text-center text-h6 font-weight-light mb-0">
-              There are no components yet
+              {{ language.noComponents }}
             </p>
             <p class="text-center text-subtitle-1 font-weight-bold mt-0">
-              At least 1 Required
+              {{ language.leastRequired }}
             </p>
           </v-col>
           <v-row class="mt-5" justify="center" v-else>
@@ -191,7 +193,8 @@
               :key="i"
               class="text-h6 font-weight-light component-entry px-5 mb-5"
             >
-              {{ i + 1 }}. {{ component.Title }}, Type : {{ component.type }}
+              {{ i + 1 }}. {{ component.name }}, {{ language.type }}
+              {{ component.type }}
               <v-btn icon @click="SwitchComponent(i, -1)">
                 <v-icon color="black">mdi-arrow-up-circle</v-icon>
               </v-btn>
@@ -216,7 +219,7 @@
               'text-subtitle-1': $vuetify.breakpoint.xs
             }"
           >
-            <h3 class="text-center">Sections</h3>
+            <h3 class="text-center">{{ language.sections }}</h3>
           </v-col>
           <v-col
             cols="12"
@@ -224,10 +227,10 @@
             class="mt-3 pt-0"
           >
             <p class="text-center text-h6 font-weight-light mb-0">
-              There are no sections yet
+              {{ language.noSections }}
             </p>
             <p class="text-center text-subtitle-1 font-weight-bold mt-0">
-              Sections Must Cover All Components Created
+              {{ language.sectionsCover }}
             </p>
           </v-col>
           <v-row class="mt-5" justify="center">
@@ -238,13 +241,13 @@
               class="text-h6 font-weight-light component-entry px-5 mb-5 text-center"
             >
               <div>
-                Section {{ i + 1 }}
+                {{ language.section }} {{ i + 1 }}
                 <v-btn icon @click="DeleteSection(i)">
                   <v-icon color="red">mdi-close-circle-outline</v-icon>
                 </v-btn>
               </div>
               <v-text-field
-                placeholder="Section Name"
+                :placeholder="language.sectionName"
                 class="mx-5"
                 v-model="$store.state.CourseInfo.sections[i].name"
                 :rules="[rules.Required]"
@@ -252,7 +255,7 @@
 
               <v-row justify="center">
                 <v-col cols="auto">
-                  Start:
+                  {{ language.start }}
                   <span class="font-weight-bold mr-3">{{ section.start }}</span>
                   <v-btn icon @click="ChangeSection(i, 0, 1)">
                     <v-icon color="black">mdi-arrow-up-circle</v-icon>
@@ -262,7 +265,7 @@
                   </v-btn>
                 </v-col>
                 <v-col cols="auto">
-                  End:
+                  {{ language.end }}
                   <span class="font-weight-bold mr-3">{{ section.end }}</span>
                   <v-btn icon @click="ChangeSection(i, 1, 1)">
                     <v-icon color="black">mdi-arrow-up-circle</v-icon>
@@ -285,7 +288,7 @@
               "
               @click="AddSection"
               class="white--text text-none text-h6"
-              >Add Section</v-btn
+              >{{ language.addSection }}</v-btn
             >
           </v-col>
         </v-row>
@@ -306,8 +309,9 @@
             'text-body': $vuetify.breakpoint.xs
           }"
           @click="ResetAll"
-          >Reset All</v-btn
         >
+          {{ language.resetAll }}
+        </v-btn>
       </v-col>
       <v-col cols="auto" v-if="!this.isEdit">
         <v-btn
@@ -321,7 +325,7 @@
             'text-body': $vuetify.breakpoint.xs
           }"
           @click="SaveProgress"
-          >Save Progress</v-btn
+          >{{ language.saveProgress }}</v-btn
         >
       </v-col>
       <v-col cols="auto">
@@ -335,7 +339,8 @@
             'text-body': $vuetify.breakpoint.xs
           }"
           @click="SubmitCourse"
-          >Finish And Submit Course</v-btn
+        >
+          {{ language.finishAndSubmit }}</v-btn
         >
       </v-col>
     </v-row>
@@ -352,11 +357,17 @@ export default {
   data() {
     return {
       rules: {
-        Required: value => !!value || "Required."
+        Required: value =>
+          !!value || this.$store.state.language.createCourseForms.required
       },
       allCourses: [],
       isEdit: false
     };
+  },
+  computed: {
+    language() {
+      return this.$store.state.language.createCourseForms;
+    }
   },
   methods: {
     ResetAll() {

@@ -18,7 +18,7 @@
             }"
           >
             <h2 class="text-center text-h4 font-weight-light">
-              New Assignment
+              {{ language.newAssignment }}
             </h2></v-col
           >
         </v-row>
@@ -30,7 +30,7 @@
               'text-subtitle-1': $vuetify.breakpoint.xs
             }"
           >
-            <div class="mr-5 font-weight-bold">Assignment Title :</div>
+            <div class="mr-5 font-weight-bold">{{ language.assignTitle }}</div>
             <v-text-field
               dense
               v-model="AssignInfo.name"
@@ -44,7 +44,9 @@
               'text-subtitle-1': $vuetify.breakpoint.xs
             }"
           >
-            <div class="mr-5 font-weight-bold">Assignment Description :</div>
+            <div class="mr-5 font-weight-bold">
+              {{ language.assignDescription }}
+            </div>
             <v-textarea
               filled
               full-width
@@ -61,7 +63,7 @@
               'text-subtitle-1': $vuetify.breakpoint.xs
             }"
           >
-            <div class="mr-5 font-weight-bold">Assignment File :</div>
+            <div class="mr-5 font-weight-bold">{{ language.assignFile }}</div>
             <v-file-input
               label="Upload A File"
               dense
@@ -86,7 +88,7 @@
             'text-body': $vuetify.breakpoint.xs
           }"
           @click="Reset"
-          >Reset</v-btn
+          >{{ language.reset }}</v-btn
         >
       </v-col>
       <v-col cols="auto">
@@ -101,7 +103,7 @@
           }"
           @click="AddAssign"
           v-if="ComponentToEdit === -1"
-          >Add Assignment</v-btn
+          >{{ language.addAssign }}</v-btn
         >
         <v-btn
           x-large
@@ -114,7 +116,7 @@
           }"
           @click="AddAssign"
           v-else
-          >Finish Edit</v-btn
+          >{{ language.finishEdit }}</v-btn
         >
       </v-col>
     </v-row>
@@ -137,6 +139,11 @@ export default {
         Required: value => !!value || "Required."
       }
     };
+  },
+  computed: {
+    language() {
+      return this.$store.state.language.createCourseForms;
+    }
   },
   methods: {
     Reset() {

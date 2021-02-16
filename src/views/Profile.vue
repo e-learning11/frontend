@@ -38,8 +38,8 @@
                 'text-subtitle-1': $vuetify.breakpoint.xs
               }"
             >
-              <div class="mr-5 font-weight-light">{{ language.firstName }}</div>
-              <p class="font-weight-medium">
+              <div class=" font-weight-light">{{ language.firstName }}</div>
+              <p class="font-weight-bold">
                 {{ $store.state.currentUser.firstName || "John" }}
               </p></v-col
             >
@@ -51,8 +51,8 @@
                 'text-subtitle-1': $vuetify.breakpoint.xs
               }"
             >
-              <div class="mr-5 font-weight-light">{{ language.lastName }}</div>
-              <p class="font-weight-medium">
+              <div class=" font-weight-light">{{ language.lastName }}</div>
+              <p class="font-weight-bold">
                 {{ $store.state.currentUser.lastName || "John" }}
               </p></v-col
             >
@@ -64,8 +64,8 @@
                 'text-subtitle-1': $vuetify.breakpoint.xs
               }"
             >
-              <div class="mr-5 font-weight-light">{{ language.email }}</div>
-              <p class="font-weight-medium">
+              <div class=" font-weight-light">{{ language.email }}</div>
+              <p class="font-weight-bold">
                 {{ $store.state.currentUser.email || "John@Doe.com" }}
               </p></v-col
             >
@@ -77,8 +77,8 @@
                 'text-subtitle-1': $vuetify.breakpoint.xs
               }"
             >
-              <div class="mr-5 font-weight-light">{{ language.gender }}</div>
-              <p class="font-weight-medium">
+              <div class=" font-weight-light">{{ language.gender }}</div>
+              <p class="font-weight-bold">
                 <span v-if="$store.state.currentUser.gender === 1">{{
                   language.male
                 }}</span>
@@ -96,8 +96,8 @@
                 'text-subtitle-1': $vuetify.breakpoint.xs
               }"
             >
-              <div class="mr-5 font-weight-light">{{ language.phone }}</div>
-              <p class="font-weight-medium">
+              <div class=" font-weight-light">{{ language.phone }}</div>
+              <p class="font-weight-bold">
                 {{ $store.state.currentUser.phone || "01XXXXXXXXX" }}
               </p></v-col
             >
@@ -109,10 +109,10 @@
                 'text-subtitle-1': $vuetify.breakpoint.xs
               }"
             >
-              <div class="mr-5 font-weight-light">
+              <div class=" font-weight-light">
                 {{ language.accountType }}
               </div>
-              <p class="font-weight-medium">
+              <p class="font-weight-bold">
                 {{ $store.state.currentUser.type || "Unknown" }}
               </p></v-col
             >
@@ -124,8 +124,8 @@
                 'text-subtitle-1': $vuetify.breakpoint.xs
               }"
             >
-              <div class="mr-5 font-weight-light">{{ language.age }}</div>
-              <p class="font-weight-medium">
+              <div class=" font-weight-light">{{ language.age }}</div>
+              <p class="font-weight-bold">
                 <span v-if="$store.state.currentUser.age !== null">
                   {{ $store.state.currentUser.age }}</span
                 >
@@ -145,7 +145,7 @@
       </v-container>
 
       <!--My Courses Section-->
-      <v-container class="mt-10 mb-16 new-container">
+      <v-container class="mt-10 mb-16 new-container" v-if="finishedCourses">
         <v-card color="white" shaped elevation="2" class="pa-10">
           <v-row justify="center" align="center" class="mb-5">
             <v-col cols="12">
@@ -179,7 +179,7 @@
                 <v-icon size="40" color="#263238">mdi-book-open-variant</v-icon>
               </v-col>
               <v-col cols="auto">
-                <div class="mr-5 font-weight-medium">
+                <div class=" font-weight-bold">
                   {{ course.name }}
                 </div>
                 <p class="font-weight-light">{{ course.Instructor.name }}</p>
@@ -237,11 +237,16 @@ export default {
   },
   async created() {
     // Send the request to get finished Courses
-    api
-      .getFinishedCourses(JSON.parse(localStorage.getItem("userToken")))
-      .then(response => {
-        this.finishedCourses = response.data;
-      });
+    if (this.$store.state.currentUser.type === "student") {
+      api
+        .getFinishedCourses(JSON.parse(localStorage.getItem("userToken")), {
+          limit: 10,
+          offset: 0
+        })
+        .then(response => {
+          this.finishedCourses = response.data;
+        });
+    }
     // Send the Request to get the User profile Info
     const profileResponse = await api.getUserProfile(
       JSON.parse(localStorage.getItem("userToken"))

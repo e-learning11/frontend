@@ -3,9 +3,25 @@
     <Loading v-if="waitRequest"></Loading>
     <v-container fluid v-else>
       <v-container class="new-container">
-        <v-card outlined color="#FAFAFA" class="pa-5 rounded-t-xl" tile flat>
-          <v-row no-gutters justify="center" align="center" class="px-5">
-            <v-col cols="6">
+        <v-card
+          outlined
+          color="#FAFAFA"
+          class="rounded-t-xl"
+          tile
+          flat
+          :class="{
+            'pa-5': $vuetify.breakpoint.smAndUp,
+            'pa-2': $vuetify.breakpoint.xs
+          }"
+        >
+          <v-row dense justify="center" align="center" class="px-2">
+            <v-col
+              :class="{
+                'col-5': $vuetify.breakpoint.mdAndUp,
+                'col-8': $vuetify.breakpoint.sm,
+                'col-12': $vuetify.breakpoint.xs
+              }"
+            >
               <v-responsive max-width="500px">
                 <v-text-field
                   full-width
@@ -20,8 +36,35 @@
                 ></v-text-field>
               </v-responsive>
             </v-col>
-            <v-spacer></v-spacer>
-            <v-col cols="auto" class="mx-5">
+            <v-spacer v-if="$vuetify.breakpoint.mdAndUp"></v-spacer>
+            <v-col
+              :class="{
+                'col-2': $vuetify.breakpoint.mdAndUp,
+                'col-8': $vuetify.breakpoint.sm,
+                'col-12': $vuetify.breakpoint.xs
+              }"
+              class="center-horizontal mx-1"
+              v-for="(filter, i) in filters"
+              :key="i"
+            >
+              <v-select
+                :items="filter.values"
+                :label="filter.name"
+                color="blue"
+                dense
+                outlined
+                hide-details
+                :menu-props="{ offsetY: true }"
+                v-model="searchData[filter.model]"
+              ></v-select>
+            </v-col>
+            <v-col
+              :class="{
+                'col-auto': $vuetify.breakpoint.mdAndUp,
+                'col-12': $vuetify.breakpoint.smAndDown
+              }"
+              class="mx-5 text-center"
+            >
               <v-btn
                 large
                 color="blue darken-3"
@@ -33,11 +76,16 @@
           </v-row>
           <v-expand-transition>
             <v-form v-show="viewNewQuestion" class="mt-10">
-              <v-row justify="center">
+              <v-row justify="center" align="center">
                 <v-col cols="12">
                   <v-divider></v-divider>
                 </v-col>
-                <v-col cols="8">
+                <v-col
+                  :class="{
+                    'col-8': $vuetify.breakpoint.smAndUp,
+                    'col-12': $vuetify.breakpoint.xs
+                  }"
+                >
                   <v-text-field
                     :rules="[rules.Required]"
                     dense
@@ -45,7 +93,12 @@
                     :placeholder="language.questionTitle"
                   ></v-text-field
                 ></v-col>
-                <v-col cols="8">
+                <v-col
+                  :class="{
+                    'col-8': $vuetify.breakpoint.smAndUp,
+                    'col-12': $vuetify.breakpoint.xs
+                  }"
+                >
                   <v-textarea
                     filled
                     full-width
@@ -55,7 +108,12 @@
                     :placeholder="language.addQuestion"
                   ></v-textarea>
                 </v-col>
-                <v-col cols="8">
+                <v-col
+                  :class="{
+                    'col-8': $vuetify.breakpoint.smAndUp,
+                    'col-12': $vuetify.breakpoint.xs
+                  }"
+                >
                   <v-combobox
                     v-model="newQuestionData.tags"
                     :rules="[rules.Required]"
@@ -63,7 +121,13 @@
                     :label="language.addTags"
                   ></v-combobox>
                 </v-col>
-                <v-col cols="8" class="text-center">
+                <v-col
+                  :class="{
+                    'col-8': $vuetify.breakpoint.smAndUp,
+                    'col-12': $vuetify.breakpoint.xs
+                  }"
+                  class="text-center"
+                >
                   <v-btn outlined class="mx-auto">
                     {{ language.askQuestion }}
                   </v-btn>
@@ -81,15 +145,28 @@
             </v-col>
           </v-row>
           <template v-else>
-            <v-row no-gutters v-for="(Question, i) in Questions" :key="i">
+            <v-row dense v-for="(Question, i) in Questions" :key="i">
               <v-col cols="12" class="px-5 mt-5 mb-5">
-                <v-row no-gutters>
-                  <v-col cols="auto" class="text-center font-weight-light px-5"
+                <v-row dense justify="center">
+                  <v-col
+                    :class="{
+                      'text-center': $vuetify.breakpoint.xs,
+                      'col-auto': $vuetify.breakpoint.smAndUp,
+                      'col-12': $vuetify.breakpoint.xs
+                    }"
+                    class="text-center font-weight-light px-5"
                     ><v-avatar size="50" color="white">
                       <v-img :src="UserImage"></v-img>
                     </v-avatar>
                   </v-col>
-                  <v-col cols="8" class="px-5">
+                  <v-col
+                    :class="{
+                      'text-center': $vuetify.breakpoint.xs,
+                      'col-8': $vuetify.breakpoint.smAndUp,
+                      'col-12': $vuetify.breakpoint.xs
+                    }"
+                    class="px-5"
+                  >
                     <div>
                       <router-link
                         class="text-body-1 question-link"
@@ -118,12 +195,18 @@
                           ' blue ': j === 0,
                           'darken-4': j === 0
                         }"
-                        >Javascript</v-chip
+                        >{{ chip }}</v-chip
                       >
                     </div>
                   </v-col>
                   <v-spacer></v-spacer>
-                  <v-col cols="auto">
+                  <v-col
+                    :class="{
+                      'text-center': $vuetify.breakpoint.xs,
+                      'col-auto': $vuetify.breakpoint.smAndUp,
+                      'col-auto': $vuetify.breakpoint.xs
+                    }"
+                  >
                     <v-card
                       max-width="40"
                       color="grey lighten-4"
@@ -131,9 +214,17 @@
                       flat
                       tile
                       class="rounded-xl"
+                      :class="{
+                        'text-center': $vuetify.breakpoint.xs,
+                        'mx-auto': $vuetify.breakpoint.xs
+                      }"
                     >
                       <v-row no-gutters justify="center" align="center">
-                        <v-col cols="12" class="text-center">
+                        <v-col
+                          cols="12"
+                          :class="{ 'text-center': $vuetify.breakpoint.xs }"
+                          class="text-center"
+                        >
                           <v-btn icon
                             ><v-icon>mdi-chevron-up</v-icon></v-btn
                           ></v-col
@@ -150,11 +241,12 @@
                     </v-card>
                   </v-col>
                   <v-col
-                    cols="auto"
-                    class="px-10 text-center center-vertical"
                     :class="{
+                      'col-auto': $vuetify.breakpoint.smAndUp,
+                      'col-auto': $vuetify.breakpoint.xs,
                       'green--text': i === 1
                     }"
+                    class="px-10 text-center center-vertical"
                   >
                     <div class="text-h6 font-weight-bold">
                       <v-icon v-if="i === 1" color="green" class="mr-1"
@@ -197,7 +289,49 @@ export default {
       Tags: [],
       rules: {
         Required: value => !!value || "Required."
-      }
+      },
+      searchData: {
+        sortOrder: "ASC",
+        sortType: "featured"
+      },
+      filters: [
+        {
+          name: this.$store.state.language.courseForum.order,
+          model: "sortOrder",
+          values: [
+            {
+              text: this.$store.state.language.courseForum.ascend,
+              value: "ASC"
+            },
+            {
+              text: this.$store.state.language.courseForum.descend,
+              value: "DESC"
+            }
+          ]
+        },
+        {
+          name: this.$store.state.language.courseForum.type,
+          model: "sortType",
+          values: [
+            {
+              text: this.$store.state.language.courseForum.featured,
+              value: "featured"
+            },
+            {
+              text: this.$store.state.language.courseForum.votes,
+              value: "votes"
+            },
+            {
+              text: this.$store.state.language.courseForum.answered,
+              value: "answered"
+            },
+            {
+              text: this.$store.state.language.courseForum.createdAt,
+              value: "createdAt"
+            }
+          ]
+        }
+      ]
     };
   },
   computed: {

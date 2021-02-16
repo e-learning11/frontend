@@ -36,59 +36,25 @@
           </v-col>
         </v-row>
         <v-row align="center" justify="center">
-          <v-col cols="auto" class="text-left center-horizontal">
-            <v-menu offset-y>
-              <template v-slot:activator="{ on }">
-                <v-btn
-                  color="blue"
-                  class="black-text text-none text-left"
-                  elevation="0"
-                  tile
-                  outlined
-                  v-on="on"
-                  max-width="150"
-                >
-                  {{ language.age }}
-                  <v-icon class="ml-5"> mdi-chevron-down</v-icon>
-                </v-btn>
-              </template>
-              <v-list dense>
-                <li
-                  v-for="(item, index) in items"
-                  :key="index"
-                  class="list-item"
-                >
-                  <div>{{ item.title }}</div>
-                </li>
-              </v-list>
-            </v-menu>
-          </v-col>
-          <v-col cols="auto" class="text-left center-horizontal">
-            <v-menu offset-y>
-              <template v-slot:activator="{ on }">
-                <v-btn
-                  color="blue"
-                  class="black-text text-none text-left"
-                  elevation="0"
-                  tile
-                  outlined
-                  v-on="on"
-                  max-width="150"
-                >
-                  {{ language.gender }}
-                  <v-icon class="ml-5"> mdi-chevron-down</v-icon>
-                </v-btn>
-              </template>
-              <v-list dense>
-                <li
-                  v-for="(item, index) in items"
-                  :key="index"
-                  class="list-item"
-                >
-                  <div>{{ item.title }}</div>
-                </li>
-              </v-list>
-            </v-menu>
+          <v-col
+            :class="{
+              'col-3': $vuetify.breakpoint.mdAndUp,
+              'col-auto': $vuetify.breakpoint.smAndDown
+            }"
+            class="center-horizontal"
+            v-for="(filter, i) in filters"
+            :key="i"
+          >
+            <v-select
+              :items="filter.values"
+              :label="filter.name"
+              color="blue"
+              dense
+              outlined
+              :menu-props="{ offsetY: true }"
+              v-model="searchData[filter.model]"
+              @change="getCourses"
+            ></v-select>
           </v-col>
         </v-row>
       </v-container>
@@ -99,14 +65,7 @@
       <v-container class="new-container">
         <Loading type="content" v-if="loading"> </Loading>
         <v-row dense align="center" justify="center">
-          <v-col
-            cols="12"
-            class="text-left"
-            v-for="i in Courses.length"
-            :key="i"
-            md="4"
-            sm="12"
-          >
+          <v-col cols="12" v-for="i in Courses.length" :key="i" md="4" sm="12">
             <CourseCard
               class="pa-10"
               :height="CardHeight"
@@ -129,23 +88,100 @@ import api from "api-client";
 
 export default {
   components: { Footer, CourseCard, Loading },
-  data: () => ({
-    loading: true,
-    Courses: [],
-    CardHeight: 250,
-    items: []
-  }),
+  data() {
+    return {
+      loading: true,
+      Courses: [],
+      CardHeight: 250,
+      searchData: {
+        language: localStorage.getItem("lang"),
+        gender: 3,
+        sortOrder: "ASC",
+        sortType: "date"
+      },
+      filters: [
+        {
+          name: this.$store.state.language.courses.language,
+          model: "language",
+          values: [
+            {
+              text: this.$store.state.language.courses.english,
+              value: "English"
+            },
+            {
+              text: this.$store.state.language.courses.arabic,
+              value: "Arabic"
+            }
+          ]
+        },
+        {
+          name: this.$store.state.language.courses.gender,
+          model: "gender",
+          values: [
+            {
+              text: this.$store.state.language.courses.male,
+              value: 1
+            },
+            {
+              text: this.$store.state.language.courses.female,
+              value: 2
+            },
+            {
+              text: this.$store.state.language.courses.both,
+              value: 3
+            }
+          ]
+        },
+        {
+          name: this.$store.state.language.courses.sortType,
+          model: "sortOrder",
+          values: [
+            {
+              text: this.$store.state.language.courses.ascend,
+              value: "ASC"
+            },
+            {
+              text: this.$store.state.language.courses.descend,
+              value: "DESC"
+            }
+          ]
+        },
+        {
+          name: this.$store.state.language.courses.sortBy,
+          model: "sortType",
+          values: [
+            {
+              text: this.$store.state.language.courses.date,
+              value: "date"
+            },
+            {
+              text: this.$store.state.language.courses.createdAt,
+              value: "createdAt"
+            }
+          ]
+        }
+      ]
+    };
+  },
+  methods: {
+    async getCourses() {
+      this.loading = true;
+      //Send request to get all the courses for allCourses
+      const response = await api.getAllCourses(0, 20, this.searchData);
+      if (response.status === 200) {
+        this.Courses = response.data;
+        this.loading = false;
+      }
+    }
+  },
   computed: {
     language() {
       return this.$store.state.language.courses;
     }
   },
   async created() {
-    //Check if the Page is an Edit
-    if (this.PageType === "EditCourse") this.isEdit = true;
-    else this.isEdit = false;
     //Send request to get all the courses for allCourses
-    const response = await api.getAllCourses(0, 20);
+    const response = await api.getAllCourses(0, 20, this.searchData);
     if (response.status === 200) {
       this.Courses = response.data;
       this.loading = false;

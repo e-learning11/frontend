@@ -19,7 +19,7 @@
             }"
           >
             <h2 class="text-center text-h4 font-weight-light">
-              New Video
+              {{ language.newVideo }}
             </h2></v-col
           >
         </v-row>
@@ -31,7 +31,7 @@
               'text-subtitle-1': $vuetify.breakpoint.xs
             }"
           >
-            <div class="mr-5 font-weight-bold">Video Title :</div>
+            <div class="mr-5 font-weight-bold">{{ language.videoTitle }}</div>
             <v-text-field
               v-model="VideoInfo.name"
               :rules="[rules.Required]"
@@ -45,7 +45,7 @@
               'text-subtitle-1': $vuetify.breakpoint.xs
             }"
           >
-            <div class="mr-5 font-weight-bold">Video URL :</div>
+            <div class="mr-5 font-weight-bold">{{ language.videoURL }}</div>
             <v-text-field
               v-model="VideoInfo.videoID"
               :rules="[rules.Required]"
@@ -59,7 +59,9 @@
               'text-subtitle-1': $vuetify.breakpoint.xs
             }"
           >
-            <div class="mr-5 font-weight-bold">Video Description :</div>
+            <div class="mr-5 font-weight-bold">
+              {{ language.videoDescription }}
+            </div>
             <v-textarea
               filled
               full-width
@@ -77,9 +79,9 @@
               'text-subtitle-1': $vuetify.breakpoint.xs
             }"
           >
-            <div class="mr-5 font-weight-bold">Attach a File :</div>
+            <div class="mr-5 font-weight-bold">{{ language.videoFile }}</div>
             <v-file-input
-              label="Upload A File"
+              :label="language.videoFileUpload"
               dense
               v-model="VideoInfo.File"
             ></v-file-input>
@@ -94,18 +96,18 @@
         large
         color="red darken-3"
         outlined
-        class="white--text text-none text-h6 mr-5"
+        class="white--text text-none text-h6 mx-3"
         @click="Reset"
-        >Reset</v-btn
+        >{{ language.reset }}</v-btn
       >
       <v-btn
         large
         color="blue darken-2"
         outlined
         @click="AddVideo"
-        class="white--text text-none text-h6"
+        class="white--text text-none text-h6 mx-3"
         v-if="ComponentToEdit === -1"
-        >Add Video</v-btn
+        >{{ language.addVideo }}</v-btn
       >
       <v-btn
         large
@@ -114,7 +116,7 @@
         @click="AddVideo"
         class="white--text text-none text-h6"
         v-else
-        >Finish Edit</v-btn
+        >{{ language.finishEdit }}</v-btn
       >
     </v-row>
   </div>
@@ -137,6 +139,11 @@ export default {
         Required: value => !!value || "Required."
       }
     };
+  },
+  computed: {
+    language() {
+      return this.$store.state.language.createCourseForms;
+    }
   },
   methods: {
     Reset() {

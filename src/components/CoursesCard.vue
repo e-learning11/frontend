@@ -10,7 +10,12 @@
     >
       <div class="anchor-img">
         <v-img :src="CourseImage" :height="height" class="zoom-img"> </v-img>
-        <div class="anchored-text">
+        <div
+          :class="{
+            'anchored-text-right': $vuetify.rtl,
+            'anchored-text-left': !$vuetify.rtl
+          }"
+        >
           <h2 class="font-weight-light">{{ CardData.name }}</h2>
         </div>
       </div>
@@ -76,10 +81,19 @@ export default {
 .definite-width {
   max-width: 450px;
 }
-.anchored-text {
+.anchored-text-left {
   position: absolute;
   bottom: 0;
   left: 0;
+  background-color: #1f98f4;
+  color: white;
+  font-size: 12px;
+  padding: 7px;
+}
+.anchored-text-right {
+  position: absolute;
+  bottom: 0;
+  right: 0;
   background-color: #1f98f4;
   color: white;
   font-size: 12px;

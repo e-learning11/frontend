@@ -37,7 +37,7 @@
               'text-large': $vuetify.breakpoint.lgAndUp
             }"
           >
-            Your Course to Success
+            {{ language.courseToSuccess }}
           </h2>
           <p
             class="text-h6 mb-5 mt-5 font-weight-light"
@@ -48,8 +48,7 @@
               'text-h6': $vuetify.breakpoint.lgAndUp
             }"
           >
-            Build skills with courses, certificates, and degrees online from
-            world-class universities and companies.
+            {{ language.successIntro }}
           </p>
           <v-btn
             x-large
@@ -63,8 +62,9 @@
               'text-subtitle-1': $vuetify.breakpoint.smAndDown,
               'text-center': $vuetify.breakpoint.smAndDown
             }"
-            >Join Now</v-btn
           >
+            {{ language.joinNow }}
+          </v-btn>
         </v-col>
         <v-col v-if="$vuetify.breakpoint.mdAndUp" md="6">
           <v-img
@@ -97,7 +97,7 @@
                 'text-h3': $vuetify.breakpoint.mdAndUp
               }"
             >
-              Achieve your goals with Us
+              {{ language.achieveGoals }}
             </h2></v-col
           >
         </v-row>
@@ -111,9 +111,11 @@
               <v-icon size="60" color="blue lighten-1" class="mb-8"
                 >mdi-school-outline</v-icon
               >
-              <h3 class="mb-3 text-h6 font-weight-medium">Learn new skills</h3>
+              <h3 class="mb-3 text-h6 font-weight-medium">
+                {{ language.learnSkills }}
+              </h3>
               <p class="text-h6 font-weight-light">
-                like Managment, graphic design and more
+                {{ language.learnSkillsBody }}
               </p>
             </v-card>
           </v-col>
@@ -128,10 +130,10 @@
                 >mdi-teach</v-icon
               >
               <h3 class="mb-3 text-h6 font-weight-medium">
-                Study for a career
+                {{ language.studyCareer }}
               </h3>
               <p class="text-h6 font-weight-light">
-                in the high-demand fields that are open for work
+                {{ language.studyCareerBody }}
               </p>
             </v-card>
           </v-col>
@@ -146,10 +148,10 @@
                 >mdi-certificate-outline</v-icon
               >
               <h3 class="mb-3 text-h6 font-weight-medium">
-                Earn a Certificate
+                {{ language.earnCert }}
               </h3>
               <p class="text-h6 font-weight-light">
-                to show your progress and your hardwork
+                {{ language.earnCertBody }}
               </p>
             </v-card>
           </v-col>
@@ -164,10 +166,10 @@
                 >mdi-account-group</v-icon
               >
               <h3 class="mb-3 text-h6 font-weight-medium">
-                Benefit your Society
+                {{ language.benefitSociety }}
               </h3>
               <p class="text-h6 font-weight-light">
-                help others by knowing more about the world
+                {{ language.benefitSocietyBody }}
               </p>
             </v-card>
           </v-col>
@@ -207,13 +209,13 @@
             <div id="circle-one-outer">
               <div id="circle-one-inner" class="center-horizontal text-center">
                 <div class="text-h4">3000+</div>
-                <div class="text-h6">Courses & Specializations</div>
+                <div class="text-h6">{{ language.circleOne }}</div>
               </div>
             </div>
             <div id="circle-two-outer">
               <div id="circle-two-inner" class="center-horizontal text-center">
                 <div class="text-h4">20+</div>
-                <div class="text-h6">University Degrees & Tracks</div>
+                <div class="text-h6">{{ language.circleTwo }}</div>
               </div>
             </div>
             <div id="circle-three-outer">
@@ -222,7 +224,7 @@
                 class="center-horizontal text-center"
               >
                 <div class="text-h4">13+</div>
-                <div class="text-h6">Professional Certificates</div>
+                <div class="text-h6">{{ language.circleThree }}</div>
               </div>
             </div>
           </v-row>
@@ -246,7 +248,7 @@
               'text-large': $vuetify.breakpoint.lgAndUp
             }"
           >
-            Accessible & Diverse
+            {{ language.accessible }}
           </h2>
           <p
             class="text-h6 mb-5 mt-5 font-weight-light"
@@ -257,8 +259,7 @@
               'text-h6': $vuetify.breakpoint.lgAndUp
             }"
           >
-            Choose from many courses, certificates and degrees. Learning at your
-            own pace, 100% online.
+            {{ language.accessibleBody }}
           </p>
         </v-col>
       </v-row>
@@ -267,7 +268,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  computed: {
+    language() {
+      return this.$store.state.language.home;
+    }
+  }
+};
 </script>
 
 <style scoped>

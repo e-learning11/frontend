@@ -21,7 +21,7 @@
               'text-h3': $vuetify.breakpoint.mdAndUp
             }"
           >
-            My Courses
+            {{ language.myCourses }}
           </h2>
         </v-col>
         <v-col cols="12" class="mt-3">
@@ -43,7 +43,7 @@
             }"
             to="/createcourse"
           >
-            Create a new Course
+            {{ language.createCourses }}
           </v-btn>
         </v-col>
       </v-row>
@@ -66,7 +66,7 @@
       <!--No Available courses-->
       <v-row v-else>
         <v-col cols="12" class="text-center font-weight-light mt-10 mb-10">
-          <h3 class="text-overline">Oops! It seems you have No Courses yet</h3>
+          <h3 class="text-overline">{{ language.noCoursesYet }}</h3>
         </v-col>
       </v-row>
     </v-container>
@@ -84,16 +84,29 @@ export default {
     height: 250,
     Courses: null
   }),
+  computed: {
+    language() {
+      return this.$store.state.language.home;
+    }
+  },
   async created() {
     let response;
     // Get User Courses according to type
     if (this.$store.state.currentUser.type === "teacher") {
       response = await api.getCreatedCourses(
-        JSON.parse(localStorage.getItem("userToken"))
+        JSON.parse(localStorage.getItem("userToken")),
+        {
+          limit: 10,
+          offset: 0
+        }
       );
     } else if (this.$store.state.currentUser.type === "student") {
       response = await api.getEnrolledCourses(
-        JSON.parse(localStorage.getItem("userToken"))
+        JSON.parse(localStorage.getItem("userToken")),
+        {
+          limit: 10,
+          offset: 0
+        }
       );
     }
 

@@ -47,13 +47,14 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
-    <!--For Course COntent Page-->
+    <!--For Course Content Page-->
     <v-expansion-panels accordion v-if="PageType === 'Content'">
       <v-expansion-panel v-for="(section, i) in sections" :key="i">
         <v-expansion-panel-header
           class="font-weight-medium text-subtitle-1"
           color="#fbfbf8"
-          >Section {{ i + 1 }}: {{ section.name }}</v-expansion-panel-header
+          >{{ language.section }} {{ i + 1 }}:
+          {{ section.name }}</v-expansion-panel-header
         >
         <v-expansion-panel-content class="innerExPan pa-0">
           <v-row no-gutters class="pt-4">
@@ -125,6 +126,11 @@ export default {
     PageType: String,
     CourseNumber: Number,
     currentComponent: Number
+  },
+  computed: {
+    language() {
+      return this.$store.state.language.courseMain;
+    }
   }
 };
 </script>

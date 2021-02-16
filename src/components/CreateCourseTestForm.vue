@@ -6,7 +6,7 @@
         <v-row justify="center" class="mb-5">
           <v-col cols="12">
             <h2 class="text-center text-h4 font-weight-light">
-              New Test
+              {{ language.newTest }}
             </h2></v-col
           >
         </v-row>
@@ -18,7 +18,7 @@
               'text-subtitle-1': $vuetify.breakpoint.xs
             }"
           >
-            <div class="mr-5 font-weight-bold">Test Title :</div>
+            <div class="mr-5 font-weight-bold">{{ language.testTitle }}</div>
             <v-text-field
               v-model="NewTest.name"
               :rules="[rules.Required]"
@@ -32,7 +32,7 @@
               'text-subtitle-1': $vuetify.breakpoint.xs
             }"
           >
-            <div class="mr-5 font-weight-bold">Passing Grade :</div>
+            <div class="mr-5 font-weight-bold">{{ language.passingGrade }}</div>
             <v-text-field
               v-model="NewTest.passingGrade"
               :rules="[
@@ -50,14 +50,14 @@
               'text-subtitle-1': $vuetify.breakpoint.xs
             }"
           >
-            <div class="mr-5 font-weight-bold">Questions :</div>
+            <div class="mr-5 font-weight-bold">{{ language.questions }}</div>
           </v-col>
           <v-col cols="12" v-if="NewTest.test.length === 0">
             <p class="text-center text-subtitle-1 font-weight-light mb-0">
-              Added Questions will Appear here
+              {{ language.addedQuestions }}
             </p>
             <p class="text-center text-subtitle-1 font-weight-bold mt-0">
-              At Least 1 Required
+              {{ language.leastRequired }}
             </p>
           </v-col>
           <!--Questions That are already Added-->
@@ -74,18 +74,22 @@
                 :key="i"
               >
                 <v-col cols="12" class="pa-1"
-                  ><span class="font-weight-bold">Question {{ i + 1 }} : </span>
+                  ><span class="font-weight-bold"
+                    >{{ language.question }} {{ i + 1 }} :
+                  </span>
                   {{ Item.Q }}
                 </v-col>
                 <v-col cols="12" class="pa-1" v-if="Item.correctAnswer">
-                  <span class="font-weight-bold">Correct Answer :</span>
-                  {{ Item.correctAnswer }}
+                  <span class="font-weight-bold">{{
+                    language.correctAnswer
+                  }}</span>
+                  {{ Item.A[Item.correctAnswer] }}
                 </v-col>
                 <v-col cols="12" class="pa-1" v-if="Item.A.length > 0">
                   <v-row class="text-center" justify="center">
-                    <v-col cols="auto" class="font-weight-bold"
-                      >Answers :</v-col
-                    >
+                    <v-col cols="auto" class="font-weight-bold">
+                      {{ language.answers }}
+                    </v-col>
                     <v-col cols="auto" v-for="(Answer, j) in Item.A" :key="j">
                       {{ Answer }}
                       <span v-if="j != Item.A.length - 1">,</span>
@@ -99,8 +103,9 @@
                     outlined
                     class="text-none text-subtitle-1"
                     @click="RemoveQuestion(i)"
-                    >Remove</v-btn
                   >
+                    {{ language.remove }}
+                  </v-btn>
                 </v-col>
               </v-row>
             </v-col>
@@ -115,7 +120,7 @@
         <v-row justify="center">
           <v-col cols="12">
             <h2 class="text-center text-h4 font-weight-light">
-              Add a Question
+              {{ language.addAQuestion }}
             </h2></v-col
           >
         </v-row>
@@ -127,7 +132,7 @@
               'text-subtitle-1': $vuetify.breakpoint.xs
             }"
           >
-            <div class="mr-5 font-weight-bold">Type :</div>
+            <div class="mr-5 font-weight-bold">{{ language.type }}</div>
             <v-radio-group
               mandatory
               :rules="[rules.Required]"
@@ -135,9 +140,9 @@
               v-model="NewQuestion.type"
               @change="ResetQuestion"
             >
-              <v-radio label="True or False" value="TorF"></v-radio>
-              <v-radio label="MCQ" value="MCQ"></v-radio>
-              <v-radio label="Essay" value="Essay"></v-radio>
+              <v-radio :label="language.torf" value="TorF"></v-radio>
+              <v-radio :label="language.mcq" value="MCQ"></v-radio>
+              <v-radio :label="language.essay" value="Essay"></v-radio>
             </v-radio-group>
           </v-col>
           <v-col
@@ -147,7 +152,7 @@
               'text-subtitle-1': $vuetify.breakpoint.xs
             }"
           >
-            <div class="mr-5 font-weight-bold">Question :</div>
+            <div class="mr-5 font-weight-bold">{{ language.question }}</div>
             <v-text-field
               v-model="NewQuestion.Q"
               :rules="[rules.Required]"
@@ -162,7 +167,9 @@
                 'text-subtitle-1': $vuetify.breakpoint.xs
               }"
             >
-              <div class="mr-5 font-weight-bold">Correct Answer :</div>
+              <div class="mr-5 font-weight-bold">
+                {{ language.correctAnswer }}
+              </div>
               <v-text-field
                 v-model="NewQuestion.correctAnswer"
                 :rules="[rules.Required]"
@@ -178,7 +185,9 @@
                 'text-subtitle-1': $vuetify.breakpoint.xs
               }"
             >
-              <div class="mr-5 font-weight-bold">Answer {{ i + 1 }} :</div>
+              <div class="mr-5 font-weight-bold">
+                {{ language.answer }} {{ i + 1 }} :
+              </div>
               <v-text-field
                 v-model="NewQuestion.A[i - 1]"
                 :rules="[rules.Required]"
@@ -194,15 +203,17 @@
                 'text-subtitle-1': $vuetify.breakpoint.xs
               }"
             >
-              <div class="mr-5 font-weight-bold">Correct Answer :</div>
+              <div class="mr-5 font-weight-bold">
+                {{ language.correctAnswer }}
+              </div>
               <v-radio-group
                 mandatory
                 :rules="[rules.Required]"
                 row
                 v-model="NewQuestion.correctAnswer"
               >
-                <v-radio label="True" value="True"></v-radio>
-                <v-radio label="False" value="False"></v-radio>
+                <v-radio :label="language.true" value="True"></v-radio>
+                <v-radio :label="language.false" value="False"></v-radio>
               </v-radio-group>
             </v-col>
           </template>
@@ -216,7 +227,8 @@
               outlined
               class="white--text text-none text-h6 mr-5"
               @click="AddQuestion"
-              >Add Question</v-btn
+            >
+              {{ language.addAQuestion }}</v-btn
             >
           </v-col>
         </v-row>
@@ -228,19 +240,20 @@
         x-large
         color="red darken-3"
         outlined
-        class="white--text text-none text-h6 mr-5"
+        class="white--text text-none text-h6 mx-3"
         @click="ResetTest"
-        >Reset</v-btn
+        >{{ language.reset }}</v-btn
       >
       <v-btn
         x-large
         color="blue darken-2"
         outlined
-        class="white--text text-none text-h6"
+        class="white--text text-none text-h6 mx-3"
         @click="AddTest"
         v-if="ComponentToEdit === -1"
-        >Add Test</v-btn
       >
+        {{ language.addTest }}
+      </v-btn>
       <v-btn
         x-large
         color="blue darken-2"
@@ -248,8 +261,9 @@
         class="white--text text-none text-h6"
         @click="AddTest"
         v-else
-        >Finish Edit</v-btn
       >
+        {{ language.finishEdit }}
+      </v-btn>
     </v-row>
   </div>
 </template>
@@ -262,10 +276,11 @@ export default {
   data() {
     return {
       rules: {
-        Required: value => !!value || "Required.",
+        Required: value =>
+          !!value || this.$store.state.language.createCourseForms.required,
         grade: (currentGrade, maxGrade) =>
           (currentGrade >= 0 && currentGrade <= maxGrade) ||
-          "Grade must be between Zero and Number of total Questions"
+          this.$store.state.language.createCourseForms.correctGrade
       },
       NewQuestion: {
         type: "TorF",
@@ -278,6 +293,11 @@ export default {
         test: []
       }
     };
+  },
+  computed: {
+    language() {
+      return this.$store.state.language.createCourseForms;
+    }
   },
   methods: {
     ResetQuestion() {
@@ -303,6 +323,8 @@ export default {
       this.NewTest.test.push({
         ...this.NewQuestion
       });
+      // Reset the Question
+      this.ResetQuestion();
     },
     RemoveQuestion(QNumber) {
       //Remove the Selected Question

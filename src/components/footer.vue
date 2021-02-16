@@ -11,7 +11,7 @@
               'text-h4': $vuetify.breakpoint.mdAndUp
             }"
           >
-            About Us
+            {{ language.aboutUs }}
           </h2>
           <v-list
             color="black"
@@ -22,11 +22,21 @@
               'text-subtitle-1': $vuetify.breakpoint.mdAndUp
             }"
           >
-            <router-link class="list-item" to="/">How it Works</router-link>
-            <router-link class="list-item" to="/">Testimonials</router-link>
-            <router-link class="list-item" to="/">Careers</router-link>
-            <router-link class="list-item" to="/">Investors</router-link>
-            <router-link class="list-item" to="/">Terms of Service</router-link>
+            <router-link class="list-item" to="/">{{
+              language.howItWorks
+            }}</router-link>
+            <router-link class="list-item" to="/">{{
+              language.testimonials
+            }}</router-link>
+            <router-link class="list-item" to="/">{{
+              language.careers
+            }}</router-link>
+            <router-link class="list-item" to="/">{{
+              language.investors
+            }}</router-link>
+            <router-link class="list-item" to="/">{{
+              language.terms
+            }}</router-link>
           </v-list>
         </v-col>
         <v-col md="3" sm="4" cols="12" class="list-center fill-height mt-5">
@@ -38,7 +48,7 @@
               'text-h4': $vuetify.breakpoint.mdAndUp
             }"
           >
-            Contact Us
+            {{ language.contactUs }}
           </h2>
           <v-list
             color="black"
@@ -49,10 +59,18 @@
               'text-subtitle-1': $vuetify.breakpoint.mdAndUp
             }"
           >
-            <router-link class="list-item" to="/">Contact</router-link>
-            <router-link class="list-item" to="/">Support</router-link>
-            <router-link class="list-item" to="/">Destinations</router-link>
-            <router-link class="list-item" to="/">Sponsorships</router-link>
+            <router-link class="list-item" to="/">{{
+              language.contact
+            }}</router-link>
+            <router-link class="list-item" to="/">{{
+              language.support
+            }}</router-link>
+            <router-link class="list-item" to="/">{{
+              language.destinations
+            }}</router-link>
+            <router-link class="list-item" to="/">{{
+              language.sponsorships
+            }}</router-link>
           </v-list>
         </v-col>
         <v-col md="3" sm="4" cols="12" class="list-center fill-height mt-5">
@@ -64,7 +82,7 @@
               'text-h4': $vuetify.breakpoint.mdAndUp
             }"
           >
-            Social Media
+            {{ language.socialMedia }}
           </h2>
           <v-list
             color="black"
@@ -75,11 +93,21 @@
               'text-subtitle-1': $vuetify.breakpoint.mdAndUp
             }"
           >
-            <router-link class="list-item" to="/">Facebook</router-link>
-            <router-link class="list-item" to="/">Instagram</router-link>
-            <router-link class="list-item" to="/">Youtube</router-link>
-            <router-link class="list-item" to="/">Twitter</router-link>
-            <router-link class="list-item" to="/">Linkedin</router-link>
+            <router-link class="list-item" to="/">{{
+              language.facebook
+            }}</router-link>
+            <router-link class="list-item" to="/">{{
+              language.instagram
+            }}</router-link>
+            <router-link class="list-item" to="/">{{
+              language.youtube
+            }}</router-link>
+            <router-link class="list-item" to="/">{{
+              language.twitter
+            }}</router-link>
+            <router-link class="list-item" to="/">{{
+              language.linkedin
+            }}</router-link>
           </v-list>
         </v-col>
       </v-row>
@@ -96,7 +124,7 @@
             <v-icon large>mdi-fleur-de-lis</v-icon>
           </v-btn>
         </v-col>
-        <v-col md="4" sm="12" class="center-items">Brand &#169; 2020</v-col>
+        <v-col md="4" sm="12" class="center-items">Brand &#169; 2021</v-col>
         <v-col md="4" sm="12" class="center-items">
           <v-btn icon to="#" color="white" x-large>
             <v-icon>mdi-facebook</v-icon>
@@ -120,7 +148,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  computed: {
+    language() {
+      return this.$store.state.language.footer;
+    }
+  }
+};
 </script>
 
 <style scoped>
