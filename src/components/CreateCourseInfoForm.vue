@@ -77,7 +77,7 @@
           >
             <div class="mr-5 font-weight-bold">{{ language.photo }}</div>
             <v-file-input
-              label="Upload An Image"
+              :label="language.uploadImage"
               dense
               accept="image/*"
               prepend-icon="mdi-camera"
@@ -121,6 +121,7 @@
               :hint="language.selectPrerequisites"
               persistent-hint
               v-model="$store.state.CourseInfo['prerequisites']"
+              class="scroll-leftright"
             ></v-select>
           </v-col>
           <v-col
@@ -133,8 +134,30 @@
             <div class="mr-5 font-weight-bold">{{ language.URL }}</div>
             <v-text-field
               dense
-              v-model="$store.state.CourseInfo['URL']"
+              v-model="$store.state.CourseInfo['url']"
+              :hint="language.URLhint"
+              :rules="[rules.URLRequired]"
             ></v-text-field>
+          </v-col>
+          <v-col
+            cols="12"
+            :class="{
+              'text-h6': $vuetify.breakpoint.smAndUp,
+              'text-subtitle-1': $vuetify.breakpoint.xs
+            }"
+          >
+            <div class="mr-5 font-weight-bold">{{ language.private }}</div>
+            <v-radio-group
+              :rules="[rules.Required]"
+              row
+              mandatory
+              v-model="$store.state.CourseInfo['private']"
+              :hint="language.privateURL"
+              persistent-hint
+            >
+              <v-radio :label="language.no" value="false"></v-radio>
+              <v-radio :label="language.yes" value="true"></v-radio>
+            </v-radio-group>
           </v-col>
           <v-col
             cols="12"
@@ -152,12 +175,12 @@
             >
               <template v-slot:prepend>
                 <p>
-                  {{ $store.state.CourseInfo.Age[0] }}
+                  {{ $store.state.CourseInfo.age[0] }}
                 </p>
               </template>
               <template v-slot:append>
                 <p>
-                  {{ $store.state.CourseInfo.Age[1] }}
+                  {{ $store.state.CourseInfo.age[1] }}
                 </p>
               </template>
             </v-range-slider>
@@ -358,7 +381,12 @@ export default {
     return {
       rules: {
         Required: value =>
-          !!value || this.$store.state.language.createCourseForms.required
+          !!value || this.$store.state.language.createCourseForms.required,
+        URLRequired: value => {
+          if (this.$store.state.CourseInfo.private == "true" && !value)
+            return this.$store.state.language.createCourseForms.required;
+          return true;
+        }
       },
       allCourses: [],
       isEdit: false
@@ -378,7 +406,7 @@ export default {
         photo: null,
         gender: null,
         prerequisites: [],
-        URL: null,
+        url: null,
         age: [0, 70],
         components: [],
         sections: []
@@ -398,7 +426,10 @@ export default {
       //Sends the Request and remove components property
       //@TODO Send Two different Requests one for edit and other for Create
       const response = await api.CreateCourse(
-        { ...this.$store.state.CourseInfo },
+        {
+          ...this.$store.state.CourseInfo,
+          language: localStorage.getItem("lang")
+        },
         JSON.parse(localStorage.getItem("userToken"))
       );
       if (response.status === 200) {
@@ -406,8 +437,7 @@ export default {
         this.ResetAll();
         this.$router.push("/");
         // Display a Success Notification
-        this.$store.state.newNotification.Message =
-          "New Course Added Successfuly";
+        this.$store.state.newNotification.Message = this.language.addedSuccess;
         this.$store.state.newNotification.state = true;
       } else {
         this.$store.state.newNotification.Message = response.data;
@@ -421,7 +451,7 @@ export default {
       );
 
       // Display a Success Notification
-      this.$store.state.newNotification.Message = "Progress Saved";
+      this.$store.state.newNotification.Message = this.language.progressSaved;
       this.$store.state.newNotification.state = true;
     },
     RemoveComponent(CNumber) {
@@ -512,8 +542,7 @@ export default {
     ValidateSections() {
       const errorInSections = () => {
         // Display an Error Notification
-        this.$store.state.newNotification.Message =
-          "Sections Do not Cover All Created Components Correctly";
+        this.$store.state.newNotification.Message = this.language.incorrectSections;
         this.$store.state.newNotification.state = true;
         return false;
       };
@@ -557,7 +586,9 @@ export default {
           //Add Number to component
           this.$store.state.CourseInfo.components[i].number = i + 1;
           // Push the component to the section
-          section.components.push(this.$store.state.CourseInfo.components[i]);
+          section.components.push({
+            ...this.$store.state.CourseInfo.components[i]
+          });
         }
       });
     }
@@ -572,7 +603,7 @@ export default {
     if (this.PageType === "EditCourse") this.isEdit = true;
     else this.isEdit = false;
     //Send request to get all the courses for allCourses
-    const response = await api.getAllCourses(0, 20);
+    const response = await api.getAllCourses(0, 200);
     if (response.status === 200) {
       this.allCourses = response.data.map(v => ({
         text: v.name,

@@ -97,6 +97,7 @@
 </template>
 
 <script>
+import api from "api-client";
 import Footer from "@/components/footer.vue";
 import Loading from "@/components/Loading.vue";
 import MainInfo from "@/components/CreateCourseInfoForm";
@@ -116,40 +117,40 @@ export default {
           this.$store.state.CourseInfo = CourseInfo;
 
           // Display a Notification
-          this.$store.state.newNotification.Message =
-            "Progress Recovered, Please reupload all files";
+          this.$store.state.newNotification.Message = this.language.reuploadAll;
           this.$store.state.newNotification.state = true;
         } else
           this.$store.state.CourseInfo = {
-            Name: "",
-            Description: "",
-            Summary: "",
+            name: "",
+            description: "",
+            summary: "",
             photo: null,
-            Gender: null,
-            Prerequisites: [],
-            URL: null,
-            Age: [0, 70],
+            gender: null,
+            prerequisites: [],
+            url: null,
+            age: [0, 70],
             components: [],
             sections: []
           };
       } else if (this.$route.name === "EditCourse") {
-        // @TODO Send Request to get course
-        await setTimeout(() => {
-          this.requestFinished = true;
+        // Send Request to get course
+        const response = await api.getCourseByid(this.$route.params.courseId);
+        if (response.status === 200) {
           // Set the value with the one gotten from the Server
-          this.$store.state.CourseInfo = {
-            Name: "From Server",
-            Description: "",
-            Summary: "",
-            photo: null,
-            Gender: null,
-            Prerequisites: [],
-            URL: null,
-            Age: [0, 70],
-            components: [],
-            sections: []
-          };
-        }, 1000);
+          this.$store.state.CourseInfo = response.data;
+          // if the course Does not belong to the User
+          if (
+            response.data.instructor.id !== this.$store.state.currentUser.id
+          ) {
+            this.$router.push("/404");
+            return;
+          }
+          this.requestFinished = true;
+        }
+        // Else route to Not found
+        else {
+          this.$router.push("/404");
+        }
       }
     }
   },
@@ -186,7 +187,6 @@ export default {
     }
   },
   mounted() {
-    this.GetCourseInfo();
     // Change to Main Info on New component
     this.$root.$on("NewComponent", () => {
       this.currentTab = "MainInfo";

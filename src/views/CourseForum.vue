@@ -31,10 +31,23 @@
                   hide-details
                   dense
                   outlined
+                  @keyup="searchQuestions"
                   :placeholder="language.search"
                   append-icon="mdi-magnify"
+                  v-model="searchData.title"
                 ></v-text-field>
               </v-responsive>
+            </v-col>
+            <v-col cols="auto" v-if="searchData.tag">
+              <v-chip
+                close
+                @click:close="
+                  searchData.tag = null;
+                  searchQuestions();
+                "
+              >
+                {{ searchData.tag }}
+              </v-chip>
             </v-col>
             <v-spacer v-if="$vuetify.breakpoint.mdAndUp"></v-spacer>
             <v-col
@@ -54,6 +67,7 @@
                 dense
                 outlined
                 hide-details
+                @change="searchQuestions"
                 :menu-props="{ offsetY: true }"
                 v-model="searchData[filter.model]"
               ></v-select>
@@ -75,7 +89,11 @@
             </v-col>
           </v-row>
           <v-expand-transition>
-            <v-form v-show="viewNewQuestion" class="mt-10">
+            <v-form
+              ref="newQuestionForm"
+              v-show="viewNewQuestion"
+              class="mt-10"
+            >
               <v-row justify="center" align="center">
                 <v-col cols="12">
                   <v-divider></v-divider>
@@ -119,6 +137,10 @@
                     :rules="[rules.Required]"
                     :items="Tags"
                     :label="language.addTags"
+                    multiple
+                    chips
+                    clearable
+                    deletable-chips
                   ></v-combobox>
                 </v-col>
                 <v-col
@@ -128,7 +150,7 @@
                   }"
                   class="text-center"
                 >
-                  <v-btn outlined class="mx-auto">
+                  <v-btn outlined class="mx-auto" @click="addQuestion">
                     {{ language.askQuestion }}
                   </v-btn>
                 </v-col>
@@ -136,134 +158,178 @@
             </v-form>
           </v-expand-transition>
         </v-card>
+
         <v-card min-height="90vh" outlined tile flat class="rounded-b-lg">
-          <v-row v-if="Questions.length === 0">
-            <v-col cols="12" class="text-center font-weight-light mt-10 mb-10">
-              <h3 class="text-overline">
-                {{ language.noQuestions }}
-              </h3>
-            </v-col>
-          </v-row>
+          <!--Loading Screen until request comes-->
+          <Loading type="content" v-if="loading"></Loading>
+
           <template v-else>
-            <v-row dense v-for="(Question, i) in Questions" :key="i">
-              <v-col cols="12" class="px-5 mt-5 mb-5">
-                <v-row dense justify="center">
-                  <v-col
-                    :class="{
-                      'text-center': $vuetify.breakpoint.xs,
-                      'col-auto': $vuetify.breakpoint.smAndUp,
-                      'col-12': $vuetify.breakpoint.xs
-                    }"
-                    class="text-center font-weight-light px-5"
-                    ><v-avatar size="50" color="white">
-                      <v-img :src="UserImage"></v-img>
-                    </v-avatar>
-                  </v-col>
-                  <v-col
-                    :class="{
-                      'text-center': $vuetify.breakpoint.xs,
-                      'col-8': $vuetify.breakpoint.smAndUp,
-                      'col-12': $vuetify.breakpoint.xs
-                    }"
-                    class="px-5"
-                  >
-                    <div>
-                      <router-link
-                        class="text-body-1 question-link"
-                        append
-                        :to="String(i)"
-                      >
-                        Why am I stuck with this question?
-                      </router-link>
-                    </div>
-                    <div class="text-caption font-weight-light">
-                      {{ language.postedBy }}
-                      <span class="font-weight-medium">Name</span>
-                    </div>
-                    <div class="mt-5">
-                      <v-chip
-                        v-for="(chip, j) in Questions"
-                        :key="j"
-                        filter
-                        link
-                        outlined
-                        pill
-                        class="mr-3"
-                        :class="{
-                          'blue--text': j === 0,
-                          'text--darken-4': j === 0,
-                          ' blue ': j === 0,
-                          'darken-4': j === 0
-                        }"
-                        >{{ chip }}</v-chip
-                      >
-                    </div>
-                  </v-col>
-                  <v-spacer></v-spacer>
-                  <v-col
-                    :class="{
-                      'text-center': $vuetify.breakpoint.xs,
-                      'col-auto': $vuetify.breakpoint.smAndUp,
-                      'col-auto': $vuetify.breakpoint.xs
-                    }"
-                  >
-                    <v-card
-                      max-width="40"
-                      color="grey lighten-4"
-                      outlined
-                      flat
-                      tile
-                      class="rounded-xl"
+            <v-row v-if="Questions.length === 0">
+              <v-col
+                cols="12"
+                class="text-center font-weight-light mt-10 mb-10"
+              >
+                <h3 class="text-overline">
+                  {{ language.noQuestions }}
+                </h3>
+              </v-col>
+            </v-row>
+            <template v-else>
+              <v-row dense v-for="(Question, i) in Questions" :key="i">
+                <v-col cols="12" class="px-5 mt-5 mb-5">
+                  <v-row dense justify="center">
+                    <v-col
                       :class="{
                         'text-center': $vuetify.breakpoint.xs,
-                        'mx-auto': $vuetify.breakpoint.xs
+                        'col-auto': $vuetify.breakpoint.smAndUp,
+                        'col-12': $vuetify.breakpoint.xs
+                      }"
+                      class="text-center font-weight-light px-5"
+                      ><v-avatar size="50" color="white">
+                        <v-img :src="UserImage(Question.UserId)"></v-img>
+                      </v-avatar>
+                    </v-col>
+                    <v-col
+                      :class="{
+                        'text-center': $vuetify.breakpoint.xs,
+                        'col-8': $vuetify.breakpoint.smAndUp,
+                        'col-12': $vuetify.breakpoint.xs
+                      }"
+                      class="px-5"
+                    >
+                      <div>
+                        <router-link
+                          class="text-h6 question-link"
+                          append
+                          :to="String(Question.id)"
+                        >
+                          {{ Question.title }}
+                        </router-link>
+                      </div>
+                      <div class="text-caption font-weight-light">
+                        {{ language.postedBy }}
+                        <span class="font-weight-medium">
+                          {{ Question.User.firstName }}
+                          {{ Question.User.lastName }}
+                        </span>
+                      </div>
+                      <div class="mt-5">
+                        <v-chip
+                          v-for="(chip, j) in Question.tags.split(',')"
+                          :key="j"
+                          filter
+                          link
+                          outlined
+                          pill
+                          class="mr-3"
+                          @click="
+                            searchData.tag = chip;
+                            searchQuestions();
+                          "
+                          :class="{
+                            'blue--text': j === 0,
+                            'text--darken-4': j === 0,
+                            ' blue ': j === 0,
+                            'darken-4': j === 0
+                          }"
+                          >{{ chip }}</v-chip
+                        >
+                      </div>
+                    </v-col>
+                    <v-spacer></v-spacer>
+                    <v-col
+                      :class="{
+                        'text-center': $vuetify.breakpoint.xs,
+                        'col-auto': $vuetify.breakpoint.smAndUp,
+                        'col-auto': $vuetify.breakpoint.xs
                       }"
                     >
-                      <v-row no-gutters justify="center" align="center">
-                        <v-col
-                          cols="12"
-                          :class="{ 'text-center': $vuetify.breakpoint.xs }"
-                          class="text-center"
-                        >
-                          <v-btn icon
-                            ><v-icon>mdi-chevron-up</v-icon></v-btn
-                          ></v-col
-                        >
-                        <v-col cols="12" class="text-center">
-                          5
-                        </v-col>
-                        <v-col cols="12" class="text-center">
-                          <v-btn icon
-                            ><v-icon>mdi-chevron-down</v-icon></v-btn
-                          ></v-col
-                        >
-                      </v-row>
-                    </v-card>
-                  </v-col>
-                  <v-col
-                    :class="{
-                      'col-auto': $vuetify.breakpoint.smAndUp,
-                      'col-auto': $vuetify.breakpoint.xs,
-                      'green--text': i === 1
-                    }"
-                    class="px-10 text-center center-vertical"
-                  >
-                    <div class="text-h6 font-weight-bold">
-                      <v-icon v-if="i === 1" color="green" class="mr-1"
-                        >mdi-check</v-icon
-                      >{{ i + 1 }}
-                    </div>
-                    <div class="text-caption">
-                      {{ language.answer }}
-                    </div>
-                  </v-col>
-                </v-row>
-              </v-col>
+                      <v-card
+                        max-width="40"
+                        outlined
+                        flat
+                        tile
+                        class="rounded-xl pa-0"
+                        :class="{
+                          'text-center': $vuetify.breakpoint.xs,
+                          'mx-auto': $vuetify.breakpoint.xs,
+                          blue:
+                            Question.userVote === 1 || Question.userVote === -1,
+                          grey:
+                            Question.userVote !== 1 && Question.userVote !== -1,
+                          'lighten-4':
+                            Question.userVote !== 1 && Question.userVote !== -1,
+                          'white--text':
+                            Question.userVote === 1 || Question.userVote === -1
+                        }"
+                      >
+                        <v-row no-gutters justify="center" align="center">
+                          <v-col
+                            cols="12"
+                            :class="{ 'text-center': $vuetify.breakpoint.xs }"
+                            class="text-center"
+                          >
+                            <v-btn
+                              icon
+                              :class="{
+                                blue: Question.userVote === 1,
+                                'white--text': Question.userVote === 1,
+                                grey: Question.userVote !== 1,
+                                'lighten-4': Question.userVote !== 1
+                              }"
+                              @click="addVote(Question, 1)"
+                              :disabled="waitVote[Question.id] === true"
+                              ><v-icon>mdi-chevron-up</v-icon></v-btn
+                            ></v-col
+                          >
+                          <v-col cols="12" class="text-center mt-2 mb-2">
+                            {{ Question.votes }}
+                          </v-col>
+                          <v-col cols="12" class="text-center">
+                            <v-btn
+                              :class="{
+                                blue: Question.userVote === -1,
+                                'white--text': Question.userVote === -1,
+                                grey: Question.userVote !== -1,
+                                'lighten-4': Question.userVote !== -1
+                              }"
+                              icon
+                              @click="addVote(Question, -1)"
+                              :disabled="waitVote[Question.id] === true"
+                              ><v-icon>mdi-chevron-down</v-icon></v-btn
+                            ></v-col
+                          >
+                        </v-row>
+                      </v-card>
+                    </v-col>
+                    <v-col
+                      :class="{
+                        'col-auto': $vuetify.breakpoint.smAndUp,
+                        'col-auto': $vuetify.breakpoint.xs,
+                        'green--text': Question.isAcceptedAnswer
+                      }"
+                      class="px-10 text-center center-vertical"
+                    >
+                      <div class="text-h6 font-weight-bold">
+                        <v-icon
+                          v-if="Question.isAcceptedAnswer"
+                          color="green"
+                          class="mr-1"
+                          >mdi-check</v-icon
+                        >{{ Question.noOfAnswers }}
+                      </div>
+                      <div class="text-caption">
+                        {{ language.answer }}
+                      </div>
+                    </v-col>
+                  </v-row>
+                </v-col>
 
-              <v-col cols="12">
-                <v-divider class="grey--text"></v-divider
-              ></v-col>
-            </v-row>
+                <v-col cols="12">
+                  <v-divider class="grey--text"></v-divider
+                ></v-col>
+              </v-row>
+            </template>
           </template>
         </v-card>
       </v-container>
@@ -284,15 +350,24 @@ export default {
     return {
       viewNewQuestion: false,
       waitRequest: true,
-      newQuestionData: {},
-      Questions: [1, 2, 3, 4],
+      newQuestionData: {
+        text: "",
+        tags: null,
+        courseId: this.$route.params.courseId,
+        title: ""
+      },
+      Questions: [],
       Tags: [],
+      loading: true,
+      waitVote: {},
       rules: {
         Required: value => !!value || "Required."
       },
       searchData: {
         sortOrder: "ASC",
-        sortType: "featured"
+        sortType: "votes",
+        title: "",
+        tag: null
       },
       filters: [
         {
@@ -335,11 +410,91 @@ export default {
     };
   },
   computed: {
-    UserImage() {
-      return api.getImageSource(this.$store.state.currentUser.id, "user");
-    },
     language() {
       return this.$store.state.language.courseForum;
+    }
+  },
+  methods: {
+    UserImage(id) {
+      return api.getImageSource(id, "user");
+    },
+    async searchQuestions() {
+      // Send the Request
+      const data = {
+        courseId: this.$route.params.courseId,
+        ...this.searchData,
+        title: this.searchData.title
+      };
+      this.loading = true;
+      const response = await api.getAllCourseQuestions(
+        JSON.parse(localStorage.getItem("userToken")),
+        0,
+        20,
+        data
+      );
+      if (response.status === 200) {
+        this.Questions = response.data;
+        this.loading = false;
+      }
+    },
+    async addQuestion() {
+      // Validate the form
+      if (!this.$refs.newQuestionForm.validate()) return;
+      // Send the Request to post question
+      const response = await api.addQuestionToForum(
+        JSON.parse(localStorage.getItem("userToken")),
+        { ...this.newQuestionData }
+      );
+
+      if (response.status === 200) {
+        this.viewNewQuestion = false;
+        this.searchQuestions();
+      }
+    },
+    async addVote(Question, vote) {
+      // disable the buttons
+      this.$set(this.waitVote, Question.id, true);
+      // if no votes before send the request once
+      // check if user wants to delete vote
+      if (Question.userVote === 0 || Question.userVote === vote) {
+        const tempvote =
+          Question.userVote !== vote ? vote : vote === 1 ? -1 : 1;
+        const response = await api.voteInForum(
+          JSON.parse(localStorage.getItem("userToken")),
+          "forum_question",
+          Question.id,
+          tempvote
+        );
+        if (response.status === 200) {
+          Question.userVote = Question.userVote === vote ? 0 : vote;
+          Question.votes = response.data.upvotes - response.data.downvotes;
+        }
+      }
+      // Else if there was a vote before send it twice
+      else {
+        let response = await api.voteInForum(
+          JSON.parse(localStorage.getItem("userToken")),
+          "forum_question",
+          Question.id,
+          vote
+        );
+        // Else if there was a vote before send it twice
+        if (response.status === 200) {
+          response = await api.voteInForum(
+            JSON.parse(localStorage.getItem("userToken")),
+            "forum_question",
+            Question.id,
+            vote
+          );
+          if (response.status === 200) {
+            Question.userVote = vote;
+            Question.votes = response.data.upvotes - response.data.downvotes;
+          }
+        }
+      }
+
+      // reEnable button
+      this.waitVote[Question.id] = false;
     }
   },
   async created() {
@@ -359,6 +514,7 @@ export default {
         return;
       }
       this.waitRequest = false;
+      this.searchQuestions();
     }
   }
 };

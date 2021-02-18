@@ -186,7 +186,8 @@
                     outlined
                     color="blue darken-2"
                     class="text-h6 white--text mt-5 text-none"
-                    @click="DownloadFile"
+                    :href="fileSource()"
+                    target="_blank"
                   >
                     {{ language.downloadAssign }}
                   </v-btn>
@@ -287,6 +288,7 @@
             class="text-body-1 white--text text-none"
             v-if="Number($route.params.componentNumber) === currentComponent"
             @click="MarkAsRead"
+            :disabled="MarkAsReadWaitRequest"
           >
             {{ language.mark }}
             <v-icon class="mx-2">mdi-sticker-check-outline</v-icon>
@@ -372,6 +374,17 @@
           to="forum"
         >
           {{ language.forum }}
+        </v-btn>
+        <v-btn
+          height="60px"
+          tile
+          text
+          class="text-none px-10 text-body-1 font-weight-black"
+          :href="fileSource()"
+          target="_blank"
+          v-if="CourseComponent.hasFile"
+        >
+          {{ language.file }}
         </v-btn>
       </v-card>
 
@@ -520,7 +533,8 @@ export default {
       },
       AssignmentFile: null,
       validAssignment: false,
-      currentTab: "About"
+      currentTab: "About",
+      MarkAsReadWaitRequest: false
     };
   },
   computed: {
@@ -550,16 +564,28 @@ export default {
     calcRoute(routeNum) {
       return "/course/" + this.$route.params.courseId + "/" + routeNum;
     },
+    fileSource() {
+      return api.getFileSource(this.CourseComponent.id);
+    },
     async validateTest() {
       // Validate the form
       if (!this.$refs.testForm.validate()) return;
 
       //Send the answers to server and get the Score
-      let response = await api.getTestScore(this.TestData.finalAnswers);
+      let response = await api.gradeTest(
+        JSON.parse(localStorage.getItem("userToken")),
+        this.$route.params.courseId,
+        this.CourseComponent.id,
+        this.TestData.finalAnswers
+      );
 
       //Check the response
       if (response.status === 200) {
-        this.TestData.currentScore = response.data;
+        let temp = 0;
+        response.data.results.forEach(item => {
+          if (item === 1) temp++;
+        });
+        this.TestData.currentScore = temp;
         this.TestData.takeTest = false;
         this.TestData.finalAnswers = [];
 
@@ -577,12 +603,44 @@ export default {
       //@TODO Send the request of Assignment
       //@TODO check How the Assignment Would be graded
     },
-    DownloadFile() {
-      //@TODO Check how the file will come from request and Download
+    async MarkAsRead() {
+      // Disable the Button
+      this.MarkAsReadWaitRequest = true;
+      //Send the Request to Mark as done
+      const response = await api.MarkAsDone(
+        JSON.parse(localStorage.getItem("userToken")),
+        this.course.id,
+        this.CourseComponent.id
+      );
+      if (response.status === 200) {
+        this.currentComponent++;
+        await this.completeCourse();
+      } else {
+        if (response.data === "user didn't pass the test")
+          // Display Error Message
+          this.$store.state.newNotification.Message =
+            "You Need to Pass the Test First";
+        this.$store.state.newNotification.state = true;
+      }
+      // ReEnable the Button
+      this.MarkAsReadWaitRequest = false;
     },
-    MarkAsRead() {
-      //@TODO Should send a request
-      this.currentComponent++;
+    async completeCourse() {
+      //check if last component
+      if (
+        this.CourseComponent.number ===
+        this.course.CourseSections[this.course.CourseSections.length - 1]
+          .CourseSectionComponents[
+          this.course.CourseSections[this.course.CourseSections.length - 1]
+            .CourseSectionComponents.length - 1
+        ].number
+      ) {
+        // send the complete course request
+        await api.MarkAsComplete(
+          JSON.parse(localStorage.getItem("userToken")),
+          this.course.id
+        );
+      }
     }
   },
 
@@ -594,7 +652,6 @@ export default {
         this.course
       );
     }
-    // @TODO Take values from request
     // Reset test Values and Assignment Files
     this.TestData = {
       finalAnswers: [],
@@ -631,13 +688,20 @@ export default {
       // whole course data
       this.course = response.data;
 
-      // @TODO Change this to take from the request
+      //Set currentComponent with the Data from server
+      const serverComp = userStaterResponse.data.currentComponent;
+      if (this.$route.params.componentNumber > serverComp) {
+        this.$router.push(
+          `/course/${this.$route.params.courseId}/${serverComp}`
+        );
+        return;
+      } else this.currentComponent = Number(serverComp);
+
       // current component of the course
       this.CourseComponent = commonFunctions.FindComponent(
         this.$route.params.componentNumber,
         response.data
       );
-      this.currentComponent = Number(this.$route.params.componentNumber);
     }
     // Else route to Not found
     else {

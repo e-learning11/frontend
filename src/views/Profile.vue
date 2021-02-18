@@ -182,7 +182,7 @@
                 <div class=" font-weight-bold">
                   {{ course.name }}
                 </div>
-                <p class="font-weight-light">{{ course.Instructor.name }}</p>
+                <p class="font-weight-light">{{ course.summary }}</p>
               </v-col>
             </v-col>
           </v-row>
@@ -240,7 +240,7 @@ export default {
     if (this.$store.state.currentUser.type === "student") {
       api
         .getFinishedCourses(JSON.parse(localStorage.getItem("userToken")), {
-          limit: 10,
+          limit: 200,
           offset: 0
         })
         .then(response => {
@@ -258,8 +258,7 @@ export default {
       this.$store.state.currentUser = currentUser;
       this.waitRequest = false;
     } else {
-      this.$store.state.newNotification.Message =
-        "Something went wrong. Please Try again";
+      this.$store.state.newNotification.Message = this.language.wentWrong;
       this.$store.state.newNotification.state = true;
     }
   }

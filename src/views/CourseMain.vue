@@ -235,7 +235,7 @@
             <v-card
               outlined
               class="pa-5 mb-5 rounded-xl"
-              v-if="course.prequisites"
+              v-if="course.prequisites && course.prequisites.length"
             >
               <h3 class="font-weight-bold text-h5 mb-3 header-text text-center">
                 {{ language.prequisites }}
@@ -342,8 +342,13 @@ export default {
       this.course = response.data;
       // First component of the course
       this.CourseComponent = this.course.CourseSections[0].CourseSectionComponents[0];
-      // @TODO check if user is the Teacher that owns the course
-      this.OwnsCourse = false;
+      // check if user is the Teacher that owns the course
+      if (
+        this.course.instructor.id === this.$store.state.currentUser.id &&
+        this.$store.state.currentUser.type === "teacher"
+      )
+        this.OwnsCourse = true;
+      else this.OwnsCourse = false;
     }
     // Else route to Not found
     else {

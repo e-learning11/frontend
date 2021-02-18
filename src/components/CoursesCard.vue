@@ -36,6 +36,11 @@
           {{ CardData.instructor.lastName }}
         </p>
       </v-card-text>
+      <v-card-text v-if="CardData.private">
+        <p class="black--text text-center text-overline">
+          {{ $store.state.language.createCourseForms.private }}
+        </p>
+      </v-card-text>
     </v-card>
   </router-link>
 </template>
@@ -53,6 +58,7 @@ export default {
   },
   computed: {
     courseLink() {
+      if (this.CardData.private === true) return "";
       if (this.CardData.id != null) return "/course/" + this.CardData.id;
       return "/course/" + this.CardData.courseId;
     },

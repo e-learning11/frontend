@@ -51,7 +51,7 @@
       <!--Current Enrolled/Teached Courses-->
       <v-row v-if="Courses.length">
         <v-col
-          v-for="i in 2"
+          v-for="i in Courses.length"
           :key="i"
           :class="{
             'col-6': $vuetify.breakpoint.smAndUp,
@@ -96,7 +96,7 @@ export default {
       response = await api.getCreatedCourses(
         JSON.parse(localStorage.getItem("userToken")),
         {
-          limit: 10,
+          limit: 200,
           offset: 0
         }
       );
@@ -104,7 +104,7 @@ export default {
       response = await api.getEnrolledCourses(
         JSON.parse(localStorage.getItem("userToken")),
         {
-          limit: 10,
+          limit: 200,
           offset: 0
         }
       );

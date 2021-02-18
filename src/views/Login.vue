@@ -153,17 +153,15 @@ export default {
           this.$store.state.currentUser = currentUser;
 
           // Display welcome Message
-          this.$store.state.newNotification.Message =
-            "Welcome! Nice to Have you";
+          this.$store.state.newNotification.Message = this.language.welcome;
           this.$store.state.newNotification.state = true;
           this.$router.push("/");
         } else {
-          this.$store.state.newNotification.Message =
-            "Something went wrong. Please Try again";
+          this.$store.state.newNotification.Message = this.language.wentWrong;
           this.$store.state.newNotification.state = true;
         }
       } else {
-        this.$store.state.newNotification.Message = "Wrong Email or Password";
+        this.$store.state.newNotification.Message = this.language.wrong;
         this.$store.state.newNotification.state = true;
       }
     }

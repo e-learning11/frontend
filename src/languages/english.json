@@ -13,7 +13,10 @@
     "email": "E-mail",
     "password": "Password",
     "forget": "Forgot password?",
-    "newAccount": "Don't have an account?"
+    "newAccount": "Don't have an account?",
+    "wentWrong": "Something went wrong. Please Try again",
+    "welcome": "Welcome! Nice to Have you",
+    "wrong": "Wrong Email or Password"
   },
   "register": {
     "signup": "Sign Up",
@@ -29,7 +32,10 @@
     "female": "Female",
     "accountType": "Account Type",
     "teacher": "Teacher",
-    "student": "Student"
+    "student": "Student",
+    "wentWrong": "Something went wrong. Please Try again",
+    "accountSuccess": "Account Created Successfuly",
+    "accountLogin": "Account Created, Please Login"
   },
   "courses": {
     "courses": "Courses",
@@ -64,7 +70,8 @@
     "accountType": "Account Type",
     "finishedCourses": "My Finished Courses",
     "noCourses": "Oops! It seems you have No Finished Courses yet",
-    "editProfile": "Edit my Profile"
+    "editProfile": "Edit my Profile",
+    "wentWrong": "Something went wrong. Please Try again"
   },
   "editProfile": {
     "myProfile": "My Profile",
@@ -78,7 +85,8 @@
     "female": "Female",
     "accountType": "Account Type",
     "editProfile": "Edit my Profile",
-    "saveChanges": "Save Changes"
+    "saveChanges": "Save Changes",
+    "wentWrong": "Something went wrong. Please Try again"
   },
   "createCourse": {
     "createCourse": "Create Course",
@@ -86,7 +94,8 @@
     "mainInfo": "Main Info",
     "addTest": "Add Test",
     "addVideo": "Add Video",
-    "addAssignment": "Add Assignment"
+    "addAssignment": "Add Assignment",
+    "reuploadAll": "Progress Recovered, Please reupload all files"
   },
   "home": {
     "adventure": "Adventure Awaits",
@@ -147,7 +156,7 @@
     "noWork": "No Work Submitted",
     "uploadWork": "Upload your work",
     "previous": "Previous",
-    "next": "next",
+    "next": "Next",
     "mark": "Mark As Done",
     "done": "Done",
     "sections": "Sections",
@@ -156,7 +165,8 @@
     "language": "Language :",
     "uploadDate": "Upload Date :",
     "about": "About",
-    "teacher": "Teacher"
+    "teacher": "Teacher",
+    "file": "Extra File"
   },
   "courseForum": {
     "search": "Search...",
@@ -239,7 +249,16 @@
     "addSection": "Add Section",
     "resetAll": "Reset All",
     "saveProgress": "Save Progress",
-    "finishAndSubmit": "Finish And Submit Course"
+    "finishAndSubmit": "Finish And Submit Course",
+    "addedSuccess": "New Course Added Successfuly",
+    "progressSaved": "Progress Saved",
+    "incorrectSections": "Sections Do not Cover All Created Components Correctly",
+    "private": "Private",
+    "yes": "Yes",
+    "no": "No",
+    "privateURL": "If The Course is Private it can only be accessed by the URL and it Would not appear on the site.",
+    "URLhint": "The URL is the last part after the domain, Example website/course/{URL is here}",
+    "uploadImage": "Upload An Image"
   },
   "footer": {
     "aboutUs": "About Us",

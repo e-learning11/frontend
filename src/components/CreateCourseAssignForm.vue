@@ -52,7 +52,7 @@
               full-width
               class="mt-5 mb-0"
               auto-grow
-              v-model="AssignInfo.Description"
+              v-model="AssignInfo.description"
               :rules="[rules.Required]"
             ></v-textarea>
           </v-col>
@@ -149,7 +149,7 @@ export default {
     Reset() {
       this.AssignInfo = {
         name: "",
-        Description: "",
+        description: "",
         File: null
       };
     },

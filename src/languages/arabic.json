@@ -13,7 +13,10 @@
     "email": "البريد الالكترونى",
     "password": "كلمة المرور",
     "forget": "نسيت كلمة المرور؟",
-    "newAccount": "ليس لديك حساب؟"
+    "newAccount": "ليس لديك حساب؟",
+    "wentWrong": "حدث خطأ, يرجى اعادة المحاولة",
+    "welcome": "مرحبا, سعيدون بوجودك معنا",
+    "wrong": "بريد الكترونى او كلمة مرور خاطئين"
   },
   "register": {
     "signup": "مستخدم جديد",
@@ -29,7 +32,10 @@
     "female": "انثى",
     "accountType": "نوع الحساب",
     "teacher": "معلم",
-    "student": "طالب"
+    "student": "طالب",
+    "wentWrong": "حدث خطأ, يرجى اعادة المحاولة",
+    "accountSuccess": "تم انشاء الحساب بنجاح",
+    "accountLogin": "تم انشاء الحساب, الرجاء الدخول"
   },
   "courses": {
     "courses": "الدورات",
@@ -64,7 +70,8 @@
     "accountType": "نوع الحساب",
     "finishedCourses": "دوراتى المنتهية",
     "noCourses": "يبدو انك لم تنهى اى دورات حتى الان!",
-    "editProfile": "تعديل الملف الشخصى"
+    "editProfile": "تعديل الملف الشخصى",
+    "wentWrong": "حدث خطأ, يرجى اعادة المحاولة"
   },
   "editProfile": {
     "myProfile": "ملفى الشخصى",
@@ -78,7 +85,8 @@
     "female": "انثى",
     "accountType": "نوع الحساب",
     "editProfile": "تعديل ملفى الشخصى",
-    "saveChanges": "حفظ التغييرات"
+    "saveChanges": "حفظ التغييرات",
+    "wentWrong": "حدث خطأ, يرجى اعادة المحاولة"
   },
   "createCourse": {
     "createCourse": "انشاء دورة",
@@ -86,7 +94,8 @@
     "mainInfo": "معلومات اساسية",
     "addTest": "اضافة اختبار",
     "addVideo": "اضافة فيديو",
-    "addAssignment": "اضافة تسليمة"
+    "addAssignment": "اضافة تسليمة",
+    "reuploadAll": "تم الاسترجاع, يرجى اعادة رفع جميع الملفات"
   },
   "home": {
     "adventure": "المغامرة تنتظرك",
@@ -156,7 +165,8 @@
     "language": "اللغة :",
     "uploadDate": "تاريخ الانشاء :",
     "about": "عن",
-    "teacher": "معلم"
+    "teacher": "معلم",
+    "file": "ملف اضافى"
   },
   "courseForum": {
     "search": "بحث...",
@@ -228,7 +238,7 @@
     "prerequisites": "المتطلبات السابقة :",
     "selectPrerequisites": "اختر الدورات المتطلبة",
     "components": "عناصر",
-    "noComponents": "لا يوجد عناصر بعج ",
+    "noComponents": "لا يوجد عناصر بعد ",
     "sections": "اجزاء",
     "section": "جزء",
     "sectionName": "اسم الجزء",
@@ -239,7 +249,16 @@
     "addSection": "اضف جزء",
     "resetAll": "بدأ من جديد",
     "saveProgress": "حفظ التقدم",
-    "finishAndSubmit": "الانتهاء و تسجيل الدورة"
+    "finishAndSubmit": "الانتهاء و تسجيل الدورة",
+    "addedSuccess": "تم انشاء الدورة بنجاح",
+    "progressSaved": "تم الحفظ",
+    "incorrectSections": "الاجزاء لا تغطى جميع العناصر بشكل صحيح",
+    "private": "مخفى",
+    "yes": "نعم",
+    "no": "لا",
+    "privateURL": "اذا تم اختيار خاص فيمكن الدخول على الدورة باستخدام الرابط فقط, لن تظهر الدورة على الموقع.",
+    "URLhint": "الرابط هو الجزء الاخير, مثال website/course/{الرابط}",
+    "uploadImage": "ارفع صورة"
   },
   "footer": {
     "aboutUs": "معلومات عنا",

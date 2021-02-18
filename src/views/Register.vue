@@ -256,13 +256,11 @@ export default {
           this.$store.state.currentUser = currentUser;
 
           // Display welcome Message
-          this.$store.state.newNotification.Message =
-            "Account Created Successfuly";
+          this.$store.state.newNotification.Message = this.language.accountSuccess;
           this.$store.state.newNotification.state = true;
           this.$router.push("/");
         } else {
-          this.$store.state.newNotification.Message =
-            "Account Created, Please Login";
+          this.$store.state.newNotification.Message = this.language.accountLogin;
           this.$store.state.newNotification.state = true;
           this.$router.push("/login");
         }

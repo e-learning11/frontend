@@ -12,7 +12,7 @@
         >
           {{ Question.tag }}
         </v-card>
-        <v-card outlined tile flat class="rounded-b-lg pt-5 pb-12 px-5">
+        <v-card outlined tile flat class="rounded-b-lg pt-5 pb-7 px-5 mb-10">
           <!--Question and its Comments-->
           <v-row dense>
             <v-col
@@ -92,11 +92,64 @@
               </v-card>
             </v-col>
             <v-col cols="12" class="text-center mt-5">
-              <v-btn text outlined class="text-none"
+              <v-btn
+                text
+                outlined
+                class="text-none"
+                @click="showMainComment = !showMainComment"
                 >Add Comment<v-icon color="grey" size="20" class="mx-3"
                   >mdi-message-reply</v-icon
                 ></v-btn
               >
+            </v-col>
+            <v-col cols="12">
+              <v-expand-transition>
+                <v-form class="mt-10" v-show="showMainComment">
+                  <v-row justify="center" align="center">
+                    <v-col
+                      :class="{
+                        'text-center': $vuetify.breakpoint.xs,
+                        'col-auto': $vuetify.breakpoint.smAndUp,
+                        'col-12': $vuetify.breakpoint.xs
+                      }"
+                      class="text-center font-weight-light"
+                      ><v-avatar size="30" color="white">
+                        <v-img :src="UserImage"></v-img>
+                      </v-avatar>
+                      <div class="mt-4 text-caption">
+                        Posting as
+                        <span class="font-weight-medium">{{
+                          $store.state.currentUser.firstName
+                        }}</span>
+                      </div>
+                    </v-col>
+                    <v-col
+                      :class="{
+                        'col-8': $vuetify.breakpoint.smAndUp,
+                        'col-12': $vuetify.breakpoint.xs
+                      }"
+                    >
+                      <v-textarea
+                        filled
+                        full-width
+                        :rules="[rules.Required]"
+                        auto-grow
+                        :placeholder="language.addQuestion"
+                        hide-details
+                      ></v-textarea>
+                    </v-col>
+                    <v-col cols="12" class="text-center mb-5">
+                      <v-btn
+                        outlined
+                        class="mx-5 text-none"
+                        color="blue darken-4"
+                      >
+                        {{ language.askQuestion }}
+                      </v-btn>
+                    </v-col>
+                  </v-row>
+                </v-form>
+              </v-expand-transition>
             </v-col>
           </v-row>
           <v-row no-gutters class="mt-10">
@@ -239,20 +292,125 @@
             </v-col>
 
             <v-col cols="12" class="text-center mt-5 mb-5">
-              <v-btn text outlined class="text-none"
+              <v-btn
+                text
+                outlined
+                class="text-none"
+                @click="toggleCommentAnswer(answer.id)"
                 >Add Comment<v-icon color="grey" size="20" class="mx-3"
                   >mdi-message-reply</v-icon
                 ></v-btn
               >
             </v-col>
-
             <v-col cols="12">
+              <v-expand-transition>
+                <v-form class="mt-10" v-show="showAnswersComment[answer.id]">
+                  <v-row justify="center" align="center">
+                    <v-col
+                      :class="{
+                        'text-center': $vuetify.breakpoint.xs,
+                        'col-auto': $vuetify.breakpoint.smAndUp,
+                        'col-12': $vuetify.breakpoint.xs
+                      }"
+                      class="text-center font-weight-light"
+                      ><v-avatar size="30" color="white">
+                        <v-img :src="UserImage"></v-img>
+                      </v-avatar>
+                      <div class="mt-4 text-caption">
+                        Posting as
+                        <span class="font-weight-medium">{{
+                          $store.state.currentUser.firstName
+                        }}</span>
+                      </div>
+                    </v-col>
+                    <v-col
+                      :class="{
+                        'col-8': $vuetify.breakpoint.smAndUp,
+                        'col-12': $vuetify.breakpoint.xs
+                      }"
+                    >
+                      <v-textarea
+                        filled
+                        full-width
+                        :rules="[rules.Required]"
+                        auto-grow
+                        :placeholder="language.addQuestion"
+                        hide-details
+                      ></v-textarea>
+                    </v-col>
+                    <v-col cols="12" class="text-center mb-5">
+                      <v-btn
+                        outlined
+                        class="mx-5 text-none"
+                        color="blue darken-4"
+                      >
+                        {{ language.askQuestion }}
+                      </v-btn>
+                    </v-col>
+                  </v-row>
+                </v-form>
+              </v-expand-transition>
+            </v-col>
+
+            <v-col cols="12" v-if="i !== Question.answers.length - 1">
               <v-responsive max-width="80%" class="mx-auto">
                 <v-divider
                   class="grey--text text-center"
                 ></v-divider></v-responsive
             ></v-col>
           </v-row>
+
+          <!--Add an Answer-->
+          <v-row no-gutters class="mt-10">
+            <v-col cols="12" class="mx-10 text-h6">
+              Add an Answer
+            </v-col>
+            <v-col cols="12" class="px-0 mt-5">
+              <v-divider
+                class="grey--text text-center divider"
+              ></v-divider></v-col
+          ></v-row>
+          <v-form class="mt-10">
+            <v-row justify="center" align="start">
+              <v-col
+                :class="{
+                  'text-center': $vuetify.breakpoint.xs,
+                  'col-auto': $vuetify.breakpoint.smAndUp,
+                  'col-12': $vuetify.breakpoint.xs
+                }"
+                class="text-center font-weight-light"
+                ><v-avatar size="70" color="white">
+                  <v-img :src="UserImage"></v-img>
+                </v-avatar>
+                <div class="mt-4">
+                  Posting as
+                  <span class="font-weight-medium">{{
+                    $store.state.currentUser.firstName
+                  }}</span>
+                </div>
+              </v-col>
+              <v-col
+                :class="{
+                  'col-8': $vuetify.breakpoint.smAndUp,
+                  'col-12': $vuetify.breakpoint.xs
+                }"
+              >
+                <v-textarea
+                  filled
+                  full-width
+                  :rules="[rules.Required]"
+                  auto-grow
+                  hide-details
+                  :placeholder="language.addQuestion"
+                ></v-textarea>
+              </v-col>
+              <v-col cols="12" class="text-center">
+                <v-btn outlined class="mx-5 text-none" color="blue darken-4">
+                  {{ language.askQuestion }}
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-form>
         </v-card>
       </v-container>
     </v-container>
@@ -274,6 +432,8 @@ export default {
       rules: {
         Required: value => !!value || "Required."
       },
+      showMainComment: false,
+      showAnswersComment: {},
       Question: {
         tag: "JavaScript",
         name: "Asker",
@@ -296,6 +456,7 @@ export default {
         answers: [
           {
             name: "Tester",
+            id: 5,
             title: "This is the an Answer",
             date: "6 hours ago",
             comments: [
@@ -314,6 +475,7 @@ export default {
           {
             name: "Tester",
             title: "This is the an Answer",
+            id: 10,
             date: "6 hours ago",
             comments: [
               {
@@ -338,6 +500,13 @@ export default {
     },
     language() {
       return this.$store.state.language.courseForum;
+    }
+  },
+  methods: {
+    toggleCommentAnswer(id) {
+      if (this.showAnswersComment[id] === undefined)
+        this.$set(this.showAnswersComment, id, true);
+      else this.showAnswersComment[id] = !this.showAnswersComment[id];
     }
   },
   async created() {

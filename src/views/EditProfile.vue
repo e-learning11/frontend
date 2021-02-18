@@ -187,10 +187,9 @@ export default {
 
       if (EditResponse.status === 200) {
         // Route to Profile
-        this.$router.push("/profile");
+        this.$router.go("/profile");
       } else {
-        this.$store.state.newNotification.Message =
-          "Something went wrong. Please Try again";
+        this.$store.state.newNotification.Message = this.language.wentWrong;
         this.$store.state.newNotification.state = true;
       }
     }
@@ -212,8 +211,7 @@ export default {
       this.NewData = { ...currentUser };
       this.waitRequest = false;
     } else {
-      this.$store.state.newNotification.Message =
-        "Something went wrong. Please Try again";
+      this.$store.state.newNotification.Message = this.language.wentWrong;
       this.$store.state.newNotification.state = true;
     }
   }
