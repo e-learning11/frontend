@@ -145,8 +145,8 @@
         </v-container>
       </v-container>
 
-      <v-row v-if="OwnsCourse"
-        ><v-col cols="12" class="text-center mt-10 mb-0">
+      <v-row v-if="OwnsCourse" justify="center"
+        ><v-col cols="auto" class="text-center mt-10 mb-0">
           <v-btn
             x-large
             outlined
@@ -156,6 +156,18 @@
             to="overview"
           >
             {{ language.courseOverview }}
+          </v-btn>
+        </v-col>
+        ><v-col cols="auto" class="text-center mt-10 mb-0">
+          <v-btn
+            x-large
+            outlined
+            class="text-h6"
+            color="blue darken-3"
+            append
+            to="forum"
+          >
+            {{ language.forum }}
           </v-btn>
         </v-col>
       </v-row>

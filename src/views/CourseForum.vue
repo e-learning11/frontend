@@ -15,6 +15,14 @@
           }"
         >
           <v-row dense justify="center" align="center" class="px-2">
+            <v-col cols="auto"
+              ><v-btn
+                color="grey lighten-4"
+                icon
+                :to="`/course/${$route.params.courseId}`"
+                ><v-icon color="grey darken-2"> mdi-arrow-left </v-icon></v-btn
+              ></v-col
+            >
             <v-col
               :class="{
                 'col-5': $vuetify.breakpoint.mdAndUp,
@@ -159,7 +167,14 @@
           </v-expand-transition>
         </v-card>
 
-        <v-card min-height="90vh" outlined tile flat class="rounded-b-lg">
+        <v-card
+          min-height="90vh"
+          outlined
+          tile
+          flat
+          class="rounded-b-lg"
+          id="infinite-questions"
+        >
           <!--Loading Screen until request comes-->
           <Loading type="content" v-if="loading"></Loading>
 
@@ -188,6 +203,12 @@
                       ><v-avatar size="50" color="white">
                         <v-img :src="UserImage(Question.UserId)"></v-img>
                       </v-avatar>
+
+                      <div class="text-caption mt-5" v-if="Question.isFeatured">
+                        <v-card outlined color="blue px-2 white--text">
+                          {{ $store.state.language.courseForum.featured }}
+                        </v-card>
+                      </div>
                     </v-col>
                     <v-col
                       :class="{
@@ -213,27 +234,34 @@
                           {{ Question.User.lastName }}
                         </span>
                       </div>
+                      <div class="text-caption font-weight-light">
+                        {{ timeSince(new Date(Question.createdAt)) }}
+                      </div>
                       <div class="mt-5">
-                        <v-chip
+                        <span
                           v-for="(chip, j) in Question.tags.split(',')"
                           :key="j"
-                          filter
-                          link
-                          outlined
-                          pill
-                          class="mr-3"
-                          @click="
-                            searchData.tag = chip;
-                            searchQuestions();
-                          "
-                          :class="{
-                            'blue--text': j === 0,
-                            'text--darken-4': j === 0,
-                            ' blue ': j === 0,
-                            'darken-4': j === 0
-                          }"
-                          >{{ chip }}</v-chip
                         >
+                          <v-chip
+                            v-if="chip != ''"
+                            filter
+                            link
+                            outlined
+                            pill
+                            class="mr-3"
+                            @click="
+                              searchData.tag = chip;
+                              searchQuestions();
+                            "
+                            :class="{
+                              'blue--text': j === 0,
+                              'text--darken-4': j === 0,
+                              ' blue ': j === 0,
+                              'darken-4': j === 0
+                            }"
+                            >{{ chip }}</v-chip
+                          >
+                        </span>
                       </div>
                     </v-col>
                     <v-spacer></v-spacer>
@@ -324,6 +352,26 @@
                     </v-col>
                   </v-row>
                 </v-col>
+                <v-col cols="12" class="text-center" v-if="ownCourse">
+                  <v-btn
+                    outlined
+                    class="text-none"
+                    x-small
+                    v-if="Question.isFeatured"
+                    @click="changeFeatured(Question, false)"
+                  >
+                    {{ $store.state.language.courseForum.removefeatured }}
+                  </v-btn>
+                  <v-btn
+                    outlined
+                    class="text-none"
+                    x-small
+                    v-else
+                    @click="changeFeatured(Question, true)"
+                  >
+                    {{ $store.state.language.courseForum.addfeatured }}
+                  </v-btn>
+                </v-col>
 
                 <v-col cols="12">
                   <v-divider class="grey--text"></v-divider
@@ -350,6 +398,8 @@ export default {
     return {
       viewNewQuestion: false,
       waitRequest: true,
+      ownCourse: false,
+      getNewCourses: false,
       newQuestionData: {
         text: "",
         tags: null,
@@ -426,6 +476,7 @@ export default {
         title: this.searchData.title
       };
       this.loading = true;
+      this.getNewCourses = true;
       const response = await api.getAllCourseQuestions(
         JSON.parse(localStorage.getItem("userToken")),
         0,
@@ -435,6 +486,7 @@ export default {
       if (response.status === 200) {
         this.Questions = response.data;
         this.loading = false;
+        if (response.data.length !== 0) this.getNewCourses = false;
       }
     },
     async addQuestion() {
@@ -495,6 +547,72 @@ export default {
 
       // reEnable button
       this.waitVote[Question.id] = false;
+    },
+    async changeFeatured(Question, type) {
+      const response = await api.changeFeaturedStatus(
+        JSON.parse(localStorage.getItem("userToken")),
+        this.$route.params.courseId,
+        Question.id,
+        type
+      );
+      if (response.status === 200) {
+        Question.isFeatured = type;
+      }
+    },
+    async loadMore() {
+      if (this.getNewCourses === true || this.Questions.length % 20 != 0)
+        return;
+
+      const listElm = document.querySelector("#infinite-questions");
+      if (listElm == null) return;
+      let rect = listElm.getBoundingClientRect();
+      let elemBottom = rect.bottom;
+
+      if (elemBottom <= window.innerHeight) {
+        // Send the Request
+        const data = {
+          courseId: this.$route.params.courseId,
+          ...this.searchData,
+          title: this.searchData.title
+        };
+        this.getNewCourses = true;
+        const response = await api.getAllCourseQuestions(
+          JSON.parse(localStorage.getItem("userToken")),
+          this.Questions.length,
+          20,
+          data
+        );
+        if (response.status === 200) {
+          this.Questions.push(...response.data);
+          if (response.data.length !== 0) this.getNewCourses = false;
+        }
+      }
+    },
+    timeSince(date) {
+      let seconds = Math.floor((new Date() - date) / 1000);
+
+      let interval = seconds / 31536000;
+
+      if (interval > 1) {
+        return Math.floor(interval) + " years ago";
+      }
+      interval = seconds / 2592000;
+      if (interval > 1) {
+        return Math.floor(interval) + " months ago";
+      }
+      interval = seconds / 86400;
+      if (interval > 1) {
+        return Math.floor(interval) + " days ago";
+      }
+      interval = seconds / 3600;
+      if (interval > 1) {
+        return Math.floor(interval) + " hours ago";
+      }
+      interval = seconds / 60;
+      if (interval > 1) {
+        return Math.floor(interval) + " minutes ago";
+      }
+      return Math.floor(seconds) + " seconds ago";
     }
   },
   async created() {
@@ -513,9 +631,26 @@ export default {
         this.$router.push(`/course/${this.$route.params.courseId}`);
         return;
       }
-      this.waitRequest = false;
-      this.searchQuestions();
+    } else if (this.$store.state.currentUser.type === "teacher") {
+      //Check if there the teacher owns this Course
+      let userStaterResponse = await api.getSingleCourse(
+        this.$route.params.courseId
+      );
+
+      if (userStaterResponse.status !== 200) {
+        this.$router.push(`/course/${this.$route.params.courseId}`);
+        return;
+      }
+      // Check if teacher owns Course
+      if (
+        this.$store.state.currentUser.id ===
+        userStaterResponse.data[0].teacherId
+      )
+        this.ownCourse = true;
     }
+    document.addEventListener("scroll", this.loadMore, true);
+    this.waitRequest = false;
+    this.searchQuestions();
   }
 };
 </script>

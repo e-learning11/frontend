@@ -361,6 +361,7 @@
             'text-h6': $vuetify.breakpoint.smAndUp,
             'text-body': $vuetify.breakpoint.xs
           }"
+          :disabled="sendRequest"
           @click="SubmitCourse"
         >
           {{ language.finishAndSubmit }}</v-btn
@@ -389,7 +390,8 @@ export default {
         }
       },
       allCourses: [],
-      isEdit: false
+      isEdit: false,
+      sendRequest: false
     };
   },
   computed: {
@@ -414,6 +416,8 @@ export default {
       if (!this.isEdit) localStorage.removeItem("CourseInfo");
     },
     async SubmitCourse() {
+      // disable button
+      this.sendRequest = true;
       // Check for validation
       if (
         !this.$refs.InfoForm.validate() ||
@@ -443,6 +447,8 @@ export default {
         this.$store.state.newNotification.Message = response.data;
         this.$store.state.newNotification.state = true;
       }
+      // Re Enable button
+      this.sendRequest = true;
     },
     SaveProgress() {
       localStorage.setItem(

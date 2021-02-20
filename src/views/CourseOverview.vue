@@ -54,21 +54,23 @@
                 <v-col cols="12">
                   <div class="font-weight-medium text-body-1">
                     Summary:
-                    <span class="font-weight-light"> {{ course.Summary }}</span>
+                    <span class="font-weight-light"> {{ course.summary }}</span>
                   </div>
                 </v-col>
                 <v-col cols="12">
                   <h2 class="font-weight-medium text-body-1">
                     Language:
                     <span class="font-weight-light">
-                      {{ course.Language }}</span
+                      {{ course.language }}</span
                     >
                   </h2>
                 </v-col>
                 <v-col cols="12">
                   <h2 class="font-weight-medium text-body-1">
                     Upload Date:
-                    <span class="font-weight-light"> {{ course.Date }}</span>
+                    <span class="font-weight-light">
+                      {{ course.date.split("T")[0] }}</span
+                    >
                   </h2>
                 </v-col>
               </v-row>
@@ -97,10 +99,12 @@
                 Course Content
               </h2>
             </v-col>
-            <CourseComponents
-              :sections="course.sections"
-              PageType="Main"
-            ></CourseComponents>
+            <v-col cols="12">
+              <CourseComponents
+                :sections="course.CourseSections"
+                PageType="Main"
+              ></CourseComponents>
+            </v-col>
           </v-row>
         </v-col>
 
@@ -117,10 +121,13 @@
           </v-btn>
         </v-col>
       </v-row>
-      <v-divider class="mt-5 mb-5" v-if="CourseTests.length > 0"></v-divider>
+      <v-divider
+        class="mt-5 mb-5"
+        v-if="SimpleCourseTests.length > 0"
+      ></v-divider>
       <!-- Review Student Tests-->
       <v-row
-        v-if="CourseTests.length > 0"
+        v-if="SimpleCourseTests.length > 0"
         class="mt-3"
         :class="{
           'pa-2': $vuetify.breakpoint.smAndDown
@@ -147,35 +154,34 @@
           <v-responsive max-width="400" class="mx-auto mb-4">
             <v-combobox
               v-model="IndexCurrentTest"
+              :disabled="searchLoading"
               :items="SimpleCourseTests"
-              label="Select a Test"
+              label="Select a Test or Assignment"
+              @change="getSubmissions(0)"
             ></v-combobox>
           </v-responsive>
 
           <!--Students Tests Submitted-->
-          <v-row
-            justify="center"
-            v-if="CourseTests[IndexCurrentTest.value].Submissions.length === 0"
-          >
+          <v-row justify="center" v-if="submissionsArray.length === 0">
             <v-col cols="auto">No Submissions yet</v-col>
           </v-row>
           <v-card elevation="16" max-width="400" class="mx-auto" v-else>
             <v-list height="300" item-height="64" class="pa-0 test-list">
-              <div
-                v-for="(item, i) in CourseTests[IndexCurrentTest.value]
-                  .Submissions"
-                :key="i"
-              >
+              <div v-for="(item, i) in submissionsArray" :key="i">
                 <v-list-item>
                   <v-list-item-action>
-                    <v-btn fab small depressed color="primary">
-                      {{ i + 1 }}
+                    <v-btn fab small depressed class="white--text blue">
+                      <span v-if="!item.isGraded">{{ i + 1 }}</span>
+                      <v-icon v-else>mdi-check</v-icon>
                     </v-btn>
                   </v-list-item-action>
 
                   <v-list-item-content>
                     <v-list-item-title class="text-body-1 font-weight-medium">
-                      {{ item.Name }}
+                      User ID : {{ item.UserId }}
+                    </v-list-item-title>
+                    <v-list-item-title class="text-body-1 font-weight-medium">
+                      Question ID : {{ item.QuestionId }}
                     </v-list-item-title>
                   </v-list-item-content>
 
@@ -199,71 +205,72 @@
             'col-12': $vuetify.breakpoint.smAndDown
           }"
         >
-          <v-card height="100%">
+          <v-card height="100%" min-height="450">
             <v-row justify="center" align="center"></v-row>
             <v-col cols="auto">
-              <v-subheader class="text-center" v-if="currentTest === null">
+              <v-subheader
+                class="text-center"
+                v-if="currentSubmission === null"
+              >
                 Please Select a Test to View
               </v-subheader>
               <template v-else>
-                <v-form ref="GradeForm">
+                <v-form ref="GradeForm" v-model="validSubmitGrade">
                   <v-row dense justify="center" class="pt-5 pb-5">
                     <v-col
                       cols="12"
                       class="text-h6 font-weight-bold text-center"
                     >
-                      {{ currentTest.Name }}
+                      {{ currentSubmission.Name }}
                     </v-col>
                     <v-col
                       cols="12"
-                      class="text-body-2 font-weight-light text-center"
+                      class="text-body-2 font-weight-light text-center "
                     >
-                      {{ currentTest.Test.Name }}
+                      {{ currentSubmission.Test.Name }}
                     </v-col>
                     <v-col>
                       <v-divider></v-divider>
                     </v-col>
                     <v-col
                       cols="12"
-                      v-for="(item, i) in currentTest.Test.test"
-                      :key="i"
-                      class="px-5 mb-5"
+                      class="px-5 mt-6 mb-6"
+                      v-if="IndexCurrentTest.type === 'Test'"
                     >
                       <div class="text-body-1 font-weight-light mb-3">
-                        <span class="font-weight-medium"
-                          >Question {{ i + 1 }}:</span
-                        >
-                        {{ item.Q }}
+                        <span class="font-weight-medium">Question:</span>
+                        {{
+                          getQuestionWithID(currentSubmission.Test.QuestionId)
+                        }}
                       </div>
-                      <div class="text-body-2 font-weight-light">
+                      <div class="text-body-2 font-weight-light mt-10">
                         <span class="font-weight-medium">Answer: </span
-                        >{{ item.A }}
+                        >{{ currentSubmission.Test.text }}
                       </div>
                     </v-col>
+                    <v-col cols="12" class="px-5 mt-6 mb-6 text-center" v-else>
+                      <v-btn outlined color="blue">
+                        Download File
+                      </v-btn>
+                    </v-col>
                     <v-col
-                      v-if="currentTest.Test.Grade != null"
+                      v-if="currentSubmission.Test.isGraded"
                       cols="12"
                       class="text-center text-overline"
                     >
-                      Test Already Graded with
-                      {{ currentTest.Test.Grade.Score }} /
-                      {{ currentTest.Test.Grade.Max }}
+                      Test Already Graded With
+                      {{ currentSubmission.Test.grade }}
                     </v-col>
                     <v-col cols="4">
                       <v-text-field
-                        :rules="[
-                          rules.Required,
-                          rules.CorrectGrade(
-                            NewGrades.Grade,
-                            NewGrades.MaxGrade
-                          )
-                        ]"
+                        :rules="[rules.Required]"
                         v-model="NewGrades.Grade"
                         type="Number"
                         label="Grade"
+                        class="text-center"
                       ></v-text-field>
                     </v-col>
-                    <v-col cols="1" class="align-text"> / </v-col>
+                    <!-- <v-col cols="1" class="align-text"> / </v-col>
                     <v-col cols="4">
                       <v-text-field
                         type="Number"
@@ -271,7 +278,7 @@
                         :rules="[rules.Required]"
                         v-model="NewGrades.MaxGrade"
                       ></v-text-field>
-                    </v-col>
+                    </v-col> -->
 
                     <v-col cols="12" class="text-center">
                       <v-btn
@@ -280,6 +287,7 @@
                         class="text-subtitle-1"
                         color="blue darken-3"
                         @click="GradeTest"
+                        :disabled="!validSubmitGrade"
                       >
                         Grade Test
                       </v-btn>
@@ -308,40 +316,42 @@ export default {
   components: { Footer, Loading, CourseComponents },
   data: () => ({
     course: null,
-    IndexCurrentTest: {
-      text: "",
-      value: 0
-    },
-    CourseTests: [],
-    currentTest: null,
+    SimpleCourseTests: [],
+    IndexCurrentTest: null,
+    currentSubmission: null,
+    submissionsArray: [],
+    searchLoading: false,
     NewGrades: {},
+    validSubmitGrade: false,
     rules: {
       Required: value => !!value || "Required.",
       CorrectGrade: (Grade, MaxGrade) =>
         Grade <= MaxGrade || "Grade Must Be Smaller or Equal To Max Grade"
     }
   }),
-  computed: {
-    SimpleCourseTests() {
-      let i = 0;
-      return this.CourseTests.map(v => ({ text: v.Name, value: i++ }));
-    }
-  },
   methods: {
     ChangeTest(Test) {
       // Changes the Current Test that is viewed
-      this.currentTest = { Test: Test, Name: this.IndexCurrentTest.text };
+      this.currentSubmission = { Test: Test, Name: this.IndexCurrentTest.text };
     },
-    GradeTest() {
+    async GradeTest() {
       // Validate the form
       if (!this.$refs.GradeForm.validate()) return;
-      // @TODO Send the Request for Grade
+      // Disable button
+      this.validSubmitGrade = false;
+      // Send the Request for Grade
+      const response = await api.gradeCourseTestsAndAssignments(
+        JSON.parse(localStorage.getItem("userToken")),
+        this.$route.params.courseId,
+        this.currentSubmission.Test.id,
+        this.NewGrades.Grade,
+        this.IndexCurrentTest.type
+      );
       // If successful Change grade
-      if (this.NewGrades) {
-        this.currentTest.Test.Grade = {
-          Score: this.NewGrades.Grade,
-          Max: this.NewGrades.MaxGrade
-        };
+      if (response.status === 200) {
+        // Reset Submission and send the Request for submissions
+        this.currentSubmission = null;
+        this.getSubmissions(0);
         // Display a Success Notification
         this.$store.state.newNotification.Message = "Grading Successful";
         this.$store.state.newNotification.state = true;
@@ -353,30 +363,70 @@ export default {
           "Something went Wrong Please Try Again";
         this.$store.state.newNotification.state = true;
       }
+      // ReEnable button
+      this.validSubmitGrade = true;
+    },
+    mapTestsAndAssignments(courseSections) {
+      let SimpleCourseTests = [];
+      courseSections.forEach(section => {
+        section.CourseSectionComponents.forEach(component => {
+          // if test or assignment add their Id and name
+          if (component.type === "Test" || component.type === "Assignment") {
+            SimpleCourseTests.push({
+              value: component.id,
+              text: component.name,
+              type: component.type,
+              Questions: component.Questions
+            });
+          }
+        });
+      });
+      return SimpleCourseTests;
+    },
+    async getSubmissions(offset) {
+      this.searchLoading = true;
+      const response = await api.getCourseTestsAndAssignments(
+        JSON.parse(localStorage.getItem("userToken")),
+        20,
+        offset != null ? offset : this.submissionsArray.length,
+        this.$route.params.courseId,
+        this.IndexCurrentTest.value,
+        this.IndexCurrentTest.type
+      );
+
+      if (response.status === 200) {
+        this.submissionsArray = response.data;
+      }
+      this.searchLoading = false;
+    },
+    getQuestionWithID(id) {
+      let QuestionName;
+      this.IndexCurrentTest.Questions.forEach(q => {
+        if (q.id === id) {
+          QuestionName = q.Q;
+          return;
+        }
+      });
+      return QuestionName;
     }
   },
   async created() {
     // Send the request
-    // @TODO check that the teacher owns the course
-    // @TODO Improve this Code
-    const response = await api.getCourseByid(this.$route.params.courseId);
-    const Testresponse = await api.getCourseTests();
+    const courseResponse = await api.getCourseByid(this.$route.params.courseId);
 
-    // If response is successful
-    if (response.status === 200 && Testresponse.status === 200) {
-      // Set the Data recieved from response
+    // If courseResponse is successful
+    if (courseResponse.status === 200) {
+      // Set the Data recieved from courseResponse
       // whole course data
-      this.course = response.data;
-      // First component of the course
-      this.CourseComponent = this.course.sections[0].components[0];
-      // Set the CourseTests with the Data
-      this.CourseTests = Testresponse.data;
-      // Set indexCourseTest
-      if (this.CourseTests.length > 0) {
-        this.IndexCurrentTest = {
-          text: this.CourseTests[0].Name,
-          value: 0
-        };
+      this.course = courseResponse.data;
+      // Set the Submissions Array
+      this.SimpleCourseTests = this.mapTestsAndAssignments(
+        this.course.CourseSections
+      );
+      if (this.SimpleCourseTests.length > 0) {
+        this.IndexCurrentTest = this.SimpleCourseTests[0];
+        // get the Submissions
+        this.getSubmissions();
       }
     }
     // Else route to Not found

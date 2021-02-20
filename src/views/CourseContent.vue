@@ -34,9 +34,19 @@
       <!--Main Content Container-->
       <v-row no-gutters>
         <v-col cols="12">
+          <!-- Loading Section for Test and Assignment Status -->
+          <Loading
+            v-if="
+              (CourseComponent.type === 'Assignment' ||
+                CourseComponent.type === 'Test') &&
+                loadingStatus
+            "
+            type="content"
+          >
+          </Loading>
           <v-container
             class="test-section new-container mt-10 mb-10"
-            v-if="CourseComponent.type === 'Test'"
+            v-if="CourseComponent.type === 'Test' && !loadingStatus"
           >
             <!--Test Form section-->
             <v-card
@@ -162,7 +172,7 @@
           <!--Assignmet Section-->
           <v-container
             class="test-section new-container mt-10 mb-10"
-            v-if="CourseComponent.type === 'Assignment'"
+            v-if="CourseComponent.type === 'Assignment' && !loadingStatus"
           >
             <v-card
               color="white"
@@ -174,7 +184,7 @@
               }"
               max-width="900"
             >
-              <v-row justify="center">
+              <v-row justify="center" v-if="TestData.takeTest">
                 <v-col cols="12">
                   <h3 class="text-center text-h4">
                     {{ CourseComponent.name }}
@@ -213,6 +223,28 @@
                     @click="SubmitAssignmet"
                   >
                     {{ language.submit }}
+                  </v-btn>
+                </v-col>
+              </v-row>
+              <!--Score Screen-->
+              <v-row justify="center" v-else>
+                <v-col cols="12">
+                  <h3 class="text-center text-h5">
+                    {{ language.currentScore }}
+                  </h3>
+                  <h4 class="text-center text-h6">
+                    {{ TestData.currentScore }}
+                  </h4>
+                </v-col>
+                <v-col cols="auto">
+                  <v-btn
+                    x-large
+                    outlined
+                    color="blue darken-2"
+                    class="text-h5 white--text mt-5 text-none"
+                    @click="TestData.takeTest = true"
+                  >
+                    {{ language.retake }}
                   </v-btn>
                 </v-col>
               </v-row>
@@ -534,7 +566,8 @@ export default {
       AssignmentFile: null,
       validAssignment: false,
       currentTab: "About",
-      MarkAsReadWaitRequest: false
+      MarkAsReadWaitRequest: false,
+      loadingStatus: true
     };
   },
   computed: {
@@ -570,38 +603,48 @@ export default {
     async validateTest() {
       // Validate the form
       if (!this.$refs.testForm.validate()) return;
+      this.validForm = false;
 
       //Send the answers to server and get the Score
       let response = await api.gradeTest(
         JSON.parse(localStorage.getItem("userToken")),
         this.$route.params.courseId,
         this.CourseComponent.id,
-        this.TestData.finalAnswers
+        this.TestData.finalAnswers,
+        this.CourseComponent.Questions
       );
 
       //Check the response
       if (response.status === 200) {
-        let temp = 0;
-        response.data.results.forEach(item => {
-          if (item === 1) temp++;
-        });
-        this.TestData.currentScore = temp;
-        this.TestData.takeTest = false;
-        this.TestData.finalAnswers = [];
-
-        // Return ot top
+        // Return to top
         window.scrollTo({
           top: 0,
           behavior: "smooth"
         });
+        // Send the Request for getting status
+        this.getTestAssignStatus();
       }
+
+      this.validForm = true;
     },
-    SubmitAssignmet() {
+    async SubmitAssignmet() {
       // Validate the form
       if (!this.$refs.AssignmentForm.validate()) return;
 
-      //@TODO Send the request of Assignment
-      //@TODO check How the Assignment Would be graded
+      //Send the request of Assignment
+      const response = await api.gradeAssignment(
+        JSON.parse(localStorage.getItem("userToken")),
+        this.$route.params.courseId,
+        this.CourseComponent.id,
+        this.AssignmentFile
+      );
+      if (response.status === 200) {
+        this.TestData.currentScore = !this.$vuetify.rtl
+          ? "Submitted For Grading"
+          : "قيد التصحيح";
+        this.TestData.takeTest = false;
+        this.TestData.finalAnswers = [];
+      }
     },
     async MarkAsRead() {
       // Disable the Button
@@ -616,11 +659,19 @@ export default {
         this.currentComponent++;
         await this.completeCourse();
       } else {
-        if (response.data === "user didn't pass the test")
+        if (response.data === "user didn't pass the test") {
           // Display Error Message
-          this.$store.state.newNotification.Message =
-            "You Need to Pass the Test First";
-        this.$store.state.newNotification.state = true;
+          this.$store.state.newNotification.Message = !this.$vuetify.rtl
+            ? "You Need to Pass the Test First"
+            : "يجب ان تنجح فى الاختبار اولا";
+          this.$store.state.newNotification.state = true;
+        } else {
+          // Display Error Message
+          this.$store.state.newNotification.Message = !this.$vuetify.rtl
+            ? "You Need to Pass the Assignment First"
+            : "يجب ان تنجح فى الاختبار اولا";
+          this.$store.state.newNotification.state = true;
+        }
       }
       // ReEnable the Button
       this.MarkAsReadWaitRequest = false;
@@ -641,6 +692,73 @@ export default {
           this.course.id
         );
       }
+    },
+    async getTestAssignStatus() {
+      this.loadingStatus = true;
+      // send the request of test
+      if (this.CourseComponent.type === "Test") {
+        const response = await api.getTestState(
+          JSON.parse(localStorage.getItem("userToken")),
+          this.$route.params.courseId,
+          this.CourseComponent.id
+        );
+        if (response.status === 200) {
+          // if Graded show the Grade
+          if (response.data.testState === 1) {
+            this.TestData.currentScore = response.data.grade;
+            this.TestData.takeTest = false;
+            this.TestData.finalAnswers = [];
+          }
+          // if Submitted Before but Not graded
+          else if (response.data.testState === 2) {
+            this.TestData.currentScore = !this.$vuetify.rtl
+              ? "Submitted For Grading"
+              : "قيد التصحيح";
+            this.TestData.takeTest = false;
+            this.TestData.finalAnswers = [];
+          }
+          // if Not Submitted Before take test
+          else if (response.data.testState === 3) {
+            this.TestData.currentScore = 0;
+            this.TestData.takeTest = true;
+            this.TestData.finalAnswers = [];
+          }
+
+          this.loadingStatus = false;
+        }
+      }
+      // Send the Assignment request
+      else if (this.CourseComponent.type === "Assignment") {
+        const response = await api.getAssignmentState(
+          JSON.parse(localStorage.getItem("userToken")),
+          this.$route.params.courseId,
+          this.CourseComponent.id
+        );
+        if (response.status === 200) {
+          // if Graded show the Grade
+          if (response.data.assignmentState === 1) {
+            this.TestData.currentScore = response.data.grade;
+            this.TestData.takeTest = false;
+            this.TestData.finalAnswers = [];
+          }
+          // if Submitted Before but Not graded
+          else if (response.data.assignmentState === 2) {
+            this.TestData.currentScore = !this.$vuetify.rtl
+              ? "Submitted For Grading"
+              : "قيد التصحيح";
+            this.TestData.takeTest = false;
+            this.TestData.finalAnswers = [];
+          }
+          // if Not Submitted Before take test
+          else if (response.data.assignmentState === 3) {
+            this.TestData.currentScore = 0;
+            this.TestData.takeTest = true;
+            this.TestData.finalAnswers = [];
+          }
+
+          this.loadingStatus = false;
+        }
+      }
     }
   },
 
@@ -659,6 +777,8 @@ export default {
       currentScore: 0
     };
     this.AssignmentFile = null;
+    // check the status
+    this.getTestAssignStatus();
     // call next
     next();
   },
@@ -702,6 +822,8 @@ export default {
         this.$route.params.componentNumber,
         response.data
       );
+      // check the status
+      this.getTestAssignStatus();
     }
     // Else route to Not found
     else {

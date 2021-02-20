@@ -132,6 +132,7 @@
     "registerNow": "Register Now",
     "goToCourse": "Go to Course",
     "courseOverview": "Course Overview",
+    "forum": "Forum",
     "courseContent": "Course Content",
     "section": "Section",
     "description": "Description",
@@ -185,8 +186,16 @@
     "date": "Date",
     "createdAt": "Creation Date",
     "featured": "Featured",
+    "addfeatured": "Add Featured",
+    "removefeatured": "Remove Featured",
     "votes": "Votes",
-    "answered": "Answered"
+    "answered": "Answered",
+    "addComment": "Add Comment",
+    "addAnAnswer": "Add An Answer",
+    "addAnswer": "Add Answer",
+    "answers": "Answers",
+    "loadMore": "Load More",
+    "addedSuccess": "Added Successfully"
   },
   "createCourseForms": {
     "newAssignment": "New Assignment",

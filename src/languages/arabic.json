@@ -132,6 +132,7 @@
     "registerNow": "اشترك الان",
     "goToCourse": "اذهب للدورة",
     "courseOverview": "نظرة عامة على الدورة",
+    "forum": "المنتدى",
     "courseContent": "محتوى الدورة",
     "section": "جزء",
     "description": "وصف",
@@ -185,8 +186,16 @@
     "date": "التاريخ",
     "createdAt": "تاريخ الانشاء",
     "featured": "مختارة",
+    "addfeatured": "اضف كمختارة",
+    "removefeatured": "ازالة مختارة",
     "votes": "الاصوات",
-    "answered": "مجابة"
+    "answered": "مجابة",
+    "addComment": "اضف تعليق",
+    "addAnAnswer": "اضف اجابة",
+    "addAnswer": "اضف اجابة",
+    "answers": "اجابات",
+    "loadMore": "تحميل المزيد",
+    "addedSuccess": "تمت الاضافة"
   },
   "createCourseForms": {
     "newAssignment": "تسليمة جديدة",

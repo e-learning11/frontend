@@ -53,7 +53,7 @@
               outlined
               :menu-props="{ offsetY: true }"
               v-model="searchData[filter.model]"
-              @change="getCourses"
+              @change="getCourses(0, 20, true)"
             ></v-select>
           </v-col>
         </v-row>
@@ -64,7 +64,7 @@
     <v-container fluid class="courses-section">
       <v-container class="new-container">
         <Loading type="content" v-if="loading"> </Loading>
-        <v-row dense align="center" justify="center">
+        <v-row dense align="center" justify="center" id="infinite-list">
           <v-col cols="12" v-for="i in Courses.length" :key="i" md="4" sm="12">
             <CourseCard
               class="pa-10"
@@ -99,6 +99,7 @@ export default {
         sortOrder: "ASC",
         sortType: "date"
       },
+      getNewCourses: false,
       filters: [
         {
           name: this.$store.state.language.courses.language,
@@ -164,13 +165,27 @@ export default {
     };
   },
   methods: {
-    async getCourses() {
+    async getCourses(offset, limit, newSearch) {
       this.loading = true;
       //Send request to get all the courses for allCourses
-      const response = await api.getAllCourses(0, 20, this.searchData);
+      const response = await api.getAllCourses(offset, limit, this.searchData);
       if (response.status === 200) {
-        this.Courses = response.data;
+        if (newSearch) this.Courses = response.data;
+        else this.Courses.push(...response.data);
+
+        if (response.data.length !== 0) this.getNewCourses = false;
         this.loading = false;
+      }
+    },
+    async loadMore() {
+      if (this.getNewCourses === true || this.Courses.length % 20 != 0) return;
+      const listElm = document.querySelector("#infinite-list");
+      if (listElm == null) return;
+      let rect = listElm.getBoundingClientRect();
+      let elemBottom = rect.bottom;
+      if (elemBottom <= window.innerHeight) {
+        this.getNewCourses = true;
+        await this.getCourses(this.Courses.length, 20, false);
       }
     }
   },
@@ -185,6 +200,7 @@ export default {
     if (response.status === 200) {
       this.Courses = response.data;
       this.loading = false;
+      document.addEventListener("scroll", this.loadMore, true);
     }
   }
 };
