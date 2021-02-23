@@ -25,9 +25,35 @@
                 'col-12': $vuetify.breakpoint.xs
               }"
               class="text-center font-weight-light px-5"
-              ><v-avatar size="70" color="white">
-                <v-img :src="UserImage(Question.User.id)"></v-img>
-              </v-avatar>
+              ><v-badge
+                bottom
+                overlap
+                icon="mdi-teach"
+                dark
+                color="blue darken-1"
+                ><v-avatar size="70" color="white">
+                  <v-img :src="UserImage(Question.User.id)"></v-img>
+                </v-avatar>
+              </v-badge>
+              <div class="text-caption mt-5" v-if="Question.isFeatured">
+                <v-card outlined color="blue px-2 white--text">
+                  {{ $store.state.language.courseForum.featured }}
+                </v-card>
+              </div>
+              <div class="text-caption mt-5">
+                <v-btn
+                  outlined
+                  x-small
+                  color="error"
+                  @click="deleteContent('Q', Question.id)"
+                  v-if="
+                    $store.state.currentUser.type === 'teacher' ||
+                      $store.state.currentUser.type === 'admin' ||
+                      $store.state.currentUser.id === Question.User.id
+                  "
+                  >{{ $store.state.language.courseForum.delete }}</v-btn
+                >
+              </div>
             </v-col>
             <v-col
               :class="{
@@ -74,9 +100,28 @@
                           'col-12': $vuetify.breakpoint.xs
                         }"
                         class="text-center font-weight-light"
-                        ><v-avatar size="30" color="white">
-                          <v-img :src="UserImage(comment.User.id)"></v-img>
-                        </v-avatar>
+                        ><v-badge bottom overlap dot dark color="blue darken-1"
+                          ><v-avatar size="30" color="white">
+                            <v-img :src="UserImage(comment.User.id)"></v-img>
+                          </v-avatar>
+                        </v-badge>
+
+                        <div class="text-caption mt-5">
+                          <v-btn
+                            outlined
+                            x-small
+                            color="error"
+                            v-if="
+                              $store.state.currentUser.type === 'teacher' ||
+                                $store.state.currentUser.type === 'admin' ||
+                                $store.state.currentUser.id === comment.User.id
+                            "
+                            @click="deleteContent('CQ', comment.id)"
+                            >{{
+                              $store.state.language.courseForum.delete
+                            }}</v-btn
+                          >
+                        </div>
                       </v-col>
                       <v-col
                         :class="{
@@ -128,11 +173,13 @@
                         'col-12': $vuetify.breakpoint.xs
                       }"
                       class="text-center font-weight-light"
-                      ><v-avatar size="30" color="white">
-                        <v-img
-                          :src="UserImage($store.state.currentUser.id)"
-                        ></v-img>
-                      </v-avatar>
+                      ><v-badge bottom overlap dot dark color="blue darken-1"
+                        ><v-avatar size="30" color="white">
+                          <v-img
+                            :src="UserImage($store.state.currentUser.id)"
+                          ></v-img>
+                        </v-avatar>
+                      </v-badge>
                       <div class="mt-4 text-caption">
                         {{ language.postedBy }}
                         <span class="font-weight-medium">{{
@@ -190,9 +237,16 @@
                 'col-12': $vuetify.breakpoint.xs
               }"
               class="text-center font-weight-light px-5"
-              ><v-avatar size="70" color="white">
-                <v-img :src="UserImage(answer.User.id)"></v-img>
-              </v-avatar>
+              ><v-badge
+                bottom
+                overlap
+                icon="mdi-teach"
+                dark
+                color="blue darken-1"
+                ><v-avatar size="70" color="white">
+                  <v-img :src="UserImage(answer.User.id)"></v-img>
+                </v-avatar>
+              </v-badge>
               <div
                 class="mt-10"
                 v-if="$store.state.currentUser.id === Question.User.id"
@@ -205,8 +259,23 @@
                   }"
                   rounded
                   outlined
-                  @click="chooseAnswer(answer.id)"
+                  @click="chooseAnswer(answer.id, !answer.isAnswer)"
                   ><v-icon>mdi-check</v-icon></v-btn
+                >
+              </div>
+
+              <div class="text-caption mt-5">
+                <v-btn
+                  outlined
+                  x-small
+                  color="error"
+                  @click="deleteContent('A', answer.id)"
+                  v-if="
+                    $store.state.currentUser.type === 'teacher' ||
+                      $store.state.currentUser.type === 'admin' ||
+                      $store.state.currentUser.id === answer.User.id
+                  "
+                  >{{ $store.state.language.courseForum.delete }}</v-btn
                 >
               </div>
             </v-col>
@@ -219,10 +288,7 @@
             >
               <v-row
                 :class="{
-                  blue: answer.isAnswer,
-                  'lighten-2': answer.isAnswer,
-                  'white--text': answer.isAnswer,
-                  'rounded-xl': answer.isAnswer
+                  'border-small': answer.isAnswer
                 }"
               >
                 <v-col
@@ -333,9 +399,27 @@
                           'col-12': $vuetify.breakpoint.xs
                         }"
                         class="text-center font-weight-light"
-                        ><v-avatar size="30" color="white">
-                          <v-img :src="UserImage(comment.User.id)"></v-img>
-                        </v-avatar>
+                        ><v-badge bottom overlap dot dark color="blue darken-1"
+                          ><v-avatar size="30" color="white">
+                            <v-img :src="UserImage(comment.User.id)"></v-img>
+                          </v-avatar>
+                        </v-badge>
+                        <div class="text-caption mt-5">
+                          <v-btn
+                            outlined
+                            x-small
+                            color="error"
+                            @click="deleteContent('CA', comment.id)"
+                            v-if="
+                              $store.state.currentUser.type === 'teacher' ||
+                                $store.state.currentUser.type === 'admin' ||
+                                $store.state.currentUser.id === comment.User.id
+                            "
+                            >{{
+                              $store.state.language.courseForum.delete
+                            }}</v-btn
+                          >
+                        </div>
                       </v-col>
                       <v-col
                         :class="{
@@ -388,11 +472,13 @@
                         'col-12': $vuetify.breakpoint.xs
                       }"
                       class="text-center font-weight-light"
-                      ><v-avatar size="30" color="white">
-                        <v-img
-                          :src="UserImage($store.state.currentUser.id)"
-                        ></v-img>
-                      </v-avatar>
+                      ><v-badge bottom overlap dot dark color="blue darken-1"
+                        ><v-avatar size="30" color="white">
+                          <v-img
+                            :src="UserImage($store.state.currentUser.id)"
+                          ></v-img>
+                        </v-avatar>
+                      </v-badge>
                       <div class="mt-4 text-caption">
                         {{ language.postedBy }}
                         <span class="font-weight-medium">{{
@@ -474,9 +560,18 @@
                   'col-12': $vuetify.breakpoint.xs
                 }"
                 class="text-center font-weight-light"
-                ><v-avatar size="70" color="white">
-                  <v-img :src="UserImage($store.state.currentUser.id)"></v-img>
-                </v-avatar>
+                ><v-badge
+                  bottom
+                  overlap
+                  icon="mdi-teach"
+                  dark
+                  color="blue darken-1"
+                  ><v-avatar size="70" color="white">
+                    <v-img
+                      :src="UserImage($store.state.currentUser.id)"
+                    ></v-img>
+                  </v-avatar>
+                </v-badge>
                 <div class="mt-4">
                   {{ language.postedBy }}
                   <span class="font-weight-medium">{{
@@ -606,6 +701,7 @@ export default {
       api.getSingleQuestionComments(offset, limit, id).then(response => {
         if (response.data.length > 0)
           this.$set(this.Question, "comments", response.data);
+        else this.$set(this.Question, "comments", null);
       });
       for (let i = start; i < end; i++) {
         api
@@ -618,6 +714,7 @@ export default {
           .then(response => {
             if (response.data.length > 0)
               this.$set(this.answers[i], "comments", response.data);
+            else this.$set(this.answers[i], "comments", null);
           });
       }
     },
@@ -691,14 +788,19 @@ export default {
         this.getComments(this.Question.id, 0, 200, 0, this.answers.length);
       }
     },
-    async chooseAnswer(answerId) {
+    async chooseAnswer(answerId, setCorrect) {
       const response = await api.setAnswerAsCorrect(
         JSON.parse(localStorage.getItem("userToken")),
         this.Question.id,
-        answerId
+        answerId,
+        setCorrect
       );
       if (response.status === 200) {
         this.$router.go();
+      } else {
+        // Display a Notification
+        this.$store.state.newNotification.Message = this.language.alreadyChose;
+        this.$store.state.newNotification.state = true;
       }
     },
     timeSince(date) {
@@ -735,6 +837,54 @@ export default {
       }
       if (this.$vuetify.rtl) return " منذ  " + Math.floor(interval) + " ثوانى";
       return Math.floor(seconds) + " seconds ago";
+    },
+    async deleteContent(type, id) {
+      // Delete Comment on Answer, Answer, Comment on Question and Question
+      const response = await api.deleteFromForum(
+        JSON.parse(localStorage.getItem("userToken")),
+        type,
+        id
+      );
+      if (response.status === 200) {
+        // Display a Success Notification
+        this.$store.state.newNotification.Message = this.language.deleteSuccess;
+        this.$store.state.newNotification.state = true;
+        // if type is Comment reload comments
+        if (type === "CA" || type === "CQ") {
+          this.getComments(this.Question.id, 0, 200, 0, this.answers.length);
+        }
+        // If type is Answer reload Answers
+        else if (type === "A") {
+          // send the get answers request
+          api
+            .getSingleQuestionAnswers(
+              JSON.parse(localStorage.getItem("userToken")),
+              0,
+              20,
+              this.$route.params.question
+            )
+            .then(response => {
+              if (response.status === 200) {
+                this.answers = response.data;
+              }
+              this.getComments(
+                this.Question.id,
+                0,
+                200,
+                0,
+                this.answers.length
+              );
+            });
+        }
+        // If is the Question Reroute to Forum
+        else {
+          this.$router.push(`/course/${this.$route.params.courseId}/forum`);
+          return;
+        }
+      } else {
+        this.$store.state.newNotification.Message = this.language.donotOwn;
+        this.$store.state.newNotification.state = true;
+      }
     }
   },
   async created() {
@@ -771,6 +921,10 @@ export default {
     ]);
 
     if (questionResponse.status === 200 && answerResponse.status === 200) {
+      if (questionResponse.data.length === 0) {
+        this.$router.push(`/course/${this.$route.params.courseId}/forum`);
+        return;
+      }
       // Take the Data from the Server and Show it
       this.Question = questionResponse.data[0];
       this.answers = answerResponse.data;
@@ -790,6 +944,9 @@ export default {
 <style scoped>
 .forum-container {
   background-color: #eceff1;
+}
+.border-small {
+  border-left: 8px solid #64b5f6;
 }
 .divider {
   height: 5px !important;

@@ -5,6 +5,13 @@
         <v-skeleton-loader type="card-avatar,image"></v-skeleton-loader>
       </v-col>
     </v-row>
+    <v-row dense justify="center" class="pa-10" v-else-if="type === 'list'">
+      <v-col cols="10">
+        <v-skeleton-loader
+          type="list-item-avatar-two-line,list-item-avatar-two-line"
+        ></v-skeleton-loader>
+      </v-col>
+    </v-row>
     <v-container v-else class="cover">
       <v-progress-circular
         :size="300"

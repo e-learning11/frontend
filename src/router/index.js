@@ -13,6 +13,10 @@ import SingleQuestionForum from "../views/SingleQuestionForum.vue";
 import CreateAndEditCourse from "../views/CreateAndEditCourse.vue";
 import CourseOverview from "../views/CourseOverview.vue";
 import NotFound from "../views/NotFound.vue";
+import Admin from "../views/Admin.vue";
+import ResetPassword from "../views/ResetPassword.vue";
+import News from "../views/News.vue";
+import NewsStory from "../views/NewsStory.vue";
 
 Vue.use(VueRouter);
 
@@ -46,6 +50,26 @@ const routes = [
     path: "/edit-profile",
     name: "EditProfile",
     component: EditProfile
+  },
+  {
+    path: "/resetpassword",
+    name: "ResetPassword",
+    component: ResetPassword
+  },
+  {
+    path: "/admin",
+    name: "Admin",
+    component: Admin
+  },
+  {
+    path: "/news",
+    name: "News",
+    component: News
+  },
+  {
+    path: "/news/:story",
+    name: "NewsStroy",
+    component: NewsStory
   },
   {
     path: "/course/:courseId/",

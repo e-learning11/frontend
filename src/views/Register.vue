@@ -234,6 +234,14 @@ export default {
       // Send the request
       const registerResponse = await api.RegisterUser({ ...this.Userform });
 
+      // If Teacher Route to Home and view Awaiting Approval
+      if (registerResponse.status === 204) {
+        // Display welcome Message
+        this.$store.state.newNotification.Message = this.language.awaitApprove;
+        this.$store.state.newNotification.state = true;
+        this.$router.push("/");
+      }
+
       // If the request was successful,
       if (registerResponse.status === 200) {
         // Save the token

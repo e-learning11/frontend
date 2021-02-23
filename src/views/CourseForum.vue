@@ -200,10 +200,17 @@
                         'col-12': $vuetify.breakpoint.xs
                       }"
                       class="text-center font-weight-light px-5"
-                      ><v-avatar size="50" color="white">
-                        <v-img :src="UserImage(Question.UserId)"></v-img>
-                      </v-avatar>
-
+                    >
+                      <v-badge
+                        bottom
+                        overlap
+                        icon="mdi-teach"
+                        dark
+                        color="blue darken-1"
+                        ><v-avatar size="50" color="white">
+                          <v-img :src="UserImage(Question.UserId)"></v-img>
+                        </v-avatar>
+                      </v-badge>
                       <div class="text-caption mt-5" v-if="Question.isFeatured">
                         <v-card outlined color="blue px-2 white--text">
                           {{ $store.state.language.courseForum.featured }}

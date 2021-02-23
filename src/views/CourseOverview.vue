@@ -20,7 +20,7 @@
               'text-h3': $vuetify.breakpoint.mdAndUp
             }"
           >
-            Course Overview
+            {{ language.overview }}
           </h1>
         </v-col>
         <v-col
@@ -40,26 +40,26 @@
                 }"
                 class="font-weight-medium mb-5 text-center"
               >
-                Main Information
+                {{ language.maininfo }}
               </h2></v-col
             >
             <v-card flat elevation="0" outlined class="pa-5 rounded-xl mt-0">
               <v-row dense>
                 <v-col cols="12">
                   <h2 class="font-weight-medium text-body-1">
-                    Name:
+                    {{ language.name }}
                     <span class="font-weight-light"> {{ course.name }}</span>
                   </h2>
                 </v-col>
                 <v-col cols="12">
                   <div class="font-weight-medium text-body-1">
-                    Summary:
+                    {{ language.summary }}
                     <span class="font-weight-light"> {{ course.summary }}</span>
                   </div>
                 </v-col>
                 <v-col cols="12">
                   <h2 class="font-weight-medium text-body-1">
-                    Language:
+                    {{ language.summary }}
                     <span class="font-weight-light">
                       {{ course.language }}</span
                     >
@@ -67,7 +67,7 @@
                 </v-col>
                 <v-col cols="12">
                   <h2 class="font-weight-medium text-body-1">
-                    Upload Date:
+                    {{ language.date }}
                     <span class="font-weight-light">
                       {{ course.date.split("T")[0] }}</span
                     >
@@ -96,7 +96,7 @@
                 }"
                 class="font-weight-medium mb-5 text-center"
               >
-                Course Content
+                {{ language.courseContent }}
               </h2>
             </v-col>
             <v-col cols="12">
@@ -117,9 +117,39 @@
             color="blue darken-3"
             to="edit"
           >
-            Edit Course
+            {{ language.editCourse }}
           </v-btn>
         </v-col>
+      </v-row>
+      <v-divider class="mt-5 mb-5"></v-divider>
+      <!-- Add A Teacher to Course -->
+      <v-row justify="center" class="mt-3">
+        <v-col
+          cols="12"
+          :class="{
+            'text-h5': $vuetify.breakpoint.smAndUp,
+            'text-h6': $vuetify.breakpoint.xs
+          }"
+          class="font-weight-medium mb-5 text-center"
+          >{{ language.addATeacher }}</v-col
+        >
+        <v-col cols="12" class="text-center"
+          ><v-responsive max-width="400" class="mx-auto mb-4">
+            <v-combobox
+              :label="language.selectTeacher"
+            ></v-combobox> </v-responsive
+        ></v-col>
+        <v-col cols="12" class="text-center"
+          ><v-btn
+            x-large
+            outlined
+            class="text-h6"
+            color="blue darken-3"
+            to="edit"
+          >
+            {{ language.addTeacher }}
+          </v-btn></v-col
+        >
       </v-row>
       <v-divider
         class="mt-5 mb-5"
@@ -141,7 +171,7 @@
             }"
             class="font-weight-medium mb-5 text-center"
           >
-            Review Tests
+            {{ language.reviewTests }}
           </h2>
         </v-col>
         <v-col
@@ -156,17 +186,21 @@
               v-model="IndexCurrentTest"
               :disabled="searchLoading"
               :items="SimpleCourseTests"
-              label="Select a Test or Assignment"
-              @change="getSubmissions(0)"
+              :label="language.selectTest"
+              @change="
+                getSubmissions(0);
+                currentSubmission = null;
+              "
             ></v-combobox>
           </v-responsive>
 
           <!--Students Tests Submitted-->
           <v-row justify="center" v-if="submissionsArray.length === 0">
-            <v-col cols="auto">No Submissions yet</v-col>
+            <v-col cols="auto">{{ language.noSubmissions }}</v-col>
           </v-row>
           <v-card elevation="16" max-width="400" class="mx-auto" v-else>
-            <v-list height="300" item-height="64" class="pa-0 test-list">
+            <Loading type="list" v-if="searchLoading"></Loading>
+            <v-list height="300" item-height="64" class="pa-0 test-list" v-else>
               <div v-for="(item, i) in submissionsArray" :key="i">
                 <v-list-item>
                   <v-list-item-action>
@@ -178,10 +212,10 @@
 
                   <v-list-item-content>
                     <v-list-item-title class="text-body-1 font-weight-medium">
-                      User ID : {{ item.UserId }}
+                      {{ language.userid }} {{ item.UserId }}
                     </v-list-item-title>
                     <v-list-item-title class="text-body-1 font-weight-medium">
-                      Question ID : {{ item.QuestionId }}
+                      {{ language.questionid }} {{ item.QuestionId }}
                     </v-list-item-title>
                   </v-list-item-content>
 
@@ -195,6 +229,18 @@
                 </v-list-item>
                 <v-divider></v-divider>
               </div>
+              <v-row justify="center" v-if="newSubmissionsAvailable"
+                ><v-col cols="12"
+                  ><v-btn
+                    width="100%"
+                    color="grey"
+                    tile
+                    icon
+                    @click="getSubmissions()"
+                    ><v-icon>mdi-chevron-double-down</v-icon></v-btn
+                  ></v-col
+                ></v-row
+              >
             </v-list>
           </v-card>
         </v-col>
@@ -212,7 +258,7 @@
                 class="text-center"
                 v-if="currentSubmission === null"
               >
-                Please Select a Test to View
+                {{ language.selectView }}
               </v-subheader>
               <template v-else>
                 <v-form ref="GradeForm" v-model="validSubmitGrade">
@@ -238,19 +284,22 @@
                       v-if="IndexCurrentTest.type === 'Test'"
                     >
                       <div class="text-body-1 font-weight-light mb-3">
-                        <span class="font-weight-medium">Question:</span>
+                        <span class="font-weight-medium">{{
+                          language.question
+                        }}</span>
                         {{
                           getQuestionWithID(currentSubmission.Test.QuestionId)
                         }}
                       </div>
                       <div class="text-body-2 font-weight-light mt-10">
-                        <span class="font-weight-medium">Answer: </span
+                        <span class="font-weight-medium"
+                          >{{ language.answer }} </span
                         >{{ currentSubmission.Test.text }}
                       </div>
                     </v-col>
                     <v-col cols="12" class="px-5 mt-6 mb-6 text-center" v-else>
-                      <v-btn outlined color="blue">
-                        Download File
+                      <v-btn outlined color="blue" @click="downloadFile">
+                        {{ language.download }}
                       </v-btn>
                     </v-col>
                     <v-col
@@ -258,7 +307,7 @@
                       cols="12"
                       class="text-center text-overline"
                     >
-                      Test Already Graded With
+                      {{ language.alreadyGraded }}
                       {{ currentSubmission.Test.grade }}
                     </v-col>
                     <v-col cols="4">
@@ -266,7 +315,7 @@
                         :rules="[rules.Required]"
                         v-model="NewGrades.Grade"
                         type="Number"
-                        label="Grade"
+                        :label="language.grade"
                         class="text-center"
                       ></v-text-field>
                     </v-col>
@@ -289,7 +338,7 @@
                         @click="GradeTest"
                         :disabled="!validSubmitGrade"
                       >
-                        Grade Test
+                        {{ language.gradeTest }}
                       </v-btn>
                     </v-col>
                   </v-row>
@@ -320,6 +369,7 @@ export default {
     IndexCurrentTest: null,
     currentSubmission: null,
     submissionsArray: [],
+    newSubmissionsAvailable: true,
     searchLoading: false,
     NewGrades: {},
     validSubmitGrade: false,
@@ -329,6 +379,11 @@ export default {
         Grade <= MaxGrade || "Grade Must Be Smaller or Equal To Max Grade"
     }
   }),
+  computed: {
+    language() {
+      return this.$store.state.language.courseOverview;
+    }
+  },
   methods: {
     ChangeTest(Test) {
       // Changes the Current Test that is viewed
@@ -395,7 +450,15 @@ export default {
       );
 
       if (response.status === 200) {
-        this.submissionsArray = response.data;
+        if (offset == null) {
+          this.submissionsArray.push(...response.data);
+        } else {
+          this.submissionsArray = response.data;
+          this.newSubmissionsAvailable = false;
+        }
+        if (response.data.length < 20) {
+          this.newSubmissionsAvailable = false;
+        }
       }
       this.searchLoading = false;
     },
@@ -408,6 +471,18 @@ export default {
         }
       });
       return QuestionName;
+    },
+    downloadFile() {
+      let blob = new Blob(
+        [new Uint8Array(this.currentSubmission.Test.file.data)],
+        {
+          type: this.currentSubmission.Test.contentType
+        }
+      );
+      let link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = "download";
+      link.click();
     }
   },
   async created() {
@@ -426,7 +501,7 @@ export default {
       if (this.SimpleCourseTests.length > 0) {
         this.IndexCurrentTest = this.SimpleCourseTests[0];
         // get the Submissions
-        this.getSubmissions();
+        this.getSubmissions(0);
       }
     }
     // Else route to Not found

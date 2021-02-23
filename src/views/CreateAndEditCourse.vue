@@ -138,6 +138,8 @@ export default {
         if (response.status === 200) {
           // Set the value with the one gotten from the Server
           this.$store.state.CourseInfo = response.data;
+          // Process the Components from sections
+          this.ProcessSections(response.data);
           // if the course Does not belong to the User
           if (
             response.data.instructor.id !== this.$store.state.currentUser.id
@@ -152,6 +154,31 @@ export default {
           this.$router.push("/404");
         }
       }
+    },
+    ProcessSections(data) {
+      // reset components in Store
+      this.$store.state.CourseInfo.components = [];
+      this.$store.state.CourseInfo.sections = [];
+      // Processes the Components to be under the correct Section
+      data.CourseSections.forEach(section => {
+        // push the section
+        this.$store.state.CourseInfo.sections.push({ ...section });
+        for (let i = 0; i < section.CourseSectionComponents.length; i++) {
+          //Add Component To Components
+          this.$store.state.CourseInfo.components.push({
+            ...section.CourseSectionComponents[i]
+          });
+        }
+      });
+      // Correct the Age and Gender
+      this.$store.state.CourseInfo.age = [data.ageMin, data.ageMax];
+      this.$store.state.CourseInfo.courseId = this.$store.state.CourseInfo.id;
+      this.$store.state.CourseInfo.prerequisites = this.$store.state.CourseInfo.prequisites;
+      this.$store.state.CourseInfo.gender = String(
+        this.$store.state.CourseInfo.gender
+      );
+      // Delete CourseSections
+      delete this.$store.state.CourseInfo.CourseSections;
     }
   },
   data() {

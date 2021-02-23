@@ -132,6 +132,66 @@ export default {
     return response;
   },
 
+  async EditCourse(DataObject, UserToken) {
+    // Create the form Data
+    let data = new FormData();
+
+    // Process the DataObject
+    // Add date
+    DataObject.date = Date.now();
+
+    // Process the files to be added to the Request
+    //let videoFlag, assignFlag = true;
+    DataObject.sections.forEach(section => {
+      for (let i = 0; i < section.components.length; i++) {
+        if (
+          section.components[i].type === "Video" &&
+          section.components[i].File != null
+        ) {
+          // append the file
+          //videoFlag = false;
+          data.append("vidoeFile", section.components[i].File);
+          section.components[i].File = true;
+        } else if (
+          section.components[i].type === "Assignment" &&
+          section.components[i].File != null
+        ) {
+          // append the file
+          //assignFlag = false;
+          data.append("assignmentFile", section.components[i].File);
+          section.components[i].File = true;
+        }
+      }
+    });
+
+    // If no files found
+    //if (videoFlag)
+    data.append("vidoeFile", null);
+    //if (assignFlag) data.append("assignmentFile", null);
+
+    //Remove components
+    delete DataObject.components;
+
+    //copy Image from Object and delete it
+    //const tempImage = DataObject.photo;
+    delete DataObject.photo;
+
+    // Append the Json and Image
+    data.append("json", `${JSON.stringify(DataObject)}`);
+    //data.append("image", tempImage);
+
+    const config = {
+      headers: {
+        "x-auth-token": `${UserToken}`
+      }
+    };
+    const response = await axios
+      .put(`${Base_URL}/api/course/full-edit`, data, config)
+      .then(res => res)
+      .catch(err => err.response);
+    return response;
+  },
+
   async getRandomCourses(count) {
     const request = {
       method: "GET",
@@ -521,23 +581,43 @@ export default {
     return response;
   },
 
-  async setAnswerAsCorrect(UserToken, questionId, answerId) {
-    const data = {
-      questionId,
-      replyId: answerId
-    };
-    // Send the request
-    const config = {
-      headers: {
-        "x-auth-token": `${UserToken}`
-      }
-    };
-    const response = await axios
-      .post(`${Base_URL}/api/forum/question/reply/set-answer`, data, config)
-      .then(res => res)
-      .catch(err => err.response);
+  async setAnswerAsCorrect(UserToken, questionId, answerId, setCorrect) {
+    if (setCorrect) {
+      const data = {
+        questionId,
+        replyId: answerId
+      };
+      // Send the request
+      const config = {
+        headers: {
+          "x-auth-token": `${UserToken}`
+        }
+      };
+      const response = await axios
+        .post(`${Base_URL}/api/forum/question/reply/set-answer`, data, config)
+        .then(res => res)
+        .catch(err => err.response);
 
-    return response;
+      return response;
+    } else {
+      const data = {
+        questionId,
+        replyId: answerId
+      };
+      // Send the request
+      const config = {
+        headers: {
+          "x-auth-token": `${UserToken}`
+        },
+        data
+      };
+      const response = await axios
+        .delete(`${Base_URL}/api/forum/question/reply/unset-answer`, config)
+        .then(res => res)
+        .catch(err => err.response);
+
+      return response;
+    }
   },
 
   async voteInForum(UserToken, type, id, vote) {
@@ -773,5 +853,55 @@ export default {
       .catch(err => err.response);
 
     return response;
+  },
+
+  async deleteFromForum(UserToken, type, id) {
+    const config = {
+      headers: {
+        "x-auth-token": `${UserToken}`
+      }
+    };
+    // Question
+    if (type === "Q") {
+      const response = await axios
+        .delete(`${Base_URL}/api/forum/question?questionId=${id}`, config)
+        .then(res => res)
+        .catch(err => err.response);
+
+      return response;
+    }
+    // Answer
+    else if (type === "A") {
+      const response = await axios
+        .delete(`${Base_URL}/api/forum/question/reply?replyId=${id}`, config)
+        .then(res => res)
+        .catch(err => err.response);
+
+      return response;
+    }
+    // Comment on Question
+    else if (type === "CQ") {
+      const response = await axios
+        .delete(
+          `${Base_URL}/api/forum/question/comment?commentId=${id}`,
+          config
+        )
+        .then(res => res)
+        .catch(err => err.response);
+
+      return response;
+    }
+    // Comment on Answer
+    else {
+      const response = await axios
+        .delete(
+          `${Base_URL}/api/forum/question/reply/comment?commentId=${id}`,
+          config
+        )
+        .then(res => res)
+        .catch(err => err.response);
+
+      return response;
+    }
   }
 };

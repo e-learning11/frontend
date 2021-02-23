@@ -35,7 +35,10 @@
     "student": "Student",
     "wentWrong": "Something went wrong. Please Try again",
     "accountSuccess": "Account Created Successfuly",
-    "accountLogin": "Account Created, Please Login"
+    "accountLogin": "Account Created, Please Login",
+    "awaitApprove": "ِAccount Submitted, Please Wait For Admin Approval",
+    "token": "Token",
+    "resetPassword": "Reset Password"
   },
   "courses": {
     "courses": "Courses",
@@ -195,7 +198,11 @@
     "addAnswer": "Add Answer",
     "answers": "Answers",
     "loadMore": "Load More",
-    "addedSuccess": "Added Successfully"
+    "addedSuccess": "Added Successfully",
+    "deleteSuccess": "Deleted Successfully",
+    "donotOwn": "You can not delete this Item",
+    "alreadyChose": "Unselect Correct Answer First",
+    "delete": "Delete"
   },
   "createCourseForms": {
     "newAssignment": "New Assignment",
@@ -260,6 +267,7 @@
     "saveProgress": "Save Progress",
     "finishAndSubmit": "Finish And Submit Course",
     "addedSuccess": "New Course Added Successfuly",
+    "editedSuccess": "Course Edit Successful",
     "progressSaved": "Progress Saved",
     "incorrectSections": "Sections Do not Cover All Created Components Correctly",
     "private": "Private",
@@ -287,5 +295,30 @@
     "youtube": "Youtube",
     "twitter": "Twitter",
     "linkedin": "Linkedin"
+  },
+  "courseOverview": {
+    "overview": "Course Overview",
+    "maininfo": "Main Information",
+    "name": "Name:",
+    "summary": "Summary:",
+    "language": "Language:",
+    "date": "Upload Date:",
+    "courseContent": "Course Content",
+    "editCourse": "Edit Course",
+    "reviewTests": "Review Tests",
+    "selectTest": "Select a Test or Assignment",
+    "noSubmissions": "No Submissions yet",
+    "userid": "User ID :",
+    "questionid": "Question ID",
+    "selectView": "Please Select a Test or Assignment to View",
+    "question": "Question:",
+    "answer": "Answer:",
+    "download": "Download File",
+    "alreadyGraded": "Test Already Graded With",
+    "grade": "Grade",
+    "gradeTest": "Grade Test",
+    "addATeacher": "Add a Teacher to the Course",
+    "addTeacher": "Add Teacher",
+    "selectTeacher": "Select a Teacher"
   }
 }

@@ -35,7 +35,9 @@
     "student": "طالب",
     "wentWrong": "حدث خطأ, يرجى اعادة المحاولة",
     "accountSuccess": "تم انشاء الحساب بنجاح",
-    "accountLogin": "تم انشاء الحساب, الرجاء الدخول"
+    "accountLogin": "تم انشاء الحساب, الرجاء الدخول",
+    "token": "المفتاح",
+    "resetPassword": "تغيير كلمة المرور"
   },
   "courses": {
     "courses": "الدورات",
@@ -195,7 +197,11 @@
     "addAnswer": "اضف اجابة",
     "answers": "اجابات",
     "loadMore": "تحميل المزيد",
-    "addedSuccess": "تمت الاضافة"
+    "addedSuccess": "تمت الاضافة",
+    "deleteSuccess": "تمت الازالة",
+    "donotOwn": "لا يمكنك الازالة",
+    "alreadyChose": "ازل اختيارك للاجابة اولا",
+    "delete": "ازالة"
   },
   "createCourseForms": {
     "newAssignment": "تسليمة جديدة",
@@ -260,6 +266,7 @@
     "saveProgress": "حفظ التقدم",
     "finishAndSubmit": "الانتهاء و تسجيل الدورة",
     "addedSuccess": "تم انشاء الدورة بنجاح",
+    "editedSuccess": "تم التعديل بنجاح",
     "progressSaved": "تم الحفظ",
     "incorrectSections": "الاجزاء لا تغطى جميع العناصر بشكل صحيح",
     "private": "مخفى",
@@ -267,7 +274,8 @@
     "no": "لا",
     "privateURL": "اذا تم اختيار خاص فيمكن الدخول على الدورة باستخدام الرابط فقط, لن تظهر الدورة على الموقع.",
     "URLhint": "الرابط هو الجزء الاخير, مثال website/course/{الرابط}",
-    "uploadImage": "ارفع صورة"
+    "uploadImage": "ارفع صورة",
+    "awaitApprove": "تم تكوين الحساب, الرجاء انتظار الموافقة عليه" 
   },
   "footer": {
     "aboutUs": "معلومات عنا",
@@ -287,5 +295,30 @@
     "youtube": "يوتيوب",
     "twitter": "تويتر",
     "linkedin": "لينكد ان"
+  },
+  "courseOverview": {
+    "overview": "نظرة عامة على الدورة",
+    "maininfo": "المعلومات الاساسية",
+    "name": "الاسم:",
+    "summary": "الملخص:",
+    "language": "اللغة:",
+    "date": "تاريخ الرفع:",
+    "courseContent": "محتوى الدورة",
+    "editCourse": "تعديل الدورة",
+    "reviewTests": "مراجعة الاختبارات",
+    "selectTest": "الرجاء اختيار اختبار او تسليمة",
+    "noSubmissions": "لا يوجد تسليمات بعد",
+    "userid": "كود المستخدم:",
+    "questionid": "كود السؤال",
+    "selectView": "الرجاء اختيار اختبار او تسليمة للعرض",
+    "question": "السؤال:",
+    "answer": "الاجابة:",
+    "download": "تحميل الملف",
+    "alreadyGraded": "تم تصحيح الاختبار من قبل ب",
+    "grade": "تصحيح",
+    "gradeTest": "تصحيح اختبار",
+    "addATeacher": "اضف معلم للدورة",
+    "addTeacher": "اضف معلم",
+    "selectTeacher": "اختر معلم"
   }
 }

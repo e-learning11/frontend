@@ -196,7 +196,7 @@
                     outlined
                     color="blue darken-2"
                     class="text-h6 white--text mt-5 text-none"
-                    :href="fileSource()"
+                    @click="downloadFile"
                     target="_blank"
                   >
                     {{ language.downloadAssign }}
@@ -412,9 +412,8 @@
           tile
           text
           class="text-none px-10 text-body-1 font-weight-black"
-          :href="fileSource()"
-          target="_blank"
-          v-if="CourseComponent.hasFile"
+          @click="downloadFile"
+          v-if="CourseComponent.hasFile && CourseComponent.type === 'Video'"
         >
           {{ language.file }}
         </v-btn>
@@ -759,6 +758,21 @@ export default {
           this.loadingStatus = false;
         }
       }
+    },
+    async downloadFile() {
+      fetch(this.fileSource())
+        .then(resp => resp.blob())
+        .then(blob => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.style.display = "none";
+          a.href = url;
+          a.download = "download";
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+        })
+        .catch();
     }
   },
 

@@ -428,27 +428,48 @@ export default {
       //process the components to be under the correct section
       this.ProcessSections();
       //Sends the Request and remove components property
-      //@TODO Send Two different Requests one for edit and other for Create
-      const response = await api.CreateCourse(
-        {
-          ...this.$store.state.CourseInfo,
-          language: localStorage.getItem("lang")
-        },
-        JSON.parse(localStorage.getItem("userToken"))
-      );
-      if (response.status === 200) {
-        // Reset the data and Route to Home
-        this.ResetAll();
-        this.$router.push("/");
-        // Display a Success Notification
-        this.$store.state.newNotification.Message = this.language.addedSuccess;
-        this.$store.state.newNotification.state = true;
+      //Send Two different Requests one for edit and other for Create
+      if (this.$route.name === "CreateCourse") {
+        const response = await api.CreateCourse(
+          {
+            ...this.$store.state.CourseInfo,
+            language: localStorage.getItem("lang")
+          },
+          JSON.parse(localStorage.getItem("userToken"))
+        );
+        if (response.status === 200) {
+          // Reset the data and Route to Home
+          this.ResetAll();
+          this.$router.push("/");
+          // Display a Success Notification
+          this.$store.state.newNotification.Message = this.language.addedSuccess;
+          this.$store.state.newNotification.state = true;
+        } else {
+          this.$store.state.newNotification.Message = response.data;
+          this.$store.state.newNotification.state = true;
+        }
       } else {
-        this.$store.state.newNotification.Message = response.data;
-        this.$store.state.newNotification.state = true;
+        const response = await api.EditCourse(
+          {
+            ...this.$store.state.CourseInfo,
+            language: localStorage.getItem("lang")
+          },
+          JSON.parse(localStorage.getItem("userToken"))
+        );
+        if (response.status === 200) {
+          // Reset the data and Route to Home
+          this.ResetAll();
+          this.$router.push("/");
+          // Display a Success Notification
+          this.$store.state.newNotification.Message = this.language.addedSuccess;
+          this.$store.state.newNotification.state = true;
+        } else {
+          this.$store.state.newNotification.Message = response.data;
+          this.$store.state.newNotification.state = true;
+        }
       }
       // Re Enable button
-      this.sendRequest = true;
+      this.sendRequest = false;
     },
     SaveProgress() {
       localStorage.setItem(
