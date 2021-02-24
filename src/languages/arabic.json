@@ -6,7 +6,11 @@
     "login": "دخول",
     "logout": "خروج",
     "createCourse": "انشاء دورة",
-    "profile": "الملف الشخصى"
+    "profile": "الملف الشخصى",
+    "noNews": "لا يوجد اخبار حاليا",
+    "news": "اخبار",
+    "delete": "ازالة",
+    "backNews": "العودة للاخبار"
   },
   "login": {
     "login": "دخول",
@@ -36,8 +40,12 @@
     "wentWrong": "حدث خطأ, يرجى اعادة المحاولة",
     "accountSuccess": "تم انشاء الحساب بنجاح",
     "accountLogin": "تم انشاء الحساب, الرجاء الدخول",
-    "token": "المفتاح",
-    "resetPassword": "تغيير كلمة المرور"
+    "token": "الرمز",
+    "resetPassword": "تغيير كلمة المرور",
+    "forgetPassword" : "نسيت كلمة المرور",
+    "sendEmail": "ارسال البريد",
+    "passwordChange": "تم تغيير كلمة المرور",
+    "wrongToken": "الرمز الذى ادخلته غير صحيح"
   },
   "courses": {
     "courses": "الدورات",
@@ -319,6 +327,8 @@
     "gradeTest": "تصحيح اختبار",
     "addATeacher": "اضف معلم للدورة",
     "addTeacher": "اضف معلم",
-    "selectTeacher": "اختر معلم"
+    "selectTeacher": "اختر معلم",
+    "deleteCourse": "ازالة الدورة",
+    "deleteRequest": "تم ارسال طلب الازالة"
   }
 }

@@ -15,6 +15,7 @@ import CourseOverview from "../views/CourseOverview.vue";
 import NotFound from "../views/NotFound.vue";
 import Admin from "../views/Admin.vue";
 import ResetPassword from "../views/ResetPassword.vue";
+import ForgetPassword from "../views/ForgetPassword.vue";
 import News from "../views/News.vue";
 import NewsStory from "../views/NewsStory.vue";
 
@@ -55,6 +56,11 @@ const routes = [
     path: "/resetpassword",
     name: "ResetPassword",
     component: ResetPassword
+  },
+  {
+    path: "/forget",
+    name: "ForgetPassword",
+    component: ForgetPassword
   },
   {
     path: "/admin",

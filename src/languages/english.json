@@ -6,7 +6,11 @@
     "login": "Login",
     "logout": "Log Out",
     "createCourse": "Create Course",
-    "profile": "Profile"
+    "profile": "Profile",
+    "noNews": "There is Currently No News",
+    "news": "News",
+    "delete": "Delete",
+    "backNews": "Back to News"
   },
   "login": {
     "login": "Login",
@@ -36,9 +40,13 @@
     "wentWrong": "Something went wrong. Please Try again",
     "accountSuccess": "Account Created Successfuly",
     "accountLogin": "Account Created, Please Login",
-    "awaitApprove": "ِAccount Submitted, Please Wait For Admin Approval",
+    "awaitApprove": "Account Submitted, Please Wait For Admin Approval",
     "token": "Token",
-    "resetPassword": "Reset Password"
+    "resetPassword": "Reset Password",
+    "forgetPassword": "Forgot Password",
+    "sendEmail": "Send Email",
+    "passwordChange": "Password was Changed",
+    "wrongToken": "You Have Entered A Wrong Token"
   },
   "courses": {
     "courses": "Courses",
@@ -319,6 +327,8 @@
     "gradeTest": "Grade Test",
     "addATeacher": "Add a Teacher to the Course",
     "addTeacher": "Add Teacher",
-    "selectTeacher": "Select a Teacher"
+    "selectTeacher": "Select a Teacher",
+    "deleteCourse": "Delete Course",
+    "deleteRequest": "Delete Request Sent"
   }
 }

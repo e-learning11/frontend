@@ -3,10 +3,19 @@
     <Loading v-if="waitRequest"></Loading>
     <!--Story-->
     <v-container v-else class="new-container">
-      <v-row class="mb-10 mt-5" justify="center">
+      <v-row class="mb-5 mt-5" justify="center">
         <v-col cols="12">
-          <v-card color="white" elevation="2" class="pa-10">
-            <v-row justify="center" align="center" class="mb-5">
+          <v-card color="white" elevation="2">
+            <v-img height="300" :src="NewsImage"></v-img>
+            <v-row
+              justify="center"
+              align="center"
+              class="mb-5"
+              :class="{
+                'pa-10': $vuetify.breakpoint.mdAndUp,
+                'pa-5': $vuetify.breakpoint.smAndDown
+              }"
+            >
               <v-col cols="12" class="text-h3">
                 {{ story.title }}
               </v-col>
@@ -17,7 +26,9 @@
           </v-card>
         </v-col>
         <v-col cols="auto">
-          <v-btn outlined color="blue" to="/news" exact>Back to News</v-btn>
+          <v-btn outlined color="blue" to="/news" exact>
+            {{ language.backNews }}</v-btn
+          >
         </v-col>
       </v-row>
     </v-container>
@@ -34,20 +45,26 @@ import api from "api-client";
 export default {
   data() {
     return {
-      waitRequest: false,
-      story: {
-        title: "Title 1",
-        text: "text text text"
-      }
+      waitRequest: true,
+      story: {}
     };
   },
   components: { Footer, Loading },
   computed: {
-    UserImage() {
-      return api.getImageSource(this.$store.state.currentUser.id, "user");
+    NewsImage() {
+      return api.getImageSource(this.story.id, "news");
     },
     language() {
-      return this.$store.state.language.profile;
+      return this.$store.state.language.navbar;
+    }
+  },
+  async created() {
+    this.waitRequest = true;
+    // Send request
+    const response = await api.getNews(0, 1, this.$route.params.story);
+    if (response.status === 200) {
+      this.story = response.data[0];
+      this.waitRequest = false;
     }
   }
 };

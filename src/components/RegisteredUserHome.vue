@@ -92,7 +92,10 @@ export default {
   async created() {
     let response;
     // Get User Courses according to type
-    if (this.$store.state.currentUser.type === "teacher") {
+    if (
+      this.$store.state.currentUser.type === "teacher" ||
+      this.$store.state.currentUser.type === "admin"
+    ) {
       response = await api.getCreatedCourses(
         JSON.parse(localStorage.getItem("userToken")),
         {

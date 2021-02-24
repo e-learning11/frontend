@@ -1,5 +1,5 @@
 <template>
-  <div class="footer-container">
+  <v-footer color="#000">
     <v-container fill-height class="white--text">
       <v-row no-gutters align="start" justify="center">
         <v-col md="3" sm="4" xs="12" class="list-center mt-5">
@@ -144,7 +144,7 @@
         </v-col>
       </v-row>
     </v-container>
-  </div>
+  </v-footer>
 </template>
 
 <script>
@@ -160,7 +160,6 @@ export default {
 <style scoped>
 .footer-container {
   background-color: #000000;
-  padding: 4rem 0 2rem 0;
 }
 .list-center {
   display: flex;

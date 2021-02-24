@@ -240,6 +240,7 @@ export default {
         this.$store.state.newNotification.Message = this.language.awaitApprove;
         this.$store.state.newNotification.state = true;
         this.$router.push("/");
+        return;
       }
 
       // If the request was successful,
@@ -286,6 +287,9 @@ export default {
   beforeRouteEnter(to, from, next) {
     if (localStorage.getItem("currentUser") == null) next();
     else next("/");
+  },
+  created() {
+    console.log(this.language);
   }
 };
 </script>

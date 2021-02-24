@@ -119,6 +119,7 @@
       color="black"
       height="80"
       clipped-right
+      clipped-left
       :class="{
         'px-0': $vuetify.breakpoint.smAndDown
       }"

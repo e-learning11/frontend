@@ -347,6 +347,33 @@
             </v-col>
           </v-card>
         </v-col>
+
+        <!-- Delete Course -->
+        <v-row justify="center" class="mt-3">
+          <v-col cols="12">
+            <v-divider class="mt-5 mb-5"></v-divider>
+          </v-col>
+          <v-col
+            cols="12"
+            :class="{
+              'text-h3': $vuetify.breakpoint.smAndUp,
+              'text-h4': $vuetify.breakpoint.xs
+            }"
+            class="font-weight-light mb-5 text-center"
+            >{{ language.deleteCourse }}</v-col
+          >
+          <v-col cols="12" class="text-center"
+            ><v-btn
+              large
+              outlined
+              class="text-body-1"
+              color="error"
+              @click="deleteCourse"
+            >
+              {{ language.deleteCourse }}
+            </v-btn></v-col
+          >
+        </v-row>
       </v-row>
     </v-container>
 
@@ -483,6 +510,27 @@ export default {
       link.href = window.URL.createObjectURL(blob);
       link.download = "download";
       link.click();
+    },
+    async deleteCourse() {
+      if (this.$store.state.currentUser.type === "admin") {
+        const response = await api.approveRequests(
+          JSON.parse(localStorage.getItem("userToken")),
+          "Delete Courses",
+          this.course.id
+        );
+        if (response.status === 200) {
+          this.$router.push("/");
+        }
+      } else if (this.$store.state.currentUser.type === "teacher") {
+        const response = await api.deleteCourseRequest(
+          JSON.parse(localStorage.getItem("userToken")),
+          this.course.id
+        );
+        if (response.status === 200) {
+          this.$store.state.newNotification.Message = this.language.deleteRequest;
+          this.$store.state.newNotification.state = true;
+        }
+      }
     }
   },
   async created() {

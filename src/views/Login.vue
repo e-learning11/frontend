@@ -66,7 +66,7 @@
                   'text-left': $vuetify.breakpoint.mdAndUp
                 }"
               >
-                <router-link to="#" class="link-style">{{
+                <router-link to="/forget" class="link-style">{{
                   language.forget
                 }}</router-link>
               </v-col>

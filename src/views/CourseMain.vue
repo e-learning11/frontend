@@ -158,7 +158,7 @@
             {{ language.courseOverview }}
           </v-btn>
         </v-col>
-        ><v-col cols="auto" class="text-center mt-10 mb-0">
+        <v-col cols="auto" class="text-center mt-10 mb-0">
           <v-btn
             x-large
             outlined

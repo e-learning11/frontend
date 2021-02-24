@@ -66,8 +66,9 @@
               <v-btn
                 x-large
                 color="blue darken-2"
-                class="text-h5 white--text mt-5"
+                class="text-h6 white--text mt-5"
                 @click="validate"
+                :disabled="sentRequest"
               >
                 {{ language.resetPassword }}
               </v-btn>
@@ -91,6 +92,7 @@ export default {
       showConfirmPassword: false,
       confirmpassword: "",
       token: "",
+      sentRequest: false,
       rules: {
         required: value => !!value || "Required.",
         Matchingchar: (Confirmpassword, password) =>
@@ -111,38 +113,23 @@ export default {
     async validate() {
       // Validate the form
       if (!this.$refs.Resetform.validate()) return;
-
+      this.sentRequest = true;
       // Send the request
-      const loginResponse = await api.loginUser({
+      const response = await api.resetPassword({
         token: this.token,
         password: this.password
       });
 
       // If the request was successful,
-      if (loginResponse.status === 200) {
-        // Save the token
-        const token = loginResponse.data;
-        localStorage.setItem("userToken", JSON.stringify(token));
-
-        // Send the Request to get the User profile Info
-        const profileResponse = await api.getUserProfile(
-          JSON.parse(localStorage.getItem("userToken"))
-        );
-
-        // If the request was successful,
-        // add the currentUser to localStorage
-        // and route to home
-        // 200 OK
-        if (profileResponse.status === 200) {
-          // if Correct
-        } else {
-          this.$store.state.newNotification.Message = this.language.wentWrong;
-          this.$store.state.newNotification.state = true;
-        }
+      if (response.status === 200) {
+        this.$store.state.newNotification.Message = this.language.passwordChange;
+        this.$store.state.newNotification.state = true;
+        this.$router.push("/login");
       } else {
-        this.$store.state.newNotification.Message = this.language.wrong;
+        this.$store.state.newNotification.Message = this.language.wrongToken;
         this.$store.state.newNotification.state = true;
       }
+      this.sentRequest = false;
     }
   }
 };

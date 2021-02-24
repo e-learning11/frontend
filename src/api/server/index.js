@@ -903,5 +903,211 @@ export default {
 
       return response;
     }
+  },
+  async getNews(offset, limit, id) {
+    if (id == null) {
+      const response = await axios
+        .get(
+          `${Base_URL}/api/news/posts?limit=${limit}&offset=${offset}
+      `
+        )
+        .then(res => res)
+        .catch(err => err.response);
+      return response;
+    } else {
+      const response = await axios
+        .get(
+          `${Base_URL}/api/news/posts?limit=${limit}&offset=${offset}&postId=${id}`
+        )
+        .then(res => res)
+        .catch(err => err.response);
+      return response;
+    }
+  },
+
+  async deleteCourseRequest(UserToken, id) {
+    const config = {
+      headers: {
+        "x-auth-token": `${UserToken}`
+      }
+    };
+    const response = await axios
+      .delete(`${Base_URL}/api/course?courseId=${id}`, config)
+      .then(res => res)
+      .catch(err => err.response);
+    return response;
+  },
+
+  // ADMIN REQUESTS
+  async AddNews(UserToken, data) {
+    const config = {
+      headers: {
+        "x-auth-token": `${UserToken}`
+      }
+    };
+    let formdata = new FormData();
+    formdata.append("title", data.title);
+    formdata.append("text", data.text);
+    formdata.append("image", data.image);
+    const response = await axios
+      .post(`${Base_URL}/api/admin/post`, data, config)
+      .then(res => res)
+      .catch(err => err.response);
+    return response;
+  },
+
+  async deleteNews(UserToken, id) {
+    const config = {
+      headers: {
+        "x-auth-token": `${UserToken}`
+      },
+      data: {
+        postId: id
+      }
+    };
+    const response = await axios
+      .delete(`${Base_URL}/api/admin/post`, config)
+      .then(res => res)
+      .catch(err => err.response);
+    return response;
+  },
+
+  async getRequests(UserToken, type, offset, limit) {
+    const config = {
+      headers: {
+        "x-auth-token": `${UserToken}`
+      }
+    };
+    if (type === "New Teachers") {
+      const response = await axios
+        .get(
+          `${Base_URL}/api/admin/teacher/requests?offset=${offset}&limit=${limit}`,
+          config
+        )
+        .then(res => res)
+        .catch(err => err.response);
+      return response;
+    } else if (type === "New Courses") {
+      const response = await axios
+        .get(
+          `${Base_URL}/api/admin/course/approval/requests?offset=${offset}&limit=${limit}`,
+          config
+        )
+        .then(res => res)
+        .catch(err => err.response);
+      return response;
+    } else if (type === "Delete Courses") {
+      const response = await axios
+        .get(
+          `${Base_URL}/api/admin/course/deletion/requests?offset=${offset}&limit=${limit}`,
+          config
+        )
+        .then(res => res)
+        .catch(err => err.response);
+      return response;
+    }
+  },
+
+  async approveRequests(UserToken, type, id) {
+    const config = {
+      headers: {
+        "x-auth-token": `${UserToken}`
+      }
+    };
+    if (type === "New Teachers") {
+      const response = await axios
+        .post(
+          `${Base_URL}/api/admin/approve/user`,
+          {
+            id,
+            approve: true
+          },
+          config
+        )
+        .then(res => res)
+        .catch(err => err.response);
+      return response;
+    } else if (type === "New Courses") {
+      const response = await axios
+        .post(
+          `${Base_URL}/api/admin/approve/course`,
+          {
+            id,
+            approve: true
+          },
+          config
+        )
+        .then(res => res)
+        .catch(err => err.response);
+      return response;
+    } else if (type === "Delete Courses") {
+      const response = await axios
+        .delete(`${Base_URL}/api/admin/course?courseId=${id}`, config)
+        .then(res => res)
+        .catch(err => err.response);
+      return response;
+    }
+  },
+
+  async rejectRequests(UserToken, type, id) {
+    if (type === "New Teachers") {
+      const config = {
+        headers: {
+          "x-auth-token": `${UserToken}`
+        },
+        data: {
+          userId: id
+        }
+      };
+      const response = await axios
+        .delete(`${Base_URL}/api/admin/user/approval`, config)
+        .then(res => res)
+        .catch(err => err.response);
+      return response;
+    } else if (type === "New Courses") {
+      const config = {
+        headers: {
+          "x-auth-token": `${UserToken}`
+        },
+        data: {
+          courseId: id
+        }
+      };
+      const response = await axios
+        .delete(`${Base_URL}/api/admin/course/approval`, config)
+        .then(res => res)
+        .catch(err => err.response);
+      return response;
+    } else if (type === "Delete Courses") {
+      const config = {
+        headers: {
+          "x-auth-token": `${UserToken}`
+        },
+        data: {
+          courseId: id
+        }
+      };
+      const response = await axios
+        .delete(`${Base_URL}/api/admin/course/deletion`, config)
+        .then(res => res)
+        .catch(err => err.response);
+      return response;
+    }
+  },
+
+  // PASSWORD REQUESTS
+  async forgetPassword(data) {
+    const response = await axios
+      .post(`${Base_URL}/api/user/forget-password`, data)
+      .then(res => res)
+      .catch(err => err.response);
+    return response;
+  },
+  async resetPassword(data) {
+    const response = await axios
+      .post(`${Base_URL}/api/user/reset-password`, data)
+      .then(res => res)
+      .catch(err => err.response);
+    return response;
   }
 };
