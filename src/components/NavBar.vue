@@ -70,7 +70,25 @@
             </v-col></v-btn
           >
           <v-btn
-            v-for="j in userButtons.length"
+            class="nav-btn text-none text-h6 font-weight-light"
+            type="li"
+            text
+            x-large
+            color="white"
+            active-class="logo-active"
+            v-if="$store.state.currentUser.type === 'admin'"
+            :to="userButtons[2].route"
+            width="220px"
+          >
+            <v-col>
+              <v-icon>{{ userButtons[2].icon }}</v-icon>
+            </v-col>
+            <v-col>
+              {{ userButtons[2].name }}
+            </v-col></v-btn
+          >
+          <v-btn
+            v-for="j in userButtons.length - 1"
             :key="j"
             class="nav-btn text-none text-h6 font-weight-light"
             type="li"
@@ -79,6 +97,7 @@
             color="white"
             active-class="logo-active"
             :to="userButtons[j - 1].route"
+            @click="logOut(userButtons[j - 1].action)"
             width="220px"
           >
             <v-col>
@@ -97,7 +116,6 @@
             x-large
             color="white"
             active-class="logo-active"
-            @click="logOut(loggedButtons[i - 1].action)"
             :to="loggedButtons[i - 1].route"
             width="220px"
           >
@@ -254,14 +272,25 @@
 
               <v-list dense color="black">
                 <v-list-item
-                  v-for="(item, index) in userButtons"
-                  :key="index"
-                  :to="item.route"
+                  :to="userButtons[2].route"
                   active-class="btn-active-list"
+                  v-if="$store.state.currentUser.type === 'admin'"
                 >
                   <v-list-item-title
                     class="text-subtitle-1 font-weight-light white--text"
-                    >{{ item.name }}</v-list-item-title
+                    >{{ userButtons[2].name }}</v-list-item-title
+                  >
+                </v-list-item>
+                <v-list-item
+                  v-for="index in userButtons.length - 1"
+                  :key="index"
+                  :to="userButtons[index - 1].route"
+                  active-class="btn-active-list"
+                  @click="logOut(userButtons[index - 1].action)"
+                >
+                  <v-list-item-title
+                    class="text-subtitle-1 font-weight-light white--text"
+                    >{{ userButtons[index - 1].name }}</v-list-item-title
                   >
                 </v-list-item>
               </v-list>
@@ -307,6 +336,12 @@ export default {
           activeclass: "btn-active"
         },
         {
+          name: this.$store.state.language.navbar.news,
+          route: "/news",
+          icon: "mdi-newspaper",
+          activeclass: "btn-active"
+        },
+        {
           name: this.$store.state.language.navbar.login,
           route: "/login",
           icon: "mdi-login-variant",
@@ -325,32 +360,28 @@ export default {
           route: "/",
           icon: "mdi-home",
           isTeacher: true,
-          activeclass: "btn-active",
-          action: false
+          activeclass: "btn-active"
         },
         {
           name: this.$store.state.language.navbar.courses,
           route: "/courses",
           icon: "mdi-book",
           isTeacher: true,
-          activeclass: "btn-active",
-          action: false
+          activeclass: "btn-active"
         },
         {
-          name: this.$store.state.language.navbar.logout,
-          route: "/",
-          icon: "mdi-login",
+          name: this.$store.state.language.navbar.news,
+          route: "/news",
+          icon: "mdi-newspaper",
           isTeacher: true,
-          activeclass: "logo-active",
-          action: true
+          activeclass: "btn-active"
         },
         {
           name: this.$store.state.language.navbar.createCourse,
           route: "/createcourse",
           icon: "mdi-bank-plus",
           isTeacher: true,
-          activeclass: "btn-active",
-          action: false
+          activeclass: "btn-active"
         }
       ],
       userButtons: [
@@ -358,6 +389,23 @@ export default {
           name: this.$store.state.language.navbar.profile,
           route: "/profile",
           icon: "mdi-account-cog",
+          activeclass: "logo-active",
+          action: false,
+          isAdmin: false
+        },
+        {
+          name: this.$store.state.language.navbar.logout,
+          route: undefined,
+          icon: "mdi-login",
+          isAdmin: false,
+          activeclass: "logo-active",
+          action: true
+        },
+        {
+          name: this.$store.state.language.navbar.adminPanel,
+          route: "/admin",
+          icon: "mdi-cog-outline",
+          isAdmin: true,
           activeclass: "logo-active",
           action: true
         }
@@ -372,6 +420,7 @@ export default {
         localStorage.removeItem("userToken");
         this.$store.state.newNotification.state = false;
         this.$store.state.currentUser = null;
+        this.$router.push("/");
       }
     },
     changeLanguage() {

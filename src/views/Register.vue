@@ -287,9 +287,6 @@ export default {
   beforeRouteEnter(to, from, next) {
     if (localStorage.getItem("currentUser") == null) next();
     else next("/");
-  },
-  created() {
-    console.log(this.language);
   }
 };
 </script>

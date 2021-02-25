@@ -10,7 +10,8 @@
     "noNews": "There is Currently No News",
     "news": "News",
     "delete": "Delete",
-    "backNews": "Back to News"
+    "backNews": "Back to News",
+    "adminPanel": "Admin Panel"
   },
   "login": {
     "login": "Login",
@@ -327,8 +328,36 @@
     "gradeTest": "Grade Test",
     "addATeacher": "Add a Teacher to the Course",
     "addTeacher": "Add Teacher",
-    "selectTeacher": "Select a Teacher",
+    "selectTeacher": "Type Teacher Name and Choose him from the list",
     "deleteCourse": "Delete Course",
-    "deleteRequest": "Delete Request Sent"
+    "deleteRequest": "Delete Request Sent",
+    "teacherAdded": "Teacher Added to Course",
+    "teacherError": "Could Not Add Teacher"
+  },
+  "admin": {
+    "adminPanel": "Admin Panel",
+    "requests": "Requests",
+    "addNews": "Add News",
+    "adminRequests": "Admin Requests",
+    "noRequests": "No Requests For Now",
+    "courseName": "Course Name:",
+    "courseSummary": "Course Summary:",
+    "goToCourse": "Go to Course",
+    "approve": "Approve",
+    "reject": "Reject",
+    "name": "Name: ",
+    "email": "Email: ",
+    "age": "Age: ",
+    "gender": "Gender: ",
+    "male": "Male",
+    "female": "Female",
+    "loadMore": "Load More",
+    "addImage": "Add Image",
+    "title": "Title",
+    "text": "Text",
+    "newTeachers": "New Teachers",
+    "newCourses": "New Courses",
+    "deleteCourses": "Delete Courses",
+    "newsAdded": "News Added"
   }
 }

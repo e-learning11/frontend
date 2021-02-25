@@ -10,7 +10,8 @@
     "noNews": "لا يوجد اخبار حاليا",
     "news": "اخبار",
     "delete": "ازالة",
-    "backNews": "العودة للاخبار"
+    "backNews": "العودة للاخبار",
+    "adminPanel": "لوحة التحكم"
   },
   "login": {
     "login": "دخول",
@@ -327,8 +328,36 @@
     "gradeTest": "تصحيح اختبار",
     "addATeacher": "اضف معلم للدورة",
     "addTeacher": "اضف معلم",
-    "selectTeacher": "اختر معلم",
+    "selectTeacher": "اكتب اسم المعلم واختره من القائمة",
     "deleteCourse": "ازالة الدورة",
-    "deleteRequest": "تم ارسال طلب الازالة"
+    "deleteRequest": "تم ارسال طلب الازالة",
+    "teacherAdded": "تم اضافة الملم للدورة",
+    "teacherError": "لم يتمكن اضافة المعلم"
+  },
+  "admin": {
+    "adminPanel": "لوحة التحكم",
+    "requests": "الطلبات",
+    "addNews": "اضافة خبر",
+    "adminRequests": "طلبات التحكم",
+    "noRequests": "لا يوجد طلبات حاليا",
+    "courseName": "اسم الدورة: ",
+    "courseSummary": "ملخص الدورة: ",
+    "goToCourse": "اذهب للدورة",
+    "approve": "موافقة",
+    "reject": "رفض",
+    "name": "الاسم: ",
+    "email": "البريد: ",
+    "age": "السن: ",
+    "gender": "النوع: ",
+    "male": "ذكر",
+    "female": "انثى",
+    "loadMore": "تحميل المزيد",
+    "addImage": "اضف صورة",
+    "title": "العنوان",
+    "text": "النص",
+    "newTeachers": "مدرسون جدد",
+    "newCourses": "دورات جديدة",
+    "deleteCourses": "الغاء الدورات",
+    "newsAdded": "تمت اضافة الخبر"
   }
 }

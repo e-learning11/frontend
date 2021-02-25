@@ -13,7 +13,9 @@
         bottom
       >
         <v-row justify="center" class="mt-10">
-          <v-col cols="auto" class="white--text text-h4">Admin Panel</v-col>
+          <v-col cols="auto" class="white--text text-h4">
+            {{ language.adminPanel }}
+          </v-col>
         </v-row>
         <v-row dense class="mt-10">
           <v-col cols="12">
@@ -27,7 +29,8 @@
               :class="{
                 'btn-active': currentTab === 'Requests'
               }"
-              >Requests</v-btn
+            >
+              {{ language.requests }}</v-btn
             >
           </v-col>
           <v-col cols="12">
@@ -41,18 +44,56 @@
               :class="{
                 'btn-active': currentTab === 'AddNews'
               }"
-              >Add News</v-btn
+              >{{ language.addNews }}</v-btn
             >
           </v-col>
         </v-row>
       </v-navigation-drawer>
+      <div v-else class="admin-panel-mob">
+        <v-row justify="center">
+          <v-col cols="auto" class="white--text text-h4">
+            {{ language.adminPanel }}
+          </v-col>
+        </v-row>
+        <v-row dense class="mt-10">
+          <v-col cols="12">
+            <v-btn
+              width="100%"
+              height="50"
+              tile
+              text
+              color="grey lighten-2"
+              @click="currentTab = 'Requests'"
+              :class="{
+                'btn-active': currentTab === 'Requests'
+              }"
+            >
+              {{ language.requests }}</v-btn
+            >
+          </v-col>
+          <v-col cols="12">
+            <v-btn
+              width="100%"
+              height="50"
+              tile
+              text
+              color="grey lighten-2"
+              @click="currentTab = 'AddNews'"
+              :class="{
+                'btn-active': currentTab === 'AddNews'
+              }"
+              >{{ language.addNews }}</v-btn
+            >
+          </v-col>
+        </v-row>
+      </div>
       <!--Main Pages for Admin-->
       <v-container class="new-container">
         <template v-if="currentTab === 'Requests'">
           <v-row justify="center" align="center" class="mt-10">
             <v-col cols="12" class="center-horizontal"
               ><h2 class="text-h4 text-center font-weight-light">
-                Admin Requests
+                {{ language.adminRequests }}
               </h2></v-col
             ><v-col
               :class="{
@@ -73,7 +114,7 @@
                 <Loading v-if="waitRequest"></Loading>
                 <v-row justify="center" v-else-if="Entries.length === 0">
                   <v-col cols="auto" class="text-overline">
-                    No Requests For Now
+                    {{ language.noRequests }}
                   </v-col>
                 </v-row>
                 <template v-else>
@@ -91,11 +132,15 @@
                       "
                     >
                       <v-col cols="12" class="text-subtitle-1 mt-5">
-                        <span class="font-weight-bold">Course Name:</span>
+                        <span class="font-weight-bold">{{
+                          language.courseName
+                        }}</span>
                         {{ entry.name }}
                       </v-col>
                       <v-col cols="12" class="text-body-2 mb-5">
-                        <span class="font-weight-bold">Course Summary:</span>
+                        <span class="font-weight-bold">{{
+                          language.courseSummary
+                        }}</span>
                         {{ entry.summary }}
                       </v-col>
                       <v-col cols="auto" class="mb-5">
@@ -105,7 +150,7 @@
                           color="blue"
                           class="mx-5"
                           :to="`/course/${entry.id}`"
-                          >Go to Course</v-btn
+                          >{{ language.goToCourse }}</v-btn
                         >
                         <v-btn
                           outlined
@@ -113,7 +158,7 @@
                           color="green"
                           class="mx-5"
                           @click="approveRequest(entry.id)"
-                          >Approve</v-btn
+                          >{{ language.approve }}</v-btn
                         >
                         <v-btn
                           outlined
@@ -121,28 +166,40 @@
                           color="red"
                           class="mx-5"
                           @click="rejectRequest(entry.id)"
-                          >Reject</v-btn
+                          >{{ language.reject }}</v-btn
                         >
                       </v-col>
                       <v-col cols="12"><v-divider></v-divider></v-col>
                     </template>
                     <template v-else>
                       <v-col cols="auto" class="text-body-2 mt-5 mx-5">
-                        <span class="font-weight-bold">Name: </span>
+                        <span class="font-weight-bold"
+                          >{{ language.name }}
+                        </span>
                         {{ entry.firstName }} {{ entry.lastName }}
                       </v-col>
                       <v-col cols="auto" class="text-body-2 mt-5 mx-5">
-                        <span class="font-weight-bold">Email: </span>
+                        <span class="font-weight-bold"
+                          >{{ language.email }}
+                        </span>
                         {{ entry.email }}
                       </v-col>
                       <v-col cols="auto" class="text-body-2 mt-5 mx-5">
-                        <span class="font-weight-bold">Age: </span>
+                        <span class="font-weight-bold"
+                          >{{ language.age }}
+                        </span>
                         {{ entry.age }}
                       </v-col>
                       <v-col cols="auto" class="text-body-2 mt-5 mx-5">
-                        <span class="font-weight-bold">Gender: </span>
-                        <span v-if="entry.gender === 1">Male</span>
-                        <span v-if="entry.gender === 2">Female</span>
+                        <span class="font-weight-bold"
+                          >{{ language.gender }}
+                        </span>
+                        <span v-if="entry.gender === 1">{{
+                          language.male
+                        }}</span>
+                        <span v-if="entry.gender === 2">{{
+                          language.female
+                        }}</span>
                       </v-col>
                       <v-col cols="12" class="mb-5 mt-5 text-center">
                         <v-btn
@@ -151,7 +208,7 @@
                           color="green"
                           class="mx-5"
                           @click="approveRequest(entry.id)"
-                          >Approve</v-btn
+                          >{{ language.approve }}</v-btn
                         >
                         <v-btn
                           outlined
@@ -159,7 +216,7 @@
                           color="red"
                           class="mx-5"
                           @click="rejectRequest(entry.id)"
-                          >Reject</v-btn
+                          >{{ language.reject }}</v-btn
                         >
                       </v-col>
                       <v-col cols="12"><v-divider></v-divider></v-col>
@@ -174,7 +231,7 @@
                 v-if="canGetMoreRequests"
                 @click="getRequests(Entries.length)"
               >
-                Load More
+                {{ language.loadMore }}
               </v-btn>
             </v-col>
           </v-row>
@@ -183,7 +240,7 @@
           <v-row justify="center" align="center" class="mt-10">
             <v-col cols="12" class="center-horizontal"
               ><h2 class="text-h4 text-center font-weight-light">
-                Add News
+                {{ language.addNews }}
               </h2></v-col
             >
           </v-row>
@@ -203,7 +260,7 @@
                       accept="image/*"
                       prepend-icon="mdi-camera"
                       v-model="newNews.image"
-                      placeholder="Add Image"
+                      :placeholder="language.addImage"
                     ></v-file-input>
                   </v-col>
                 </v-row>
@@ -216,7 +273,7 @@
                   'text-subtitle-1': $vuetify.breakpoint.xs
                 }"
               >
-                <div class=" font-weight-bold">Title</div>
+                <div class=" font-weight-bold">{{ language.title }}</div>
                 <v-text-field
                   dense
                   v-model="newNews.title"
@@ -232,7 +289,7 @@
                 }"
               >
                 <div class="font-weight-bold">
-                  Text
+                  {{ language.text }}
                 </div>
                 <v-textarea
                   filled
@@ -251,7 +308,7 @@
                   @click="addNews"
                   :disabled="sendrequest"
                 >
-                  Add News
+                  {{ language.addNews }}
                 </v-btn>
               </v-col>
             </v-row>
@@ -285,20 +342,20 @@ export default {
       canGetMoreRequests: false,
       requestType: {
         value: "New Teachers",
-        text: "New Teachers"
+        text: this.$store.state.language.admin.newTeachers
       },
       typesOfRequest: [
         {
           value: "New Teachers",
-          text: "New Teachers"
+          text: this.$store.state.language.admin.newTeachers
         },
         {
           value: "New Courses",
-          text: "New Courses"
+          text: this.$store.state.language.admin.newCourses
         },
         {
           value: "Delete Courses",
-          text: "Delete Courses"
+          text: this.$store.state.language.admin.deleteCourses
         }
       ],
       typesOfRequestValues: ["New Teachers", "New Courses", "Delete Courses"]
@@ -310,7 +367,7 @@ export default {
       return api.getImageSource(this.$store.state.currentUser.id, "user");
     },
     language() {
-      return this.$store.state.language.profile;
+      return this.$store.state.language.admin;
     }
   },
   methods: {
@@ -324,7 +381,7 @@ export default {
         this.newNews
       );
       if (response.status === 200) {
-        this.$store.state.newNotification.Message = "News Added";
+        this.$store.state.newNotification.Message = this.$store.state.language.admin.newsAdded;
         this.$store.state.newNotification.state = true;
       }
 
@@ -348,7 +405,7 @@ export default {
         else this.canGetMoreRequests = true;
         if (offset === 0) this.Entries = response.data;
         else this.Entries.push(...response.data);
-      }
+      } else if (response.status === 401) this.$router.push("/");
       this.waitRequest = false;
     },
     async rejectRequest(id) {
@@ -391,6 +448,9 @@ export default {
 <style scoped>
 .admin-container {
   background-color: #f5f5f5;
+}
+.admin-panel-mob {
+  background-color: black;
 }
 .center-horizontal {
   display: flex;

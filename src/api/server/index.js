@@ -658,6 +658,39 @@ export default {
     return response;
   },
 
+  async assignTeacherToCourse(UserToken, courseId, teacherId) {
+    const data = {
+      teacherId,
+      courseId
+    };
+    const config = {
+      headers: {
+        "x-auth-token": `${UserToken}`
+      }
+    };
+    const response = await axios
+      .post(`${Base_URL}/api/course/assign/teacher`, data, config)
+      .then(res => res)
+      .catch(err => err.response);
+
+    return response;
+  },
+
+  async getAllTeachers(UserToken, limit, offset, fullname) {
+    const request = {
+      method: "GET",
+      url: `${Base_URL}/api/teachers?limit=${limit}&offset=${offset}&sortOrder=DESC&sort=createdAt&fullname=${fullname}`,
+      headers: {
+        "x-auth-token": `${UserToken}`
+      }
+    };
+    const response = await axios(request)
+      .then(res => res)
+      .catch(err => err.response);
+
+    return response;
+  },
+
   async getCourseTestsAndAssignments(
     UserToken,
     limit,

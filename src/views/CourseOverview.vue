@@ -137,6 +137,9 @@
           ><v-responsive max-width="400" class="mx-auto mb-4">
             <v-combobox
               :label="language.selectTeacher"
+              v-model="currentTeacher"
+              :items="simpleTeachers"
+              @input.native="getAllTeachers($event.srcElement.value)"
             ></v-combobox> </v-responsive
         ></v-col>
         <v-col cols="12" class="text-center"
@@ -145,7 +148,7 @@
             outlined
             class="text-h6"
             color="blue darken-3"
-            to="edit"
+            @click="addTeacher"
           >
             {{ language.addTeacher }}
           </v-btn></v-col
@@ -400,6 +403,8 @@ export default {
     searchLoading: false,
     NewGrades: {},
     validSubmitGrade: false,
+    currentTeacher: null,
+    simpleTeachers: [],
     rules: {
       Required: value => !!value || "Required.",
       CorrectGrade: (Grade, MaxGrade) =>
@@ -530,6 +535,39 @@ export default {
           this.$store.state.newNotification.Message = this.language.deleteRequest;
           this.$store.state.newNotification.state = true;
         }
+      }
+    },
+    async addTeacher() {
+      // Add teacher to Course
+      if (this.currentTeacher == null || this.currentTeacher.value == null)
+        return;
+      const response = await api.assignTeacherToCourse(
+        JSON.parse(localStorage.getItem("userToken")),
+        this.course.id,
+        this.currentTeacher.value
+      );
+      if (response.status === 200) {
+        this.$store.state.newNotification.Message = this.language.teacherAdded;
+        this.$store.state.newNotification.state = true;
+      } else {
+        this.$store.state.newNotification.Message = this.language.teacherError;
+        this.$store.state.newNotification.state = true;
+      }
+    },
+    async getAllTeachers(value) {
+      const response = await api.getAllTeachers(
+        JSON.parse(localStorage.getItem("userToken")),
+        20,
+        0,
+        value
+      );
+      if (response.status === 200) {
+        // Change combobox list
+        this.simpleTeachers = response.data.map(t => ({
+          text: t.firstName + t.lastName,
+          value: t.id
+        }));
+        console.log(this.simpleTeachers);
       }
     }
   },
