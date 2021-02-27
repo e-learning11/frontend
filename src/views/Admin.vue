@@ -383,6 +383,7 @@ export default {
       if (response.status === 200) {
         this.$store.state.newNotification.Message = this.$store.state.language.admin.newsAdded;
         this.$store.state.newNotification.state = true;
+        this.$store.state.newNotification.color = "success";
       }
 
       this.sendrequest = false;

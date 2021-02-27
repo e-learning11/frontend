@@ -50,7 +50,10 @@
             <v-row justify="center">
               <v-col
                 cols="auto"
-                v-if="$store.state.currentUser.type === 'admin'"
+                v-if="
+                  $store.state.currentUser &&
+                    $store.state.currentUser.type === 'admin'
+                "
               >
                 <v-btn x-small color="error" @click="deleteNews(story.id)">
                   {{ language.delete }}

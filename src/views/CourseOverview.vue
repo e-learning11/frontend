@@ -442,6 +442,7 @@ export default {
         // Display a Success Notification
         this.$store.state.newNotification.Message = "Grading Successful";
         this.$store.state.newNotification.state = true;
+        this.$store.state.newNotification.color = "success";
       }
       // Else Display error
       else {
@@ -449,6 +450,7 @@ export default {
         this.$store.state.newNotification.Message =
           "Something went Wrong Please Try Again";
         this.$store.state.newNotification.state = true;
+        this.$store.state.newNotification.color = "error";
       }
       // ReEnable button
       this.validSubmitGrade = true;
@@ -534,6 +536,7 @@ export default {
         if (response.status === 200) {
           this.$store.state.newNotification.Message = this.language.deleteRequest;
           this.$store.state.newNotification.state = true;
+          this.$store.state.newNotification.color = "success";
         }
       }
     },
@@ -549,9 +552,11 @@ export default {
       if (response.status === 200) {
         this.$store.state.newNotification.Message = this.language.teacherAdded;
         this.$store.state.newNotification.state = true;
+        this.$store.state.newNotification.color = "success";
       } else {
         this.$store.state.newNotification.Message = this.language.teacherError;
         this.$store.state.newNotification.state = true;
+        this.$store.state.newNotification.color = "error";
       }
     },
     async getAllTeachers(value) {

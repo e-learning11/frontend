@@ -26,7 +26,12 @@
         </v-row>
         <v-row class="mt-16" justify="center" align="center">
           <v-col md="8" sm="12" class="px-0">
-            <v-form ref="Loginform" class="form-center" v-model="valid">
+            <v-form
+              ref="Loginform"
+              class="form-center"
+              v-model="valid"
+              @keyup.enter.native="validate"
+            >
               <v-text-field
                 color="blue darken-2"
                 outlined
@@ -53,6 +58,7 @@
                 color="blue darken-2"
                 class="text-h5 white--text mt-5"
                 @click="validate"
+                :disabled="sendRequest"
               >
                 {{ language.login }}
               </v-btn>
@@ -112,7 +118,8 @@ export default {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
           return pattern.test(value) || "Not a valid Email";
         }
-      }
+      },
+      sendRequest: false
     };
   },
   computed: {
@@ -125,6 +132,8 @@ export default {
       // Validate the form
       if (!this.$refs.Loginform.validate()) return;
 
+      // Disable the button
+      this.sendRequest = true;
       // Send the request
       const loginResponse = await api.loginUser({
         email: this.email,
@@ -155,15 +164,21 @@ export default {
           // Display welcome Message
           this.$store.state.newNotification.Message = this.language.welcome;
           this.$store.state.newNotification.state = true;
+          this.$store.state.newNotification.color = "success";
           this.$router.push("/");
         } else {
           this.$store.state.newNotification.Message = this.language.wentWrong;
           this.$store.state.newNotification.state = true;
+          this.$store.state.newNotification.color = "error";
         }
       } else {
         this.$store.state.newNotification.Message = this.language.wrong;
         this.$store.state.newNotification.state = true;
+        this.$store.state.newNotification.color = "error";
       }
+
+      // Renable the button
+      this.sendRequest = false;
     }
   },
   beforeRouteEnter(to, from, next) {

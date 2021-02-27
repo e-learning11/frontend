@@ -420,7 +420,9 @@ export default {
         localStorage.removeItem("userToken");
         this.$store.state.newNotification.state = false;
         this.$store.state.currentUser = null;
-        this.$router.push("/");
+        if (this.$route.name !== "Home") {
+          this.$router.push("/");
+        }
       }
     },
     changeLanguage() {

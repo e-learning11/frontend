@@ -8,7 +8,8 @@ export default new Vuex.Store({
   state: {
     newNotification: {
       state: false,
-      Message: "Hey! Nice to Have you here"
+      Message: "Hey! Nice to Have you here",
+      color: "success"
     },
     currentUser: null,
     CourseInfo: {

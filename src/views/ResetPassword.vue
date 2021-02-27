@@ -124,10 +124,12 @@ export default {
       if (response.status === 200) {
         this.$store.state.newNotification.Message = this.language.passwordChange;
         this.$store.state.newNotification.state = true;
+        this.$store.state.newNotification.color = "success";
         this.$router.push("/login");
       } else {
         this.$store.state.newNotification.Message = this.language.wrongToken;
         this.$store.state.newNotification.state = true;
+        this.$store.state.newNotification.color = "error";
       }
       this.sentRequest = false;
     }

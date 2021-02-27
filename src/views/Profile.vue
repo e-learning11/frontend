@@ -260,6 +260,7 @@ export default {
     } else {
       this.$store.state.newNotification.Message = this.language.wentWrong;
       this.$store.state.newNotification.state = true;
+      this.$store.state.newNotification.color = "error";
     }
   }
 };

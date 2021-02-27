@@ -744,6 +744,7 @@ export default {
         // Display a Success Notification
         this.$store.state.newNotification.Message = this.language.addedSuccess;
         this.$store.state.newNotification.state = true;
+        this.$store.state.newNotification.color = "success";
         // send the get answers request
         api
           .getSingleQuestionAnswers(
@@ -770,6 +771,7 @@ export default {
         // Display a Success Notification
         this.$store.state.newNotification.Message = this.language.addedSuccess;
         this.$store.state.newNotification.state = true;
+        this.$store.state.newNotification.color = "success";
         // get comments
         this.getComments(this.Question.id, 0, 200, 0, this.answers.length);
       }
@@ -784,6 +786,7 @@ export default {
         // Display a Success Notification
         this.$store.state.newNotification.Message = this.language.addedSuccess;
         this.$store.state.newNotification.state = true;
+        this.$store.state.newNotification.color = "success";
         // get comments
         this.getComments(this.Question.id, 0, 200, 0, this.answers.length);
       }
@@ -801,6 +804,7 @@ export default {
         // Display a Notification
         this.$store.state.newNotification.Message = this.language.alreadyChose;
         this.$store.state.newNotification.state = true;
+        this.$store.state.newNotification.color = "error";
       }
     },
     timeSince(date) {
@@ -849,6 +853,7 @@ export default {
         // Display a Success Notification
         this.$store.state.newNotification.Message = this.language.deleteSuccess;
         this.$store.state.newNotification.state = true;
+        this.$store.state.newNotification.color = "success";
         // if type is Comment reload comments
         if (type === "CA" || type === "CQ") {
           this.getComments(this.Question.id, 0, 200, 0, this.answers.length);
@@ -884,6 +889,7 @@ export default {
       } else {
         this.$store.state.newNotification.Message = this.language.donotOwn;
         this.$store.state.newNotification.state = true;
+        this.$store.state.newNotification.color = "error";
       }
     }
   },

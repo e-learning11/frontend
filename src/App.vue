@@ -6,10 +6,12 @@
     <v-toolbar
       v-if="$store.state.newNotification.state"
       absolute
-      class="Notification-bar pb-2"
+      class="Notification-bar pb-2 white--text"
+      dense
+      :color="$store.state.newNotification.color"
     >
       <div
-        class="black--text font-weight-light mr-5"
+        class="white--text font-weight-light mr-5"
         :class="{
           'text-subtitle-1': $vuetify.breakpoint.smAndDown,
           'text-h6': $vuetify.breakpoint.mdAndUp
@@ -17,8 +19,15 @@
       >
         {{ $store.state.newNotification.Message }}
       </div>
-      <v-btn icon @click="closeBar" rounded outlined small
-        ><v-icon color="black">mdi-close</v-icon></v-btn
+      <v-btn
+        icon
+        @click="closeBar"
+        rounded
+        outlined
+        small
+        class="mx-5"
+        color="white"
+        ><v-icon color="white">mdi-close</v-icon></v-btn
       >
     </v-toolbar>
 

@@ -26,7 +26,12 @@
         </v-row>
         <v-row class="mt-10" justify="center" align="center">
           <v-col md="8" sm="12" class="px-0">
-            <v-form ref="Registerform" class="form-center" v-model="valid">
+            <v-form
+              ref="Registerform"
+              class="form-center"
+              v-model="valid"
+              @keyup.enter.native="validate"
+            >
               <v-row justify="center" align="center" class="mb-5">
                 <v-col cols="auto">
                   <v-avatar size="120">
@@ -166,6 +171,7 @@
                 color="blue darken-3"
                 class="text-h5 white--text mt-5"
                 @click="validate"
+                :disabled="sendrequest"
               >
                 {{ language.signup }}
               </v-btn>
@@ -214,7 +220,8 @@ export default {
           const pattern = /^(\d{10}|\d{11}|\d{12})$/;
           return pattern.test(value) || "Please write 10, 11 or 12 Numbers";
         }
-      }
+      },
+      sendrequest: false
     };
   },
   computed: {
@@ -231,6 +238,8 @@ export default {
       // Validate the form
       if (!this.$refs.Registerform.validate()) return;
 
+      // Disable the button
+      this.sendRequest = true;
       // Send the request
       const registerResponse = await api.RegisterUser({ ...this.Userform });
 
@@ -239,6 +248,7 @@ export default {
         // Display welcome Message
         this.$store.state.newNotification.Message = this.language.awaitApprove;
         this.$store.state.newNotification.state = true;
+        this.$store.state.newNotification.color = "success";
         this.$router.push("/");
         return;
       }
@@ -267,16 +277,22 @@ export default {
           // Display welcome Message
           this.$store.state.newNotification.Message = this.language.accountSuccess;
           this.$store.state.newNotification.state = true;
+          this.$store.state.newNotification.color = "success";
           this.$router.push("/");
         } else {
           this.$store.state.newNotification.Message = this.language.accountLogin;
           this.$store.state.newNotification.state = true;
+          this.$store.state.newNotification.color = "success";
           this.$router.push("/login");
         }
       } else {
         this.$store.state.newNotification.Message = registerResponse.data;
         this.$store.state.newNotification.state = true;
+        this.$store.state.newNotification.color = "error";
       }
+
+      // Renable the button
+      this.sendRequest = false;
     },
 
     IsMatching(Confirmpassword, password) {

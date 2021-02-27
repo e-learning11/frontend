@@ -119,6 +119,7 @@ export default {
           // Display a Notification
           this.$store.state.newNotification.Message = this.language.reuploadAll;
           this.$store.state.newNotification.state = true;
+          this.$store.state.newNotification.color = "white";
         } else
           this.$store.state.CourseInfo = {
             name: "",

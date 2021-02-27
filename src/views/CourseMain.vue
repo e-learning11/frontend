@@ -319,11 +319,13 @@ export default {
         // Display a Success Notification
         this.$store.state.newNotification.Message = this.language.successMessage;
         this.$store.state.newNotification.state = true;
+        this.$store.state.newNotification.color = "success";
         this.registered = true;
       } else {
         // Display a Success Notification
         this.$store.state.newNotification.Message = response.data;
         this.$store.state.newNotification.state = true;
+        this.$store.state.newNotification.color = "error";
         this.registered = false;
       }
     }

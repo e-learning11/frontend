@@ -664,12 +664,14 @@ export default {
             ? "You Need to Pass the Test First"
             : "يجب ان تنجح فى الاختبار اولا";
           this.$store.state.newNotification.state = true;
+          this.$store.state.newNotification.color = "error";
         } else {
           // Display Error Message
           this.$store.state.newNotification.Message = !this.$vuetify.rtl
             ? "You Need to Pass the Assignment First"
             : "يجب ان تنجح فى الاختبار اولا";
           this.$store.state.newNotification.state = true;
+          this.$store.state.newNotification.color = "error";
         }
       }
       // ReEnable the Button

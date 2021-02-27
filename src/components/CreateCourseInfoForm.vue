@@ -444,9 +444,11 @@ export default {
           // Display a Success Notification
           this.$store.state.newNotification.Message = this.language.addedSuccess;
           this.$store.state.newNotification.state = true;
+          this.$store.state.newNotification.color = "success";
         } else {
           this.$store.state.newNotification.Message = response.data;
           this.$store.state.newNotification.state = true;
+          this.$store.state.newNotification.color = "error";
         }
       } else {
         const response = await api.EditCourse(
@@ -463,9 +465,11 @@ export default {
           // Display a Success Notification
           this.$store.state.newNotification.Message = this.language.addedSuccess;
           this.$store.state.newNotification.state = true;
+          this.$store.state.newNotification.color = "success";
         } else {
           this.$store.state.newNotification.Message = response.data;
           this.$store.state.newNotification.state = true;
+          this.$store.state.newNotification.color = "error";
         }
       }
       // Re Enable button
@@ -480,6 +484,7 @@ export default {
       // Display a Success Notification
       this.$store.state.newNotification.Message = this.language.progressSaved;
       this.$store.state.newNotification.state = true;
+      this.$store.state.newNotification.color = "success";
     },
     RemoveComponent(CNumber) {
       //Remove component from Array
@@ -571,6 +576,7 @@ export default {
         // Display an Error Notification
         this.$store.state.newNotification.Message = this.language.incorrectSections;
         this.$store.state.newNotification.state = true;
+        this.$store.state.newNotification.color = "error";
         return false;
       };
       //Create temp Variable
