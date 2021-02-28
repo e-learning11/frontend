@@ -332,7 +332,9 @@
     "deleteCourse": "Delete Course",
     "deleteRequest": "Delete Request Sent",
     "teacherAdded": "Teacher Added to Course",
-    "teacherError": "Could Not Add Teacher"
+    "teacherError": "Could Not Add Teacher",
+    "forum": "Forum",
+    "courseMain": "Go to Course"
   },
   "admin": {
     "adminPanel": "Admin Panel",

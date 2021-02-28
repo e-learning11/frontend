@@ -174,6 +174,7 @@ export default {
       }
       //Call Reset
       this.Reset();
+      this.$refs.AssignForm.reset();
     }
   },
   created() {

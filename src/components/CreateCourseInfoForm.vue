@@ -474,6 +474,7 @@ export default {
       }
       // Re Enable button
       this.sendRequest = false;
+      this.$refs.InfoForm.reset();
     },
     SaveProgress() {
       localStorage.setItem(

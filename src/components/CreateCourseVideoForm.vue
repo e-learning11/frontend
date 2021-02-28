@@ -175,6 +175,7 @@ export default {
       }
       //Call Reset
       this.Reset();
+      this.$refs.VideoForm.reset();
     }
   },
   created() {

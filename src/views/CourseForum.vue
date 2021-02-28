@@ -288,8 +288,8 @@
                         :class="{
                           'text-center': $vuetify.breakpoint.xs,
                           'mx-auto': $vuetify.breakpoint.xs,
-                          blue:
-                            Question.userVote === 1 || Question.userVote === -1,
+                          blue: Question.userVote === 1,
+                          red: Question.userVote === -1,
                           grey:
                             Question.userVote !== 1 && Question.userVote !== -1,
                           'lighten-4':
@@ -323,7 +323,7 @@
                           <v-col cols="12" class="text-center">
                             <v-btn
                               :class="{
-                                blue: Question.userVote === -1,
+                                red: Question.userVote === -1,
                                 'white--text': Question.userVote === -1,
                                 grey: Question.userVote !== -1,
                                 'lighten-4': Question.userVote !== -1
@@ -509,6 +509,7 @@ export default {
         this.viewNewQuestion = false;
         this.searchQuestions();
       }
+      this.$refs.newQuestionForm.reset();
     },
     async addVote(Question, vote) {
       // disable the buttons

@@ -179,6 +179,7 @@ export default {
 
       // Renable the button
       this.sendRequest = false;
+      this.$refs.Loginform.reset();
     }
   },
   beforeRouteEnter(to, from, next) {

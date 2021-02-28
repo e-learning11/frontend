@@ -165,10 +165,11 @@
               to="/"
               active-class="logo-active"
               text
+              height="50"
               class="text-h4 text-none"
               color="white"
             >
-              Brand
+              <span>Brand</span>
               <v-icon large>mdi-fleur-de-lis</v-icon>
             </v-btn>
 

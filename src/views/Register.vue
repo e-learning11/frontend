@@ -293,6 +293,7 @@ export default {
 
       // Renable the button
       this.sendRequest = false;
+      this.$refs.Registerform.reset();
     },
 
     IsMatching(Confirmpassword, password) {

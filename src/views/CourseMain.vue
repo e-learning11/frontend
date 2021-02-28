@@ -145,7 +145,7 @@
         </v-container>
       </v-container>
 
-      <v-row v-if="OwnsCourse" justify="center"
+      <v-row justify="center"
         ><v-col cols="auto" class="text-center mt-10 mb-0">
           <v-btn
             x-large
@@ -154,6 +154,7 @@
             color="blue darken-3"
             append
             to="overview"
+            v-if="OwnsCourse"
           >
             {{ language.courseOverview }}
           </v-btn>

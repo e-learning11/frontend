@@ -625,6 +625,7 @@ export default {
       }
 
       this.validForm = true;
+      this.$refs.testForm.reset();
     },
     async SubmitAssignmet() {
       // Validate the form
@@ -644,6 +645,7 @@ export default {
         this.TestData.takeTest = false;
         this.TestData.finalAnswers = [];
       }
+      this.$refs.AssignmentForm.reset();
     },
     async MarkAsRead() {
       // Disable the Button

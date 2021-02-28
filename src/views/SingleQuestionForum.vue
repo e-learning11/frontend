@@ -329,7 +329,8 @@
                     :class="{
                       'text-center': $vuetify.breakpoint.xs,
                       'mx-auto': $vuetify.breakpoint.xs,
-                      blue: answer.userVote === 1 || answer.userVote === -1,
+                      blue: answer.userVote === 1,
+                      red: answer.userVote === -1,
                       grey: answer.userVote !== 1 && answer.userVote !== -1,
                       'lighten-4':
                         answer.userVote !== 1 && answer.userVote !== -1,
@@ -362,7 +363,7 @@
                       <v-col cols="12" class="text-center">
                         <v-btn
                           :class="{
-                            blue: answer.userVote === -1,
+                            red: answer.userVote === -1,
                             'white--text': answer.userVote === -1,
                             grey: answer.userVote !== -1,
                             'lighten-4': answer.userVote !== -1
@@ -760,6 +761,8 @@ export default {
             this.getComments(this.Question.id, 0, 200, 0, this.answers.length);
           });
       }
+      // Reset the Answer
+      this.newAnswer = "";
     },
     async addQuestionComment() {
       const response = await api.addCommentToQuestion(
@@ -775,6 +778,8 @@ export default {
         // get comments
         this.getComments(this.Question.id, 0, 200, 0, this.answers.length);
       }
+      // Reset the Value
+      this.newQuestionComment = "";
     },
     async addAnswerComment(answerId) {
       const response = await api.addCommentToAnswer(
@@ -790,6 +795,8 @@ export default {
         // get comments
         this.getComments(this.Question.id, 0, 200, 0, this.answers.length);
       }
+      // Reset the Value
+      this.newAnswerComment[answerId] = "";
     },
     async chooseAnswer(answerId, setCorrect) {
       const response = await api.setAnswerAsCorrect(

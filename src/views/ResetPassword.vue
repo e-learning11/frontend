@@ -132,6 +132,7 @@ export default {
         this.$store.state.newNotification.color = "error";
       }
       this.sentRequest = false;
+      this.$refs.Resetform.reset();
     }
   }
 };

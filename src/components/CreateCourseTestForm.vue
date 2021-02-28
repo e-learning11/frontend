@@ -325,6 +325,7 @@ export default {
       });
       // Reset the Question
       this.ResetQuestion();
+      this.$refs.QuestionForm.reset();
     },
     RemoveQuestion(QNumber) {
       //Remove the Selected Question
@@ -359,6 +360,7 @@ export default {
       }
       //Call Reset
       this.ResetTest();
+      this.$refs.TestForm.reset();
     }
   },
   created() {

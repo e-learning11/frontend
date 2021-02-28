@@ -54,9 +54,19 @@ export default {
       this.$store.state.newNotification.state = false;
     }
   },
-  data: () => ({
-    //
-  }),
+  computed: {
+    notificationState() {
+      return this.$store.state.newNotification.state;
+    }
+  },
+  watch: {
+    notificationState(newValue) {
+      if (newValue === true)
+        setTimeout(() => {
+          this.$store.state.newNotification.state = false;
+        }, 5000);
+    }
+  },
   created() {
     // Get the currentLanguage from local storage
     const lang = localStorage.getItem("lang");

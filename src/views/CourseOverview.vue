@@ -109,15 +109,34 @@
         </v-col>
 
         <!--Edit Course Button-->
-        <v-col cols="12" class="text-center mt-5 mb-5">
+        <v-col cols="auto" class="text-center mt-5 mb-5">
           <v-btn
             x-large
             outlined
-            class="text-h6"
+            class="text-h6 mt-3 mx-3"
             color="blue darken-3"
             to="edit"
           >
             {{ language.editCourse }}
+          </v-btn>
+          <v-btn
+            x-large
+            outlined
+            class="text-h6 mt-3 mx-3"
+            color="blue darken-3"
+            to="forum"
+          >
+            {{ language.forum }}
+          </v-btn>
+          <v-btn
+            x-large
+            outlined
+            class="text-h6 mt-3 mx-3"
+            color="blue darken-3"
+            exact
+            :to="`/course/${$route.params.courseId}`"
+          >
+            {{ language.courseMain }}
           </v-btn>
         </v-col>
       </v-row>
@@ -454,6 +473,7 @@ export default {
       }
       // ReEnable button
       this.validSubmitGrade = true;
+      this.$refs.GradeForm.reset();
     },
     mapTestsAndAssignments(courseSections) {
       let SimpleCourseTests = [];

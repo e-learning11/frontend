@@ -332,7 +332,9 @@
     "deleteCourse": "ازالة الدورة",
     "deleteRequest": "تم ارسال طلب الازالة",
     "teacherAdded": "تم اضافة الملم للدورة",
-    "teacherError": "لم يتمكن اضافة المعلم"
+    "teacherError": "لم يتمكن اضافة المعلم",
+    "forum": "المنتدى",
+    "courseMain": "اذهب للدورة"
   },
   "admin": {
     "adminPanel": "لوحة التحكم",

@@ -92,6 +92,7 @@ export default {
         this.$router.push("/resetpassword");
       }
       this.sentRequest = false;
+      this.$refs.Resetform.reset();
     }
   }
 };
