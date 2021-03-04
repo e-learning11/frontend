@@ -59,7 +59,7 @@
                 </v-col>
                 <v-col cols="12">
                   <h2 class="font-weight-medium text-body-1">
-                    {{ language.summary }}
+                    {{ language.language }}
                     <span class="font-weight-light">
                       {{ course.language }}</span
                     >
@@ -70,6 +70,53 @@
                     {{ language.date }}
                     <span class="font-weight-light">
                       {{ course.date.split("T")[0] }}</span
+                    >
+                  </h2>
+                </v-col>
+                <v-col cols="12">
+                  <h2 class="font-weight-medium text-body-1">
+                    {{ language.private }}
+                    <span class="font-weight-light" v-if="!overview.private">
+                      {{ language.false }}
+                    </span>
+                    <span class="font-weight-light" v-else>
+                      {{ language.true }}
+                    </span>
+                  </h2>
+                </v-col>
+              </v-row>
+            </v-card>
+            <v-card flat elevation="0" outlined class="pa-5 rounded-xl mt-5">
+              <v-row dense>
+                <v-col cols="12">
+                  <h2 class="font-weight-medium text-body-1">
+                    {{ language.enrolledUsers }}
+                    <span class="font-weight-light">
+                      {{ overview.noOfEnrolledUsers }}</span
+                    >
+                  </h2>
+                </v-col>
+                <v-col cols="12">
+                  <div class="font-weight-medium text-body-1">
+                    {{ language.ForumQuestions }}
+                    <span class="font-weight-light">
+                      {{ overview.noOfForumQuestions }}</span
+                    >
+                  </div>
+                </v-col>
+                <v-col cols="12">
+                  <h2 class="font-weight-medium text-body-1">
+                    {{ language.assignmentSubmissions }}
+                    <span class="font-weight-light">
+                      {{ overview.noOfAssignmentSubmits }}</span
+                    >
+                  </h2>
+                </v-col>
+                <v-col cols="12">
+                  <h2 class="font-weight-medium text-body-1">
+                    {{ language.essaySubmissions }}
+                    <span class="font-weight-light">
+                      {{ overview.noOfEssaySubmits }}</span
                     >
                   </h2>
                 </v-col>
@@ -424,6 +471,7 @@ export default {
     validSubmitGrade: false,
     currentTeacher: null,
     simpleTeachers: [],
+    overview: null,
     rules: {
       Required: value => !!value || "Required.",
       CorrectGrade: (Grade, MaxGrade) =>
@@ -592,16 +640,24 @@ export default {
           text: t.firstName + t.lastName,
           value: t.id
         }));
-        console.log(this.simpleTeachers);
       }
     }
   },
   async created() {
     // Send the request
-    const courseResponse = await api.getCourseByid(this.$route.params.courseId);
+    const [courseResponse, overviewResponse] = await Promise.all([
+      api.getCourseByid(
+        this.$route.params.courseId,
+        JSON.parse(localStorage.getItem("userToken"))
+      ),
+      api.getCourseOverview(
+        JSON.parse(localStorage.getItem("userToken")),
+        this.$route.params.courseId
+      )
+    ]);
 
     // If courseResponse is successful
-    if (courseResponse.status === 200) {
+    if (courseResponse.status === 200 && overviewResponse.status === 200) {
       // Set the Data recieved from courseResponse
       // whole course data
       this.course = courseResponse.data;
@@ -614,6 +670,7 @@ export default {
         // get the Submissions
         this.getSubmissions(0);
       }
+      this.overview = overviewResponse.data;
     }
     // Else route to Not found
     else {

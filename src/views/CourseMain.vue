@@ -333,7 +333,10 @@ export default {
   },
   async created() {
     // Send the request
-    const response = await api.getCourseByid(this.$route.params.courseId);
+    const response = await api.getCourseByid(
+      this.$route.params.courseId,
+      JSON.parse(localStorage.getItem("userToken"))
+    );
     // If response is successful
     if (response.status === 200) {
       // Send the Request to know if the User is Registered
@@ -359,8 +362,9 @@ export default {
       this.CourseComponent = this.course.CourseSections[0].CourseSectionComponents[0];
       // check if user is the Teacher that owns the course
       if (
-        this.course.instructor.id === this.$store.state.currentUser.id &&
-        this.$store.state.currentUser.type === "teacher"
+        this.$store.state.currentUser !== null &&
+        this.$store.state.currentUser.type === "teacher" &&
+        this.course.instructor.id === this.$store.state.currentUser.id
       )
         this.OwnsCourse = true;
       else this.OwnsCourse = false;

@@ -312,19 +312,35 @@ export default {
     return response;
   },
 
-  async getCourseByid(typeid) {
+  async getCourseByid(typeid, UserToken) {
     //check the type of url
     let typeofCourse = "course_by_id";
     if (isNaN(typeid)) typeofCourse = "course_by_url";
-    const request = {
-      method: "GET",
-      url: `${Base_URL}/api/course/get?type=${typeofCourse}&typeId=${typeid}`
-    };
-    const response = await axios(request)
-      .then(res => res)
-      .catch(err => err.response);
+    if (UserToken == null) {
+      const request = {
+        method: "GET",
+        url: `${Base_URL}/api/course/get?type=${typeofCourse}&typeId=${typeid}`
+      };
+      const response = await axios(request)
+        .then(res => res)
+        .catch(err => err.response);
 
-    return response;
+      return response;
+    } else {
+      console.log(UserToken);
+      const request = {
+        method: "GET",
+        url: `${Base_URL}/api/course/get?type=${typeofCourse}&typeId=${typeid}`,
+        headers: {
+          "x-auth-token": `${UserToken}`
+        }
+      };
+      const response = await axios(request)
+        .then(res => res)
+        .catch(err => err.response);
+
+      return response;
+    }
   },
 
   async MarkAsDone(UserToken, courseId, componentId) {
@@ -937,6 +953,19 @@ export default {
       return response;
     }
   },
+  async editQuestionForum(UserToken, DataObject) {
+    const config = {
+      headers: {
+        "x-auth-token": `${UserToken}`
+      }
+    };
+    const response = await axios
+      .put(`${Base_URL}/api/forum/question`, DataObject, config)
+      .then(res => res)
+      .catch(err => err.response);
+
+    return response;
+  },
   async getNews(offset, limit, id) {
     if (id == null) {
       const response = await axios
@@ -1126,6 +1155,24 @@ export default {
         .catch(err => err.response);
       return response;
     }
+  },
+
+  async editNewsStory(UserToken, DataObject) {
+    let data = new FormData();
+    for (let key in DataObject) {
+      data.append(key, DataObject[key]);
+    }
+    const config = {
+      headers: {
+        "x-auth-token": `${UserToken}`
+      }
+    };
+    const response = await axios
+      .put(`${Base_URL}/api/admin/post`, data, config)
+      .then(res => res)
+      .catch(err => err.response);
+
+    return response;
   },
 
   // PASSWORD REQUESTS

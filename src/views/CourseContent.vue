@@ -150,9 +150,24 @@
                   <h3 class="text-center text-h5">
                     {{ language.currentScore }}
                   </h3>
-                  <h4 class="text-center text-h6">
+                  <h4
+                    class="text-center text-h6"
+                    :class="{
+                      'black--text': TestData.isPassed === 0,
+                      'green--text': TestData.isPassed === 1,
+                      'red--text': TestData.isPassed === 2
+                    }"
+                  >
                     {{ TestData.currentScore }}
                   </h4>
+                  <div v-if="TestData.isPassed !== 0" class="text-center">
+                    <span class="green--text" v-if="TestData.isPassed === 1">{{
+                      language.pass
+                    }}</span>
+                    <span class="red--text" v-if="TestData.isPassed === 2">{{
+                      language.fail
+                    }}</span>
+                  </div>
                 </v-col>
                 <v-col cols="auto">
                   <v-btn
@@ -232,9 +247,24 @@
                   <h3 class="text-center text-h5">
                     {{ language.currentScore }}
                   </h3>
-                  <h4 class="text-center text-h6">
+                  <h4
+                    class="text-center text-h6"
+                    :class="{
+                      'black--text': TestData.isPassed === 0,
+                      'green--text': TestData.isPassed === 1,
+                      'red--text': TestData.isPassed === 2
+                    }"
+                  >
                     {{ TestData.currentScore }}
                   </h4>
+                  <div v-if="TestData.isPassed !== 0" class="text-center">
+                    <span class="green--text" v-if="TestData.isPassed === 1">{{
+                      language.pass
+                    }}</span>
+                    <span class="red--text" v-if="TestData.isPassed === 2">{{
+                      language.fail
+                    }}</span>
+                  </div>
                 </v-col>
                 <v-col cols="auto">
                   <v-btn
@@ -560,7 +590,8 @@ export default {
       TestData: {
         finalAnswers: [],
         takeTest: true,
-        currentScore: 0
+        currentScore: 0,
+        isPassed: 0
       },
       AssignmentFile: null,
       validAssignment: false,
@@ -642,6 +673,7 @@ export default {
         this.TestData.currentScore = !this.$vuetify.rtl
           ? "Submitted For Grading"
           : "قيد التصحيح";
+        this.TestData.isPassed = 0;
         this.TestData.takeTest = false;
         this.TestData.finalAnswers = [];
       }
@@ -709,6 +741,7 @@ export default {
           // if Graded show the Grade
           if (response.data.testState === 1) {
             this.TestData.currentScore = response.data.grade;
+            this.TestData.isPassed = response.data.isPassed ? 1 : 2;
             this.TestData.takeTest = false;
             this.TestData.finalAnswers = [];
           }
@@ -717,12 +750,14 @@ export default {
             this.TestData.currentScore = !this.$vuetify.rtl
               ? "Submitted For Grading"
               : "قيد التصحيح";
+            this.TestData.isPassed = 0;
             this.TestData.takeTest = false;
             this.TestData.finalAnswers = [];
           }
           // if Not Submitted Before take test
           else if (response.data.testState === 3) {
             this.TestData.currentScore = 0;
+            this.TestData.isPassed = 0;
             this.TestData.takeTest = true;
             this.TestData.finalAnswers = [];
           }
@@ -741,6 +776,7 @@ export default {
           // if Graded show the Grade
           if (response.data.assignmentState === 1) {
             this.TestData.currentScore = response.data.grade;
+            this.TestData.isPassed = response.data.isPassed ? 1 : 2;
             this.TestData.takeTest = false;
             this.TestData.finalAnswers = [];
           }
@@ -749,12 +785,14 @@ export default {
             this.TestData.currentScore = !this.$vuetify.rtl
               ? "Submitted For Grading"
               : "قيد التصحيح";
+            this.TestData.isPassed = 0;
             this.TestData.takeTest = false;
             this.TestData.finalAnswers = [];
           }
           // if Not Submitted Before take test
           else if (response.data.assignmentState === 3) {
             this.TestData.currentScore = 0;
+            this.TestData.isPassed = 0;
             this.TestData.takeTest = true;
             this.TestData.finalAnswers = [];
           }
@@ -768,12 +806,12 @@ export default {
         .then(resp => resp.blob())
         .then(blob => {
           const url = window.URL.createObjectURL(blob);
-          const a = document.createElement("a");
-          a.style.display = "none";
-          a.href = url;
-          a.download = "download";
-          document.body.appendChild(a);
-          a.click();
+          const link = document.createElement("a");
+          link.style.display = "none";
+          link.href = url;
+          link.download = "download";
+          document.body.appendChild(link);
+          link.click();
           window.URL.revokeObjectURL(url);
         })
         .catch();
@@ -792,7 +830,8 @@ export default {
     this.TestData = {
       finalAnswers: [],
       takeTest: true,
-      currentScore: 0
+      currentScore: 0,
+      isPassed: 0
     };
     this.AssignmentFile = null;
     // check the status
@@ -819,7 +858,10 @@ export default {
     }
 
     // Send the request to get the Course
-    const response = await api.getCourseByid(this.$route.params.courseId);
+    const response = await api.getCourseByid(
+      this.$route.params.courseId,
+      JSON.parse(localStorage.getItem("userToken"))
+    );
     // If response is successful
     if (response.status === 200) {
       // Set the Data recieved from response

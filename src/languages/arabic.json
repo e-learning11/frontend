@@ -11,7 +11,11 @@
     "news": "اخبار",
     "delete": "ازالة",
     "backNews": "العودة للاخبار",
-    "adminPanel": "لوحة التحكم"
+    "adminPanel": "لوحة التحكم",
+    "edit": "تعديل",
+    "finishEdit": "انهاء التعديل",
+    "addedSuccess":"تم التعديل بنجاح",
+    "addedFailure":"حدث خطأ ما"
   },
   "login": {
     "login": "دخول",
@@ -178,7 +182,9 @@
     "uploadDate": "تاريخ الانشاء :",
     "about": "عن",
     "teacher": "معلم",
-    "file": "ملف اضافى"
+    "file": "ملف اضافى",
+    "pass": "تجاوزت",
+    "fail": "لم تتجاوز"
   },
   "courseForum": {
     "search": "بحث...",
@@ -210,7 +216,11 @@
     "deleteSuccess": "تمت الازالة",
     "donotOwn": "لا يمكنك الازالة",
     "alreadyChose": "ازل اختيارك للاجابة اولا",
-    "delete": "ازالة"
+    "delete": "ازالة",
+    "edit":"تعديل",
+    "finishEdit":"انهاء التعديل",
+    "editedSuccess":"تم التعديل بنجاح",
+    "editedFailure":"حدث خطأ ما"
   },
   "createCourseForms": {
     "newAssignment": "تسليمة جديدة",
@@ -334,7 +344,14 @@
     "teacherAdded": "تم اضافة الملم للدورة",
     "teacherError": "لم يتمكن اضافة المعلم",
     "forum": "المنتدى",
-    "courseMain": "اذهب للدورة"
+    "courseMain": "اذهب للدورة",
+    "private":"مخفى",
+    "false":"لا",
+    "true":"نعم",
+    "enrolledUsers": "عدد المشتركين فى الدورة :",
+    "ForumQuestions": "عدد الاسئلة فى المنتدى :",
+    "assignmentSubmissions": "عدد التسليمات المرسلة :",
+    "essaySubmissions": "عدد اسئلة الاختبارات المرسلة :"
   },
   "admin": {
     "adminPanel": "لوحة التحكم",

@@ -11,6 +11,7 @@
               justify="center"
               align="center"
               class="mb-5"
+              v-if="!isEdit"
               :class="{
                 'pa-10': $vuetify.breakpoint.mdAndUp,
                 'pa-5': $vuetify.breakpoint.smAndDown
@@ -19,15 +20,75 @@
               <v-col cols="12" class="text-h3">
                 {{ story.title }}
               </v-col>
-              <v-col cols="12" class="text-h6">
+              <v-col cols="12" class="text-h6 text-justify">
                 {{ story.text }}
               </v-col>
             </v-row>
+            <v-form ref="newsForm" v-else>
+              <v-row
+                justify="center"
+                align="center"
+                class="mb-5"
+                :class="{
+                  'pa-10': $vuetify.breakpoint.mdAndUp,
+                  'pa-5': $vuetify.breakpoint.smAndDown
+                }"
+              >
+                <v-col cols="12" class="text-h3">
+                  <v-text-field
+                    color="blue darken-2"
+                    v-model="editedStory.title"
+                    required
+                    :value="story.title"
+                    :rules="[rules.required]"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" class="text-h6 text-justify">
+                  <v-textarea
+                    filled
+                    full-width
+                    :rules="[rules.required]"
+                    auto-grow
+                    hide-details
+                    :value="story.text"
+                    v-model="editedStory.text"
+                  ></v-textarea>
+                </v-col>
+              </v-row>
+            </v-form>
           </v-card>
         </v-col>
         <v-col cols="auto">
           <v-btn outlined color="blue" to="/news" exact>
             {{ language.backNews }}</v-btn
+          >
+        </v-col>
+        <v-col
+          cols="auto"
+          v-if="
+            $store.state.currentUser != null &&
+              $store.state.currentUser.type === 'admin'
+          "
+        >
+          <v-btn
+            outlined
+            color="blue"
+            @click="
+              isEdit = true;
+              editedStory = { ...story };
+            "
+            v-if="!isEdit"
+          >
+            {{ language.edit }}</v-btn
+          >
+          <v-btn
+            outlined
+            color="blue"
+            @click="editNews"
+            v-if="isEdit"
+            :disabled="sendRequest"
+          >
+            {{ language.finishEdit }}</v-btn
           >
         </v-col>
       </v-row>
@@ -46,7 +107,13 @@ export default {
   data() {
     return {
       waitRequest: true,
-      story: {}
+      story: {},
+      isEdit: false,
+      editedStory: {},
+      rules: {
+        required: value => !!value || "Required."
+      },
+      sendRequest: false
     };
   },
   components: { Footer, Loading },
@@ -56,6 +123,30 @@ export default {
     },
     language() {
       return this.$store.state.language.navbar;
+    }
+  },
+  methods: {
+    async editNews() {
+      if (!this.$refs.newsForm.validate()) return;
+      this.sendRequest = true;
+      // Send the request to Edit
+      const response = await api.editNewsStory(
+        JSON.parse(localStorage.getItem("userToken")),
+        { ...this.editedStory, postId: this.$route.params.story }
+      );
+      if (response.status === 200) {
+        // Success message and edit false
+        this.$store.state.newNotification.Message = this.language.addedSuccess;
+        this.$store.state.newNotification.state = true;
+        this.$store.state.newNotification.color = "success";
+      } else {
+        // Failure message and edit false
+        this.$store.state.newNotification.Message = this.language.addedFailure;
+        this.$store.state.newNotification.state = true;
+        this.$store.state.newNotification.color = "error";
+      }
+      this.isEdit = false;
+      this.sendRequest = false;
     }
   },
   async created() {

@@ -54,6 +54,34 @@
                   >{{ $store.state.language.courseForum.delete }}</v-btn
                 >
               </div>
+              <div
+                class="text-caption mt-5"
+                v-if="
+                  $store.state.currentUser.type === 'admin' ||
+                    $store.state.currentUser.id === Question.User.id
+                "
+              >
+                <v-btn
+                  outlined
+                  x-small
+                  color="blue darken-2"
+                  @click="
+                    isEditQuestion = true;
+                    editedQuestion = { ...Question };
+                  "
+                  v-if="!isEditQuestion"
+                  >{{ $store.state.language.courseForum.edit }}</v-btn
+                >
+                <v-btn
+                  outlined
+                  x-small
+                  color="blue darken-2"
+                  @click="editQuestion"
+                  :disabled="!editQuestionForm"
+                  v-else
+                  >{{ $store.state.language.courseForum.finishEdit }}</v-btn
+                >
+              </div>
             </v-col>
             <v-col
               :class="{
@@ -72,12 +100,36 @@
               <div class="text-caption font-weight-light">
                 {{ timeSince(new Date(Question.createdAt)) }}
               </div>
-              <div class="text-h4 font-weight-bold">
-                {{ Question.title }}
-              </div>
-              <div class="text-body-1 font-weight-light mt-7 mb-5">
-                {{ Question.text }}
-              </div>
+              <template v-if="!isEditQuestion">
+                <div class="text-h4 font-weight-bold">
+                  {{ Question.title }}
+                </div>
+                <div class="text-body-1 font-weight-light mt-7 mb-5">
+                  {{ Question.text }}
+                </div>
+              </template>
+              <template v-else>
+                <v-form v-model="editQuestionForm">
+                  <div class="text-h4 font-weight-bold">
+                    <v-text-field
+                      color="blue darken-2"
+                      v-model="editedQuestion.title"
+                      required
+                      :rules="[rules.Required]"
+                    ></v-text-field>
+                  </div>
+                  <div class="text-body-1 font-weight-light mt-7 mb-5">
+                    <v-textarea
+                      filled
+                      full-width
+                      :rules="[rules.Required]"
+                      auto-grow
+                      hide-details
+                      v-model="editedQuestion.text"
+                    ></v-textarea>
+                  </div>
+                </v-form>
+              </template>
               <v-card
                 flat
                 elevation="0"
@@ -532,7 +584,7 @@
 
           <v-row
             justify="center"
-            v-if="!(getNewCourses === true || answers.length % 20 != 0)"
+            v-if="!(getNewAnswers === true || answers.length % 20 != 0)"
             class="mt-5 mb-5"
           >
             <v-col cols="auto">
@@ -627,7 +679,7 @@ export default {
   data() {
     return {
       waitRequest: true,
-      getNewCourses: false,
+      getNewAnswers: false,
       waitVote: {},
       rules: {
         Required: value => !!value || "Required."
@@ -638,7 +690,10 @@ export default {
       answers: null,
       newAnswer: "",
       newQuestionComment: "",
-      newAnswerComment: {}
+      newAnswerComment: {},
+      isEditQuestion: false,
+      editedQuestion: {},
+      editQuestionForm: false
     };
   },
   computed: {
@@ -720,10 +775,10 @@ export default {
       }
     },
     async loadMore() {
-      if (this.getNewCourses === true || this.answers.length % 20 != 0) return;
+      if (this.getNewAnswers === true || this.answers.length % 20 != 0) return;
 
       // Send the Request
-      this.getNewCourses = true;
+      this.getNewAnswers = true;
       const response = api.getSingleQuestionAnswers(
         JSON.parse(localStorage.getItem("userToken")),
         this.answers.length,
@@ -732,7 +787,7 @@ export default {
       );
       if (response.status === 200) {
         this.answers.push(...response.data);
-        if (response.data.length !== 0) this.getNewCourses = false;
+        if (response.data.length !== 0) this.getNewAnswers = false;
       }
     },
     async addAnswer() {
@@ -898,6 +953,43 @@ export default {
         this.$store.state.newNotification.state = true;
         this.$store.state.newNotification.color = "error";
       }
+    },
+    async editQuestion() {
+      // Send the request to Edit
+      const response = await api.editQuestionForum(
+        JSON.parse(localStorage.getItem("userToken")),
+        {
+          questionId: this.editedQuestion.id,
+          title: this.editedQuestion.title,
+          text: this.editedQuestion.text,
+          tags: this.editedQuestion.tags
+        }
+      );
+      if (response.status === 200) {
+        // Success message and edit false
+        this.$store.state.newNotification.Message = this.language.editedSuccess;
+        this.$store.state.newNotification.state = true;
+        this.$store.state.newNotification.color = "success";
+
+        // Get the Question
+        this.waitRequest = true;
+        const questionResponse = await api.getSingleQuestion(
+          JSON.parse(localStorage.getItem("userToken")),
+          this.$route.params.question
+        );
+        if (questionResponse.status === 200) {
+          this.Question = questionResponse.data[0];
+          this.getComments(this.Question.id, 0, 200, 0, this.answers.length);
+
+          this.waitRequest = false;
+        }
+      } else {
+        // Failure message and edit false
+        this.$store.state.newNotification.Message = this.language.editedFailure;
+        this.$store.state.newNotification.state = true;
+        this.$store.state.newNotification.color = "error";
+      }
+      this.isEditQuestion = false;
     }
   },
   async created() {
@@ -917,8 +1009,8 @@ export default {
         return;
       }
     }
-    // Set the getNewCourses to true
-    this.getNewCourses = true;
+    // Set the getNewAnswers to true
+    this.getNewAnswers = true;
     // Send the requests to get the questions and Answers
     let [questionResponse, answerResponse] = await Promise.all([
       api.getSingleQuestion(
@@ -941,7 +1033,7 @@ export default {
       // Take the Data from the Server and Show it
       this.Question = questionResponse.data[0];
       this.answers = answerResponse.data;
-      if (answerResponse.data.length !== 0) this.getNewCourses = false;
+      if (answerResponse.data.length !== 0) this.getNewAnswers = false;
     } else {
       this.$router.push(`/course/${this.$route.params.courseId}/forum`);
       return;

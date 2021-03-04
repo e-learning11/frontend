@@ -11,7 +11,11 @@
     "news": "News",
     "delete": "Delete",
     "backNews": "Back to News",
-    "adminPanel": "Admin Panel"
+    "adminPanel": "Admin Panel",
+    "edit": "Edit",
+    "finishEdit": "Finish Edit",
+    "addedSuccess":"Edited Successfuly",
+    "addedFailure":"Edit was Not Successful"
   },
   "login": {
     "login": "Login",
@@ -179,7 +183,9 @@
     "uploadDate": "Upload Date :",
     "about": "About",
     "teacher": "Teacher",
-    "file": "Extra File"
+    "file": "Extra File",
+    "pass": "Passed",
+    "fail": "Did not Pass"
   },
   "courseForum": {
     "search": "Search...",
@@ -211,7 +217,11 @@
     "deleteSuccess": "Deleted Successfully",
     "donotOwn": "You can not delete this Item",
     "alreadyChose": "Unselect Correct Answer First",
-    "delete": "Delete"
+    "delete": "Delete",
+    "edit":"Edit",
+    "finishEdit":"Finish Edit",
+    "editedSuccess":"Edited Successfuly",
+    "editedFailure":"Edit was Not Successful"
   },
   "createCourseForms": {
     "newAssignment": "New Assignment",
@@ -334,7 +344,14 @@
     "teacherAdded": "Teacher Added to Course",
     "teacherError": "Could Not Add Teacher",
     "forum": "Forum",
-    "courseMain": "Go to Course"
+    "courseMain": "Go to Course",
+    "private": "Private",
+    "false":"No",
+    "true":"Yes",
+    "enrolledUsers": "Number of Enrolled Users :",
+    "ForumQuestions": "Number of Forum Questions :",
+    "assignmentSubmissions": "Number of Assignment Submissions :",
+    "essaySubmissions": "Number of Test Questions Submissions :"
   },
   "admin": {
     "adminPanel": "Admin Panel",

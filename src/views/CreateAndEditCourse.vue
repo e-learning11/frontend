@@ -135,7 +135,10 @@ export default {
           };
       } else if (this.$route.name === "EditCourse") {
         // Send Request to get course
-        const response = await api.getCourseByid(this.$route.params.courseId);
+        const response = await api.getCourseByid(
+          this.$route.params.courseId,
+          JSON.parse(localStorage.getItem("userToken"))
+        );
         if (response.status === 200) {
           // Set the value with the one gotten from the Server
           this.$store.state.CourseInfo = response.data;
