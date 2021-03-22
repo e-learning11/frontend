@@ -166,11 +166,13 @@
               active-class="logo-active"
               text
               height="50"
-              class="text-h4 text-none"
+              class="text-h4 text-none mx-3"
               color="white"
-            >
-              <span>Brand</span>
-              <v-icon large>mdi-fleur-de-lis</v-icon>
+              ><v-img
+                width="96"
+                height="60"
+                src="../assets/newLogo.svg"
+              ></v-img>
             </v-btn>
 
             <v-btn x-small @click="changeLanguage" outlined color="white">

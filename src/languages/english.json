@@ -14,8 +14,8 @@
     "adminPanel": "Admin Panel",
     "edit": "Edit",
     "finishEdit": "Finish Edit",
-    "addedSuccess":"Edited Successfuly",
-    "addedFailure":"Edit was Not Successful"
+    "addedSuccess": "Edited Successfuly",
+    "addedFailure": "Edit was Not Successful"
   },
   "login": {
     "login": "Login",
@@ -155,7 +155,8 @@
     "instructor": "Instructor",
     "prerequisites": "Prerequisites",
     "finishedCourses": "You need to have Finished the Following Courses :",
-    "successMessage": "You are Now Registered in This Course"
+    "successMessage": "You are Now Registered in This Course",
+    "certificate": "Download Certificate"
   },
   "courseContent": {
     "registerNow": "Register Now",
@@ -218,10 +219,10 @@
     "donotOwn": "You can not delete this Item",
     "alreadyChose": "Unselect Correct Answer First",
     "delete": "Delete",
-    "edit":"Edit",
-    "finishEdit":"Finish Edit",
-    "editedSuccess":"Edited Successfuly",
-    "editedFailure":"Edit was Not Successful"
+    "edit": "Edit",
+    "finishEdit": "Finish Edit",
+    "editedSuccess": "Edited Successfuly",
+    "editedFailure": "Edit was Not Successful"
   },
   "createCourseForms": {
     "newAssignment": "New Assignment",
@@ -294,7 +295,9 @@
     "no": "No",
     "privateURL": "If The Course is Private it can only be accessed by the URL and it Would not appear on the site.",
     "URLhint": "The URL is the last part after the domain, Example website/course/{URL is here}",
-    "uploadImage": "Upload An Image"
+    "uploadImage": "Upload An Image",
+    "nonBlocking": "Non Blocking",
+    "blockingHint": "If Yes then all the course is open from the start, If No they will need to pass one by one"
   },
   "footer": {
     "aboutUs": "About Us",
@@ -346,8 +349,8 @@
     "forum": "Forum",
     "courseMain": "Go to Course",
     "private": "Private",
-    "false":"No",
-    "true":"Yes",
+    "false": "No",
+    "true": "Yes",
     "enrolledUsers": "Number of Enrolled Users :",
     "ForumQuestions": "Number of Forum Questions :",
     "assignmentSubmissions": "Number of Assignment Submissions :",

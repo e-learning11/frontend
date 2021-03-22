@@ -14,8 +14,8 @@
     "adminPanel": "لوحة التحكم",
     "edit": "تعديل",
     "finishEdit": "انهاء التعديل",
-    "addedSuccess":"تم التعديل بنجاح",
-    "addedFailure":"حدث خطأ ما"
+    "addedSuccess": "تم التعديل بنجاح",
+    "addedFailure": "حدث خطأ ما"
   },
   "login": {
     "login": "دخول",
@@ -47,7 +47,7 @@
     "accountLogin": "تم انشاء الحساب, الرجاء الدخول",
     "token": "الرمز",
     "resetPassword": "تغيير كلمة المرور",
-    "forgetPassword" : "نسيت كلمة المرور",
+    "forgetPassword": "نسيت كلمة المرور",
     "sendEmail": "ارسال البريد",
     "passwordChange": "تم تغيير كلمة المرور",
     "wrongToken": "الرمز الذى ادخلته غير صحيح"
@@ -154,7 +154,8 @@
     "instructor": "معلم",
     "prerequisites": "المتطلبات السابقة",
     "finishedCourses": "يجب أن تكون قد أنهيت الدورات التالية:",
-    "successMessage": "أنت الآن مسجل في هذه الدورة"
+    "successMessage": "أنت الآن مسجل في هذه الدورة",
+    "certificate": "تنزيل الشهادة"
   },
   "courseContent": {
     "registerNow": "اشترك الان",
@@ -217,10 +218,10 @@
     "donotOwn": "لا يمكنك الازالة",
     "alreadyChose": "ازل اختيارك للاجابة اولا",
     "delete": "ازالة",
-    "edit":"تعديل",
-    "finishEdit":"انهاء التعديل",
-    "editedSuccess":"تم التعديل بنجاح",
-    "editedFailure":"حدث خطأ ما"
+    "edit": "تعديل",
+    "finishEdit": "انهاء التعديل",
+    "editedSuccess": "تم التعديل بنجاح",
+    "editedFailure": "حدث خطأ ما"
   },
   "createCourseForms": {
     "newAssignment": "تسليمة جديدة",
@@ -294,7 +295,9 @@
     "privateURL": "اذا تم اختيار خاص فيمكن الدخول على الدورة باستخدام الرابط فقط, لن تظهر الدورة على الموقع.",
     "URLhint": "الرابط هو الجزء الاخير, مثال website/course/{الرابط}",
     "uploadImage": "ارفع صورة",
-    "awaitApprove": "تم تكوين الحساب, الرجاء انتظار الموافقة عليه" 
+    "awaitApprove": "تم تكوين الحساب, الرجاء انتظار الموافقة عليه",
+    "nonBlocking": "غير مانعة",
+    "blockingHint": "نعم تعنى ان الدورة كلها مفتوحة من البداية و لا تعنى ان عليهم المرور بالترتيب على الدورة"
   },
   "footer": {
     "aboutUs": "معلومات عنا",
@@ -345,9 +348,11 @@
     "teacherError": "لم يتمكن اضافة المعلم",
     "forum": "المنتدى",
     "courseMain": "اذهب للدورة",
-    "private":"مخفى",
-    "false":"لا",
-    "true":"نعم",
+    "private": "مخفى",
+    "nonBlocking": "Non Blocking",
+    "blockingHint": "If Yes then all the course is open from the start, If No they will need to pass one by one",
+    "false": "لا",
+    "true": "نعم",
     "enrolledUsers": "عدد المشتركين فى الدورة :",
     "ForumQuestions": "عدد الاسئلة فى المنتدى :",
     "assignmentSubmissions": "عدد التسليمات المرسلة :",

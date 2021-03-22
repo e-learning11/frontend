@@ -151,10 +151,10 @@ export default {
           // append the file
           //videoFlag = false;
           data.append("vidoeFile", section.components[i].File);
-          section.components[i].File = true;
+          section.components[i].hasFile = true;
         } else if (
           section.components[i].type === "Assignment" &&
-          section.components[i].File != null
+          section.components[i].hasFile != null
         ) {
           // append the file
           //assignFlag = false;
@@ -327,7 +327,6 @@ export default {
 
       return response;
     } else {
-      console.log(UserToken);
       const request = {
         method: "GET",
         url: `${Base_URL}/api/course/get?type=${typeofCourse}&typeId=${typeid}`,

@@ -40,8 +40,8 @@
               <div class="text-body font-weight-light mb-3">
                 {{ language.createdBy }}
                 <span class="text-body white--text font-weight-black mb-3"
-                  >{{ course.instructor.firstName }}
-                  {{ course.instructor.lastName }}</span
+                  >{{ course.instructors[0].firstName }}
+                  {{ course.instructors[0].lastName }}</span
                 >
               </div>
               <div class="text-subtitle-2 font-weight-thin">
@@ -163,12 +163,22 @@
           <v-btn
             x-large
             outlined
-            class="text-h6"
+            class="text-h6 mx-5"
             color="blue darken-3"
             append
             to="forum"
           >
             {{ language.forum }}
+          </v-btn>
+          <v-btn
+            v-if="finishedCourse"
+            x-large
+            outlined
+            class="text-h6 mx-5"
+            color="blue darken-3"
+            @click="downloadCertificate"
+          >
+            {{ language.certificate }}
           </v-btn>
         </v-col>
       </v-row>
@@ -230,16 +240,16 @@
                     'col-8': $vuetify.breakpoint.mdAndUp,
                     'col-11': $vuetify.breakpoint.smAndDown
                   }"
-                  v-if="course.instructor"
+                  v-if="course.instructors"
                 >
                   <div
                     class="font-weight-bold text-subtitle-1 mx-auto text-center"
                   >
-                    {{ course.instructor.firstName }}
-                    {{ course.instructor.lastName }}
+                    {{ course.instructors[0].firstName }}
+                    {{ course.instructors[0].lastName }}
                   </div>
                   <div class="font-weight-light text-subtitle-2">
-                    {{ course.instructor.about }}
+                    {{ course.instructors[0].about }}
                   </div>
                 </v-col>
               </v-row>
@@ -282,6 +292,7 @@ import Loading from "@/components/Loading.vue";
 import CourseComponents from "@/components/CourseComponents.vue";
 //import Player from "@vimeo/player";
 import api from "api-client";
+import commonFunctions from "@/plugins/commonFunction.js";
 
 export default {
   components: { Footer, Loading, CourseComponents },
@@ -290,7 +301,8 @@ export default {
       CourseComponent: null,
       course: null,
       OwnsCourse: false,
-      registered: false
+      registered: false,
+      finishedCourse: false
     };
   },
   computed: {
@@ -298,7 +310,7 @@ export default {
       return this.CourseComponent.videoID;
     },
     instructorImage() {
-      return api.getImageSource(this.course.instructor.id, "user");
+      return api.getImageSource(this.course.instructors[0].id, "user");
     },
     language() {
       return this.$store.state.language.courseMain;
@@ -329,6 +341,13 @@ export default {
         this.$store.state.newNotification.color = "error";
         this.registered = false;
       }
+    },
+    downloadCertificate() {
+      commonFunctions.downloadPDF(
+        this.$store.state.currentUser.firstName +
+          this.$store.state.currentUser.lastName,
+        this.course.name
+      );
     }
   },
   async created() {
@@ -350,6 +369,9 @@ export default {
         );
         if (stateResponse.status === 200) {
           this.registered = true;
+          if (stateResponse.data.type === "finished") {
+            this.finishedCourse = true;
+          }
         } else {
           this.registered = false;
         }
@@ -364,7 +386,7 @@ export default {
       if (
         this.$store.state.currentUser !== null &&
         this.$store.state.currentUser.type === "teacher" &&
-        this.course.instructor.id === this.$store.state.currentUser.id
+        this.course.instructors[0].id === this.$store.state.currentUser.id
       )
         this.OwnsCourse = true;
       else this.OwnsCourse = false;

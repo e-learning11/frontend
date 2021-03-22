@@ -30,10 +30,10 @@
             'text-subtitle-2': $vuetify.breakpoint.sm,
             'text-subtitle-1': $vuetify.breakpoint.mdAndUp
           }"
-          v-if="CardData.instructor"
+          v-if="CardData.instructors"
         >
-          {{ CardData.instructor.firstName }}
-          {{ CardData.instructor.lastName }}
+          {{ CardData.instructors[0].firstName }}
+          {{ CardData.instructors[0].lastName }}
         </p>
       </v-card-text>
       <v-card-text v-if="CardData.private">

@@ -21,8 +21,11 @@ export default new Vuex.Store({
       prerequisites: [],
       url: null,
       age: [0, 70],
+      private: false,
+      nonBlocking: false,
       components: [],
-      sections: []
+      sections: [],
+      deleted: []
     },
     language: english
   },

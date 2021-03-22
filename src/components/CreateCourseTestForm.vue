@@ -328,6 +328,12 @@ export default {
       this.$refs.QuestionForm.reset();
     },
     RemoveQuestion(QNumber) {
+      if (this.NewTest.test[QNumber].id) {
+        this.$store.state.CourseInfo.deleted.push({
+          id: this.NewTest.test[QNumber].id,
+          type: "question"
+        });
+      }
       //Remove the Selected Question
       this.NewTest.test.splice(QNumber, 1);
     },
@@ -358,6 +364,7 @@ export default {
           type: "Test"
         };
       }
+
       //Call Reset
       this.ResetTest();
       this.$refs.TestForm.reset();
@@ -369,6 +376,16 @@ export default {
       this.NewTest = this.$store.state.CourseInfo.components[
         this.ComponentToEdit
       ];
+      if (this.NewTest.id != null) {
+        this.$set(this.NewTest, "test", this.NewTest.Questions);
+        this.NewTest.test.forEach(question => {
+          this.$set(question, "correctAnswer", question.Answers.length - 1);
+          this.$set(question, "A", []);
+          question.Answers.forEach(answer => {
+            question.A.push(answer.A);
+          });
+        });
+      }
     }
   },
   destroyed() {

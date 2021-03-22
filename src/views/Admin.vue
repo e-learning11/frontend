@@ -9,7 +9,7 @@
         left
         color="#000"
         width="20%"
-        v-if="$vuetify.breakpoint.mdAndUp"
+        v-if="$vuetify.breakpoint.lgAndUp"
         bottom
       >
         <v-row justify="center" class="mt-10">

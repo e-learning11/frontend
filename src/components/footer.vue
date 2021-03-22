@@ -111,20 +111,13 @@
           </v-list>
         </v-col>
       </v-row>
-      <v-row no-gutters align="center" justify="center" class="mt-10">
+      <v-row no-gutters align="center" justify="center" class="mt-10 mb-3">
         <v-col md="4" sm="12" class="center-items">
-          <v-btn
-            to="/"
-            active-class="btn-active"
-            text
-            class="text-h4 text-none"
-            color="white"
-          >
-            Brand
-            <v-icon large>mdi-fleur-de-lis</v-icon>
-          </v-btn>
+          <router-link to="/">
+            <v-img width="160" height="100" src="../assets/newLogo.svg"></v-img>
+          </router-link>
         </v-col>
-        <v-col md="4" sm="12" class="center-items">Brand &#169; 2021</v-col>
+        <v-col md="4" sm="12" class="center-items">&#169; 2021</v-col>
         <v-col md="4" sm="12" class="center-items">
           <v-btn icon to="#" color="white" x-large>
             <v-icon>mdi-facebook</v-icon>

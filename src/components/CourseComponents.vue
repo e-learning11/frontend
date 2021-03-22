@@ -64,7 +64,8 @@
               :key="j"
               class="text-body-2 font-weight-light link-wrapper mb-2 rounded-lg"
               :class="{
-                'disabled-link': component.number > currentComponent,
+                'disabled-link':
+                  !nonBlocking && component.number > currentComponent,
                 'active-link':
                   component.number === Number($route.params.componentNumber)
               }"
@@ -78,7 +79,10 @@
                 :to="`/course/${CourseNumber}/${component.number}`"
               >
                 <v-row align="center">
-                  <v-col cols="1" v-if="component.number > currentComponent">
+                  <v-col
+                    cols="1"
+                    v-if="!nonBlocking && component.number > currentComponent"
+                  >
                     <v-icon size="16" color="grey darken-2">
                       mdi-lock
                     </v-icon>
@@ -86,21 +90,33 @@
                   <v-col cols="1" v-else>
                     <v-icon
                       size="16"
-                      color="grey darken-2"
+                      color="darken-2"
+                      :class="{
+                        'green--text': component.done,
+                        'grey--text': !component.done
+                      }"
                       v-if="component.type === 'Video'"
                     >
                       mdi-play-circle-outline
                     </v-icon>
                     <v-icon
+                      :class="{
+                        'green--text': component.done,
+                        'grey--text': !component.done
+                      }"
                       size="16"
-                      color="grey darken-2"
+                      color="darken-2"
                       v-if="component.type === 'Assignment'"
                     >
                       mdi-notebook-edit-outline
                     </v-icon>
                     <v-icon
+                      :class="{
+                        'green--text': component.done,
+                        'grey--text': !component.done
+                      }"
                       size="16"
-                      color="grey darken-2"
+                      color="darken-2"
                       v-if="component.type === 'Test'"
                     >
                       mdi-fountain-pen-tip
@@ -125,7 +141,8 @@ export default {
     sections: Array,
     PageType: String,
     CourseNumber: Number,
-    currentComponent: Number
+    currentComponent: Number,
+    nonBlocking: Boolean
   },
   computed: {
     language() {

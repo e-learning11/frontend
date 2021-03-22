@@ -148,15 +148,33 @@
           >
             <div class="mr-5 font-weight-bold">{{ language.private }}</div>
             <v-radio-group
-              :rules="[rules.Required]"
               row
               mandatory
               v-model="$store.state.CourseInfo['private']"
               :hint="language.privateURL"
               persistent-hint
             >
-              <v-radio :label="language.no" value="false"></v-radio>
-              <v-radio :label="language.yes" value="true"></v-radio>
+              <v-radio :label="language.no" :value="false"></v-radio>
+              <v-radio :label="language.yes" :value="true"></v-radio>
+            </v-radio-group>
+          </v-col>
+          <v-col
+            cols="12"
+            :class="{
+              'text-h6': $vuetify.breakpoint.smAndUp,
+              'text-subtitle-1': $vuetify.breakpoint.xs
+            }"
+          >
+            <div class="mr-5 font-weight-bold">{{ language.nonBlocking }}</div>
+            <v-radio-group
+              row
+              v-model="$store.state.CourseInfo['nonBlocking']"
+              :hint="language.blockingHint"
+              mandatory
+              persistent-hint
+            >
+              <v-radio :label="language.no" :value="false"></v-radio>
+              <v-radio :label="language.yes" :value="true"></v-radio>
             </v-radio-group>
           </v-col>
           <v-col
@@ -230,6 +248,14 @@
               <v-btn icon @click="RemoveComponent(i)">
                 <v-icon color="red">mdi-close-circle-outline</v-icon>
               </v-btn>
+              <v-switch
+                v-if="isEdit"
+                v-model="component.reset"
+                :label="language.reset"
+                hide-details
+                class="mx-5"
+                style="display:inline-block;"
+              ></v-switch>
             </v-col>
           </v-row>
 
@@ -410,6 +436,7 @@ export default {
         prerequisites: [],
         url: null,
         age: [0, 70],
+        private: false,
         components: [],
         sections: []
       };
@@ -423,8 +450,10 @@ export default {
         !this.$refs.InfoForm.validate() ||
         this.$store.state.CourseInfo.components.length == 0 ||
         !this.ValidateSections()
-      )
+      ) {
+        this.sendRequest = false;
         return;
+      }
       //process the components to be under the correct section
       this.ProcessSections();
       //Sends the Request and remove components property
@@ -451,6 +480,8 @@ export default {
           this.$store.state.newNotification.color = "error";
         }
       } else {
+        // ADD deletedComponents
+        this.$store.state.CourseInfo.deletedComponents = this.deletedComponents;
         const response = await api.EditCourse(
           {
             ...this.$store.state.CourseInfo,
@@ -472,9 +503,9 @@ export default {
           this.$store.state.newNotification.color = "error";
         }
       }
-      // Re Enable button
+      // // Re Enable button
       this.sendRequest = false;
-      this.$refs.InfoForm.reset();
+      //this.$refs.InfoForm.reset();
     },
     SaveProgress() {
       localStorage.setItem(
@@ -488,6 +519,12 @@ export default {
       this.$store.state.newNotification.color = "success";
     },
     RemoveComponent(CNumber) {
+      if (this.$store.state.CourseInfo.components[CNumber].id) {
+        this.$store.state.CourseInfo.deleted.push({
+          id: this.$store.state.CourseInfo.components[CNumber].id,
+          type: "component"
+        });
+      }
       //Remove component from Array
       this.$store.state.CourseInfo.components.splice(CNumber, 1);
     },
@@ -569,6 +606,12 @@ export default {
       }
     },
     DeleteSection(SNumber) {
+      if (this.$store.state.CourseInfo.sections[SNumber].id) {
+        this.$store.state.CourseInfo.deleted.push({
+          id: this.$store.state.CourseInfo.sections[SNumber].id,
+          type: "section"
+        });
+      }
       //Remove a certain section
       this.$store.state.CourseInfo.sections.splice(SNumber, 1);
     },

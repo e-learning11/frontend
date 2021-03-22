@@ -131,7 +131,9 @@ export default {
             url: null,
             age: [0, 70],
             components: [],
-            sections: []
+            sections: [],
+            private: false,
+            nonBlocking: false
           };
       } else if (this.$route.name === "EditCourse") {
         // Send Request to get course
@@ -146,12 +148,15 @@ export default {
           this.ProcessSections(response.data);
           // if the course Does not belong to the User
           if (
-            response.data.instructor.id !== this.$store.state.currentUser.id
+            response.data.instructors != null &&
+            response.data.instructors[0].id !== this.$store.state.currentUser.id
           ) {
             this.$router.push("/404");
             return;
           }
           this.requestFinished = true;
+          // add deleted array
+          this.$set(this.$store.state.CourseInfo, "deleted", []);
         }
         // Else route to Not found
         else {
@@ -161,16 +166,18 @@ export default {
     },
     ProcessSections(data) {
       // reset components in Store
-      this.$store.state.CourseInfo.components = [];
-      this.$store.state.CourseInfo.sections = [];
+      this.$set(this.$store.state.CourseInfo, "components", []);
+      this.$set(this.$store.state.CourseInfo, "sections", []);
       // Processes the Components to be under the correct Section
       data.CourseSections.forEach(section => {
         // push the section
         this.$store.state.CourseInfo.sections.push({ ...section });
         for (let i = 0; i < section.CourseSectionComponents.length; i++) {
           //Add Component To Components
+          section.CourseSectionComponents[i].hasFile = null;
           this.$store.state.CourseInfo.components.push({
-            ...section.CourseSectionComponents[i]
+            ...section.CourseSectionComponents[i],
+            reset: false
           });
         }
       });

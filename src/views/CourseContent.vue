@@ -28,6 +28,7 @@
           PageType="Content"
           :CourseNumber="Number($route.params.courseId)"
           :currentComponent="currentComponent"
+          :nonBlocking="course.nonBlocking"
         ></CourseComponents>
       </v-navigation-drawer>
 
@@ -348,7 +349,7 @@
             text
             x-large
             class="text-body-1 white--text text-none"
-            v-if="Number($route.params.componentNumber) === currentComponent"
+            v-if="!CourseComponent.done"
             @click="MarkAsRead"
             :disabled="MarkAsReadWaitRequest"
           >
@@ -382,7 +383,8 @@
             text
             class="text-none"
             :disabled="
-              Number($route.params.componentNumber) === currentComponent ||
+              // If it was not done yet and blocking   OR   last component in course
+              (!CourseComponent.done && !course.nonBlocking) ||
                 Number($route.params.componentNumber) ===
                   course.CourseSections[course.CourseSections.length - 1]
                     .CourseSectionComponents[
@@ -529,7 +531,7 @@
             </template>
             <!--Teacher Section-->
             <template v-if="currentTab === 'Teacher'">
-              <v-row justify="center" align="center" v-if="course.instructor">
+              <v-row justify="center" align="center" v-if="course.instructors">
                 <v-col cols="auto" class="pa-5 text-center">
                   <v-img
                     width="100"
@@ -540,14 +542,14 @@
                 </v-col>
                 <v-col cols="12">
                   <h3 class="font-weight-bold text-h5 mb-3 text-center">
-                    {{ course.instructor.firstName }}
-                    {{ course.instructor.lastName }}
+                    {{ course.instructors[0].firstName }}
+                    {{ course.instructors[0].lastName }}
                   </h3>
                 </v-col>
 
                 <v-col cols="12">
                   <div class="font-weight-light text-body-1 text-center">
-                    {{ course.instructor.about }}
+                    {{ course.instructors[0].about }}
                   </div>
                 </v-col>
               </v-row>
@@ -559,6 +561,7 @@
               PageType="Content"
               :CourseNumber="Number($route.params.courseId)"
               :currentComponent="currentComponent"
+              :nonBlocking="course.nonBlocking"
             ></CourseComponents>
           </v-col>
         </v-row>
@@ -605,7 +608,7 @@ export default {
       return this.CourseComponent.videoID;
     },
     instructorImage() {
-      return api.getImageSource(this.course.instructor.id, "user");
+      return api.getImageSource(this.course.instructors[0].id, "user");
     },
     language() {
       return this.$store.state.language.courseContent;
@@ -690,6 +693,7 @@ export default {
       );
       if (response.status === 200) {
         this.currentComponent++;
+        this.CourseComponent.done = true;
         await this.completeCourse();
       } else {
         if (response.data === "user didn't pass the test") {
@@ -796,10 +800,9 @@ export default {
             this.TestData.takeTest = true;
             this.TestData.finalAnswers = [];
           }
-
-          this.loadingStatus = false;
         }
       }
+      this.loadingStatus = false;
     },
     async downloadFile() {
       fetch(this.fileSource())
@@ -878,6 +881,7 @@ export default {
       } else this.currentComponent = Number(serverComp);
 
       // current component of the course
+      console.log(response.data);
       this.CourseComponent = commonFunctions.FindComponent(
         this.$route.params.componentNumber,
         response.data
