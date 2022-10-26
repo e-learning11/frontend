@@ -127,7 +127,7 @@
               class="text-center pa-5"
             >
               <v-icon size="60" color="blue lighten-1" class="mb-8"
-                >mdi-teach</v-icon
+                >mdi-human-male-board</v-icon
               >
               <h3 class="mb-3 text-h6 font-weight-medium">
                 {{ language.studyCareer }}
