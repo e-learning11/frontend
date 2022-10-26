@@ -46,5 +46,5 @@ jobs:
           mkdir ~/.ssh
           echo "$remote_key" > ~/.ssh/gh_actions_key
           chmod 600 ~/.ssh/gh_actions_key
-          scp -i ~/.ssh/gh_actions_key -o "StrictHostKeyChecking=no" -r ./build ${remote_user}@${remote_host}:${remote_dir}
+          scp -i ~/.ssh/gh_actions_key -o "StrictHostKeyChecking=no" -r ./dist ${remote_user}@${remote_host}:${remote_dir}
           ssh -i ~/.ssh/gh_actions_key ${remote_user}@${remote_host} "service nginx reload"
