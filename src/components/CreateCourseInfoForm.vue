@@ -466,8 +466,14 @@ export default {
       }
       //process the components to be under the correct section
       this.ProcessSections();
-      //Sends the Request and remove components property
-      //Send Two different Requests one for edit and other for Create
+
+      // Show the user that the request is sent please wait
+      this.$store.state.newNotification.Message = this.language.pleaseWait;
+      this.$store.state.newNotification.state = true;
+      this.$store.state.newNotification.color = "info";
+
+      // Sends the Request and remove components property
+      // Send Two different Requests one for edit and other for Create
       if (this.$route.name === "CreateCourse") {
         const response = await api.CreateCourse(
           {
