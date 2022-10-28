@@ -112,29 +112,29 @@ export default {
       // Get the Course Info
       if (this.$route.name === "CreateCourse") {
         // Check if CourseInfo is in LocalStorage
-        let CourseInfo = JSON.parse(localStorage.getItem("CourseInfo"));
-        if (CourseInfo != null) {
-          this.$store.state.CourseInfo = CourseInfo;
+        // let CourseInfo = JSON.parse(localStorage.getItem("CourseInfo"));
+        // if (CourseInfo != null) {
+        //   this.$store.state.CourseInfo = CourseInfo;
 
-          // Display a Notification
-          this.$store.state.newNotification.Message = this.language.reuploadAll;
-          this.$store.state.newNotification.state = true;
-          this.$store.state.newNotification.color = "white";
-        } else
-          this.$store.state.CourseInfo = {
-            name: "",
-            description: "",
-            summary: "",
-            photo: null,
-            gender: null,
-            prerequisites: [],
-            url: null,
-            age: [0, 70],
-            components: [],
-            sections: [],
-            private: false,
-            nonBlocking: false
-          };
+        //   // Display a Notification
+        //   this.$store.state.newNotification.Message = this.language.reuploadAll;
+        //   this.$store.state.newNotification.state = true;
+        //   this.$store.state.newNotification.color = "white";
+        // } else
+        this.$store.state.CourseInfo = {
+          name: "",
+          description: "",
+          summary: "",
+          photo: null,
+          gender: null,
+          prerequisites: [],
+          url: null,
+          age: [0, 70],
+          components: [],
+          sections: [],
+          private: false,
+          nonBlocking: false
+        };
       } else if (this.$route.name === "EditCourse") {
         // Send Request to get course
         const response = await api.getCourseByid(

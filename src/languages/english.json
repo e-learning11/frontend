@@ -297,7 +297,9 @@
     "URLhint": "The URL is the last part after the domain, Example website/course/{URL is here}",
     "uploadImage": "Upload An Image",
     "nonBlocking": "Non Blocking",
-    "blockingHint": "If Yes then all the course is open from the start, If No they will need to pass one by one"
+    "blockingHint": "If Yes then all the course is open from the start, If No they will need to pass one by one",
+    "fieldErrors": "Some Fields contain errors",
+    "componentsNeeded": "Must add at least one component"
   },
   "footer": {
     "aboutUs": "About Us",

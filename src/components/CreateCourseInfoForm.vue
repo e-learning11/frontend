@@ -362,7 +362,7 @@
           {{ language.resetAll }}
         </v-btn>
       </v-col>
-      <v-col cols="auto" v-if="!this.isEdit">
+      <!-- <v-col cols="auto" v-if="!this.isEdit">
         <v-btn
           large
           color="green darken-3"
@@ -376,7 +376,7 @@
           @click="SaveProgress"
           >{{ language.saveProgress }}</v-btn
         >
-      </v-col>
+      </v-col> -->
       <v-col cols="auto">
         <v-btn
           large
@@ -446,11 +446,21 @@ export default {
       // disable button
       this.sendRequest = true;
       // Check for validation
-      if (
-        !this.$refs.InfoForm.validate() ||
-        this.$store.state.CourseInfo.components.length == 0 ||
-        !this.ValidateSections()
-      ) {
+      if (!this.$refs.InfoForm.validate()) {
+        this.sendRequest = false;
+        this.$store.state.newNotification.Message = this.language.fieldErrors;
+        this.$store.state.newNotification.state = true;
+        this.$store.state.newNotification.color = "error";
+        return;
+      }
+      if (this.$store.state.CourseInfo.components.length == 0) {
+        this.sendRequest = false;
+        this.$store.state.newNotification.Message = this.language.componentsNeeded;
+        this.$store.state.newNotification.state = true;
+        this.$store.state.newNotification.color = "error";
+        return;
+      }
+      if (!this.ValidateSections()) {
         this.sendRequest = false;
         return;
       }
@@ -507,17 +517,17 @@ export default {
       this.sendRequest = false;
       //this.$refs.InfoForm.reset();
     },
-    SaveProgress() {
-      localStorage.setItem(
-        "CourseInfo",
-        JSON.stringify(this.$store.state.CourseInfo)
-      );
+    // SaveProgress() {
+    //   localStorage.setItem(
+    //     "CourseInfo",
+    //     JSON.stringify(this.$store.state.CourseInfo)
+    //   );
 
-      // Display a Success Notification
-      this.$store.state.newNotification.Message = this.language.progressSaved;
-      this.$store.state.newNotification.state = true;
-      this.$store.state.newNotification.color = "success";
-    },
+    //   // Display a Success Notification
+    //   this.$store.state.newNotification.Message = this.language.progressSaved;
+    //   this.$store.state.newNotification.state = true;
+    //   this.$store.state.newNotification.color = "success";
+    // },
     RemoveComponent(CNumber) {
       if (this.$store.state.CourseInfo.components[CNumber].id) {
         this.$store.state.CourseInfo.deleted.push({
