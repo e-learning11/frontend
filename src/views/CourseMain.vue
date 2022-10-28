@@ -383,10 +383,12 @@ export default {
       // First component of the course
       this.CourseComponent = this.course.CourseSections[0].CourseSectionComponents[0];
       // check if user is the Teacher that owns the course
+      const isOwnerTeacher =
+        this.$store.state.currentUser.type === "teacher" &&
+        this.course.instructors[0].id === this.$store.state.currentUser.id;
       if (
         this.$store.state.currentUser !== null &&
-        this.$store.state.currentUser.type === "teacher" &&
-        this.course.instructors[0].id === this.$store.state.currentUser.id
+        (isOwnerTeacher || this.$store.state.currentUser.type === "admin")
       )
         this.OwnsCourse = true;
       else this.OwnsCourse = false;
