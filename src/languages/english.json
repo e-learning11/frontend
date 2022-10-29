@@ -71,7 +71,8 @@
     "ascend": "Ascending",
     "descend": "Descending",
     "date": "Date",
-    "createdAt": "Creation Date"
+    "createdAt": "Creation Date",
+    "all": "All"
   },
   "profile": {
     "basicInfo": "Basic Information",

@@ -210,7 +210,15 @@ export default {
     if (data != null) {
       request = {
         method: "GET",
-        url: `${Base_URL}/api/courses?limit=${limit}&offset=${offset}&language=${data.language}&gender=${data.gender}&sortOrder=${data.sortOrder}&sort=${data.sortType}`
+        url: `${Base_URL}/api/courses`,
+        params: {
+          limit,
+          offset,
+          language: data.language,
+          gender: data.gender,
+          sortOrder: data.sortOrder,
+          sort: data.sortType
+        }
       };
     } else {
       request = {

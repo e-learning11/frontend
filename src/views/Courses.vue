@@ -94,8 +94,8 @@ export default {
       Courses: [],
       CardHeight: 250,
       searchData: {
-        language: localStorage.getItem("lang"),
-        gender: 3,
+        language: null,
+        gender: null,
         sortOrder: "ASC",
         sortType: "date"
       },
@@ -112,6 +112,10 @@ export default {
             {
               text: this.$store.state.language.courses.arabic,
               value: "Arabic"
+            },
+            {
+              text: this.$store.state.language.courses.all,
+              value: null
             }
           ]
         },
@@ -130,6 +134,10 @@ export default {
             {
               text: this.$store.state.language.courses.both,
               value: 3
+            },
+            {
+              text: this.$store.state.language.courses.all,
+              value: null
             }
           ]
         },

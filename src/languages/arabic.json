@@ -70,7 +70,8 @@
     "ascend": "تصاعدى",
     "descend": "تنازلى",
     "date": "التاريخ",
-    "createdAt": "تاريخ الانشاء"
+    "createdAt": "تاريخ الانشاء",
+    "all": "الكل"
   },
   "profile": {
     "basicInfo": "معلومات اساسية",
