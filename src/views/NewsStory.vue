@@ -20,7 +20,11 @@
               <v-col cols="12" class="text-h3">
                 {{ story.title }}
               </v-col>
-              <v-col cols="12" class="text-h6 text-justify">
+              <v-col
+                cols="12"
+                class="text-h6 text-justify"
+                style="white-space: pre-wrap"
+              >
                 {{ story.text }}
               </v-col>
             </v-row>
