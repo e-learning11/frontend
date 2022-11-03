@@ -244,7 +244,7 @@
               </h2></v-col
             >
           </v-row>
-          <v-form ref="NewsForm">
+          <v-form ref="NewsForm" @submit="addNews">
             <v-row justify="center" align="center" class="mt-10">
               <v-col
                 :class="{
@@ -305,7 +305,7 @@
                   color="blue darken-2"
                   outlined
                   x-large
-                  @click="addNews"
+                  type="submit"
                   :disabled="sendrequest"
                 >
                   {{ language.addNews }}
@@ -371,19 +371,24 @@ export default {
     }
   },
   methods: {
-    async addNews() {
+    async addNews(event) {
+      event.preventDefault();
       if (!this.$refs.NewsForm.validate()) return;
       this.sendrequest = true;
 
       // Send the Request
       const response = await api.AddNews(
         JSON.parse(localStorage.getItem("userToken")),
-        this.newNews
+        { ...this.newNews }
       );
       if (response.status === 200) {
         this.$store.state.newNotification.Message = this.$store.state.language.admin.newsAdded;
         this.$store.state.newNotification.state = true;
         this.$store.state.newNotification.color = "success";
+      } else {
+        this.$store.state.newNotification.Message = response.data;
+        this.$store.state.newNotification.state = true;
+        this.$store.state.newNotification.color = "error";
       }
 
       this.sendrequest = false;

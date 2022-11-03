@@ -1018,8 +1018,9 @@ export default {
     formdata.append("title", data.title);
     formdata.append("text", data.text);
     formdata.append("image", data.image);
+
     const response = await axios
-      .post(`${Base_URL}/api/admin/post`, data, config)
+      .post(`${Base_URL}/api/admin/post`, formdata, config)
       .then(res => res)
       .catch(err => err.response);
     return response;
