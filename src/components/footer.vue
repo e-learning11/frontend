@@ -93,21 +93,33 @@
               'text-subtitle-1': $vuetify.breakpoint.mdAndUp
             }"
           >
-            <router-link class="list-item" to="/">{{
-              language.facebook
-            }}</router-link>
-            <router-link class="list-item" to="/">{{
-              language.instagram
-            }}</router-link>
-            <router-link class="list-item" to="/">{{
-              language.youtube
-            }}</router-link>
-            <router-link class="list-item" to="/">{{
-              language.twitter
-            }}</router-link>
-            <router-link class="list-item" to="/">{{
-              language.linkedin
-            }}</router-link>
+            <a
+              class="list-item"
+              href="https://www.facebook.com/Shabab.aksa"
+              target="_blank"
+              >{{ language.facebook }}</a
+            >
+            <a
+              class="list-item"
+              href="https://www.instagram.com/shababalaksa/"
+              target="_blank"
+              >{{ language.instagram }}</a
+            >
+            <a
+              class="list-item"
+              href="https://www.youtube.com/channel/UCEbx62dCdoH0-LuQqOSD9HQ"
+              target="_blank"
+              >{{ language.youtube }}</a
+            >
+            <a
+              class="list-item"
+              href="https://twitter.com/shababalaksa"
+              target="_blank"
+              >{{ language.twitter }}</a
+            >
+            <a class="list-item" href="mailto:shabaab.alaaksa@gmail.com">{{
+              language.mail
+            }}</a>
           </v-list>
         </v-col>
       </v-row>
@@ -117,22 +129,53 @@
             <v-img width="160" height="100" src="../assets/newLogo.svg"></v-img>
           </router-link>
         </v-col>
-        <v-col md="4" sm="12" class="center-items">&#169; 2021</v-col>
+        <v-col md="4" sm="12" class="center-items"
+          >&#169; {{ new Date().getFullYear() }}</v-col
+        >
         <v-col md="4" sm="12" class="center-items">
-          <v-btn icon to="#" color="white" x-large>
+          <v-btn
+            icon
+            href="https://www.facebook.com/Shabab.aksa"
+            target="_blank"
+            color="white"
+            x-large
+          >
             <v-icon>mdi-facebook</v-icon>
           </v-btn>
-          <v-btn icon to="#" color="white" x-large>
+          <v-btn
+            icon
+            href="https://www.instagram.com/shababalaksa/"
+            target="_blank"
+            color="white"
+            x-large
+          >
             <v-icon>mdi-instagram</v-icon>
           </v-btn>
-          <v-btn icon to="#" color="white" x-large>
+          <v-btn
+            icon
+            href="https://www.youtube.com/channel/UCEbx62dCdoH0-LuQqOSD9HQ"
+            target="_blank"
+            color="white"
+            x-large
+          >
             <v-icon>mdi-youtube</v-icon>
           </v-btn>
-          <v-btn icon to="#" color="white" x-large>
+          <v-btn
+            icon
+            href="https://twitter.com/shababalaksa"
+            target="_blank"
+            color="white"
+            x-large
+          >
             <v-icon>mdi-twitter</v-icon>
           </v-btn>
-          <v-btn icon to="#" color="white" x-large>
-            <v-icon>mdi-linkedin</v-icon>
+          <v-btn
+            icon
+            href="mailto:shabaab.alaaksa@gmail.com"
+            color="white"
+            x-large
+          >
+            <v-icon>mdi-mail</v-icon>
           </v-btn>
         </v-col>
       </v-row>
