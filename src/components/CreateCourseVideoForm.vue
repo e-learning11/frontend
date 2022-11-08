@@ -50,6 +50,8 @@
               v-model="VideoInfo.videoID"
               :rules="[rules.Required]"
               dense
+              persistent-hint
+              :hint="language.videoHint"
             ></v-text-field>
           </v-col>
           <v-col

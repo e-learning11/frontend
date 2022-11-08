@@ -301,7 +301,8 @@
     "blockingHint": "نعم تعنى ان الدورة كلها مفتوحة من البداية و لا تعنى ان عليهم المرور بالترتيب على الدورة",
     "fieldErrors": "بعض الحقول بها اخطاء",
     "componentsNeeded": "يجب اضافة عنصر واحد على الاقل",
-    "pleaseWait": "الرجاء الانظار يتم تجهيز الدورة"
+    "pleaseWait": "الرجاء الانظار يتم تجهيز الدورة",
+    "videoHint": "فى حالة اذا كان الفيديو من اليوتيوب يجب ان يكون مثل هذا المثال ليعمل https://www.youtube.com/embed/vKr6axoA6xw"
   },
   "footer": {
     "aboutUs": "معلومات عنا",
@@ -353,7 +354,7 @@
     "teacherError": "لم يتم إضافة المعلم",
     "forum": "المنتدى",
     "courseMain": "اذهب للدورة",
-    "private": "مخفي",
+    "private": "خاص",
     "nonBlocking": "Non Blocking",
     "blockingHint": "If Yes then all the course is open from the start, If No they will need to pass one by one",
     "false": "لا",

@@ -301,7 +301,8 @@
     "blockingHint": "If Yes then all the course is open from the start, If No they will need to pass one by one",
     "fieldErrors": "Some Fields contain errors",
     "componentsNeeded": "Must add at least one component",
-    "pleaseWait": "Please wait the course is being created"
+    "pleaseWait": "Please wait the course is being created",
+    "videoHint": "Youtube videos must be in embed form, example: https://www.youtube.com/embed/vKr6axoA6xw"
   },
   "footer": {
     "aboutUs": "About Us",
