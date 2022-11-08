@@ -182,7 +182,7 @@ export default {
   background-color: rgb(245, 245, 245);
 }
 .hero-container {
-  background: url(../assets/img-home.jpg) center center/cover no-repeat;
+  background: url(../assets/home-image.png) center center/cover no-repeat;
   height: calc(100vh - 80px);
   width: 100%;
   box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.3);

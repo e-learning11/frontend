@@ -4,7 +4,7 @@
       <v-row no-gutters align="start" justify="center">
         <v-col md="3" sm="4" xs="12" class="list-center mt-5">
           <h2
-            class="font-weight-bold"
+            class="font-weight-bold text-center"
             :class="{
               'text-h6': $vuetify.breakpoint.xs,
               'text-h5': $vuetify.breakpoint.sm,
@@ -41,7 +41,7 @@
         </v-col>
         <v-col md="3" sm="4" cols="12" class="list-center fill-height mt-5">
           <h2
-            class="font-weight-bold"
+            class="font-weight-bold text-center"
             :class="{
               'text-h6': $vuetify.breakpoint.xs,
               'text-h5': $vuetify.breakpoint.sm,
@@ -75,7 +75,7 @@
         </v-col>
         <v-col md="3" sm="4" cols="12" class="list-center fill-height mt-5">
           <h2
-            class="font-weight-bold"
+            class="font-weight-bold text-center"
             :class="{
               'text-h6': $vuetify.breakpoint.xs,
               'text-h5': $vuetify.breakpoint.sm,
@@ -171,7 +171,7 @@
           </v-btn>
           <v-btn
             icon
-            href="mailto:shabaab.alaaksa@gmail.com"
+            href="mailto:shabab.alaqsa.academy@gmail.com"
             color="white"
             x-large
           >
