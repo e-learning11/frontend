@@ -344,9 +344,13 @@ export default {
     },
     downloadCertificate() {
       commonFunctions.downloadPDF(
+        localStorage.getItem("lang"),
         this.$store.state.currentUser.firstName +
+          " " +
           this.$store.state.currentUser.lastName,
-        this.course.name
+        this.course.name,
+        this.course.instructors[0].firstName,
+        this.course.instructors[0].lastName
       );
     }
   },

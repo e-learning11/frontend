@@ -1,3 +1,10 @@
+import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
+import englishCertificate from "./../assets/certificates/english.pdf";
+import arabicCertificate from "./../assets/certificates/arabic.pdf";
+import Sacramento from "./../assets/fonts/Sacramento.ttf";
+import Cairo from "./../assets/fonts/Cairo.ttf";
+import fontkit from "@pdf-lib/fontkit";
+
 export default {
   FindComponent(CNumber, course) {
     //Takes a component number and searches for it returns it
@@ -9,101 +16,278 @@ export default {
     });
     return returnvalue;
   },
-  downloadPDF(userName, courseTitle) {
-    // Get todays date in format dd/mm/yyyy
-    // let today = new Date();
-    // let dd = today.getDate();
-    // let mm = today.getMonth() + 1; //January is 0!
-    // let yyyy = today.getFullYear();
-    // if (dd < 10) {
-    //   dd = "0" + dd;
-    // }
-    // if (mm < 10) {
-    //   mm = "0" + mm;
-    // }
-    // let date = dd + "/" + mm + "/" + yyyy;
 
-    // Define PDF output - See http://pdfmake.org/#/gettingstarted for information on creating a PDF document with pdfmake.
-    let docDefinition = {
-      // Set page size
-      pageSize: "A4",
-      // Set document orientation
-      pageOrientation: "landscape",
-      // Set page margins
-      pageMargins: [0, 100, 0, 0],
-
-      // Define main body of document
-      content: [
-        // Include logo image (image is encoded as base64 string)
-        {
-          svg: `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" width="23.4637in" height="14.5059in" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd" viewBox="0 0 23111.23 14288.05">
-          <defs>
-           <style type="text/css">
-            <![CDATA[
-             .fil3 {fill:#FEFEFE}
-             .fil2 {fill:#727271}
-             .fil0 {fill:#193662}
-             .fil1 {fill:#C5161D}
-            ]]>
-           </style>
-          </defs>
-          <g id="Layer_x0020_1">
-           <metadata id="CorelCorpID_0Corel-Layer"/>
-           <g id="_2433000509840">
-            <path class="fil0" d="M17045.37 1142.97l0 1628 -1406.62 0c-188.64,0 -349.23,-14.24 -480.32,-42.28 -131.24,-28.19 -239.28,-87.93 -323.98,-179.1 -84.7,-91.16 -126.98,-226.95 -126.98,-407.07 0,-93.36 10.28,-200.38 30.83,-320.75 20.55,-120.38 44.04,-230.62 70.02,-330.45l351.73 19.53 -22.75 205.08c-17.47,158.69 -32.59,267.03 -32.59,325.6 0,221.52 160.59,332.21 481.94,332.21l1022.3 0 0 -1230.76 436.44 0zm-7931.68 10866.32l-201.11 0 -372.14 0c-9.98,437.02 -119.05,757.92 -326.77,962.7 -207.87,204.93 -492.8,307.25 -854.81,307.25l-1402.66 0c-231.36,0 -460.95,-44.33 -688.93,-133 -227.83,-88.81 -416.47,-225.34 -565.61,-409.71 -149.15,-184.38 -223.72,-409.57 -223.72,-675.86 0,-119.64 14.24,-278.33 42.72,-476.36 28.48,-198.03 59.46,-380.65 93.07,-548l628.44 102.47c-23.49,143.28 -44.48,298 -62.83,463.44 -18.5,165.59 -27.6,284.21 -27.6,355.84 0,129.77 32.59,247.65 97.91,353.49 65.47,105.84 156.78,189.37 274.07,250.88 117.29,61.36 253.08,92.19 407.22,92.19l1387.68 0c184.38,0 318.41,-47.86 402.23,-143.42 83.82,-95.56 127.42,-262.92 130.8,-501.9l-15.12 0c-154.14,0 -291.54,-16.15 -412.21,-48.59 -120.67,-32.44 -244.71,-94.68 -372.14,-187.02l291.69 -532.59c87.05,68.41 164.12,109.36 231.21,123.02 67.09,13.65 171.02,20.41 311.8,20.41l1025.68 0 201.11 0 583.23 0c-46.97,-245.74 -70.31,-462.42 -70.31,-650.17 0,-187.75 18.35,-389.16 55.19,-604.37 36.85,-215.06 78.83,-401.2 125.81,-558.13 90.43,-44.34 224.46,-83.53 402.23,-117.88 177.63,-34.06 375.37,-51.09 593.21,-51.09 345.27,0 610.83,51.09 796.97,153.55 185.99,102.47 311.66,247.65 376.98,435.26 65.47,187.75 98.06,433.64 98.06,737.37l0 435.4c23.49,68.11 60.33,121.99 110.69,161.33 50.2,39.19 103.93,58.72 160.89,58.72l276.57 0 749.11 0 0 -1935.54 673.81 0 0 2560.31 -1422.92 0 -276.57 0c-56.96,0 -110.69,-20.41 -160.89,-61.36 -50.35,-40.96 -87.2,-93.95 -110.69,-158.84l0 220.2 -2961.37 0zm13107.64 -3144.14l673.81 0 0 3144.14 -673.81 0 0 -3144.14zm889.89 -496.76l-1100.99 220.34 -55.34 -240.75 231.21 -61.51c-130.65,-112.59 -195.98,-250.88 -195.98,-414.7 0,-139.9 49.32,-261.16 148.27,-363.62 98.8,-102.47 225.34,-153.55 379.62,-153.55 130.65,0 261.45,40.96 392.1,122.87l-65.33 307.25c-20.11,-17.03 -48.59,-33.32 -85.44,-48.74 -36.84,-15.27 -78.83,-23.05 -125.66,-23.05 -77.22,0 -140.05,25.54 -188.64,76.92 -48.59,51.09 -72.81,112.59 -72.81,184.38 0,95.42 40.22,172.34 120.67,230.33l548 -148.41 70.32 312.24zm-2574.26 1157.36c268.2,0 474.31,73.4 618.46,220.2 144.16,146.8 240.46,312.39 289.04,496.77 48.59,184.38 72.96,356.72 72.96,517.17l0 1249.4 -2911.16 0 -1166.46 0 0 -3584.53 673.81 0 0 2959.75 492.66 0 2237.35 0 0 -629.77c0,-177.63 -40.96,-322.66 -123.17,-435.4 -82.06,-112.45 -180.12,-168.82 -294.04,-168.82l-1347.46 0 -347.03 -476.21 301.67 -599.08c67.09,-136.67 157.52,-282.59 271.58,-437.9 113.91,-155.46 221.22,-289.34 321.78,-401.93l497.79 286.69c-174.4,252.64 -338.67,527.3 -492.8,824.42l-90.43 179.24 995.44 0zm-4997.61 -194.65c268.05,0 503.52,67.53 706.39,202.29 202.73,134.91 360.24,337.19 472.55,606.86 112.3,269.81 168.52,600.85 168.52,993.39l0 875.65 -2287.71 0 0 -624.78 1613.9 0 0 -184.38c0,-443.77 -82.06,-760.42 -246.33,-949.78 -164.27,-189.37 -360.39,-284.21 -588.22,-284.21l-507.78 0 -50.35 -537.72c103.93,-23.93 222.11,-45.95 354.52,-66.5 132.41,-20.41 253.81,-30.83 364.5,-30.83zm-2463.58 3087.91l517.76 0 0 640.04 -517.76 0 0 -640.04zm764.24 0l517.76 0 0 640.04 -517.76 0 0 -640.04zm-3559.87 -1684.66c0,115.97 7.49,234.73 22.61,355.84 15.12,121.25 30.97,219.32 47.86,294.33l1050.78 0 0 -670.72c0,-238.99 -46.1,-414.85 -138.28,-527.44 -92.19,-112.74 -268.93,-168.97 -530.38,-168.97 -127.42,0 -254.84,13.65 -382.11,40.96 -46.98,256.02 -70.46,481.35 -70.46,676.01zm-4364.17 2913.66l517.76 0 0 640.04 -517.76 0 0 -640.04zm764.23 0l517.76 0 0 640.04 -517.76 0 0 -640.04zm9445.46 -7090.08l-343.36 0c-6.02,278.33 -71.34,482.82 -195.68,613.03 -124.34,130.35 -295.36,195.68 -511.89,195.68l-839.98 0c-138.28,0 -276.13,-28.18 -412.65,-84.7 -136.52,-56.52 -249.56,-143.71 -338.66,-260.86 -89.25,-117.29 -134.03,-261.01 -134.03,-430.56 0,-76.04 8.81,-177.33 25.54,-303.28 16.88,-125.95 35.67,-242.37 55.64,-348.94l376.54 65.18c-14.09,91.31 -26.71,189.96 -37.58,295.21 -11.01,105.25 -16.73,181 -16.73,226.65 0,82.65 19.82,157.81 58.87,225.04 38.9,67.23 93.95,120.82 163.97,159.72 70.17,39.05 151.5,58.72 243.98,58.72l831.03 0c110.39,0 190.69,-30.39 240.9,-91.31 50.2,-60.92 76.19,-167.35 78.24,-319.58l-9.1 0c-91.9,0 -174.69,-10.42 -246.77,-30.97 -72.22,-20.55 -146.65,-60.33 -222.84,-119.05l174.54 -339.1c52.26,43.45 98.5,69.58 138.58,78.24 40.07,8.66 102.32,13.06 186.58,13.06l734.87 0 397.38 0 0 -1232.67 403.55 0 0 521.72c90.28,-121.7 172.19,-220.79 245.45,-296.83 72.96,-75.89 158.98,-137.99 257.34,-185.85 98.35,-47.86 211.83,-71.78 340.28,-71.78 252.93,0 432.03,84.26 537.43,252.79 105.4,168.52 158.1,366.12 158.1,591.89l0 420.73 252.93 0 322.22 0c-34.2,-132.7 -51.23,-282.74 -51.23,-450.09 0,-197.88 28.63,-353.49 85.73,-466.38 57.25,-112.88 144.3,-193.63 260.57,-241.34 116.26,-47.56 269.96,-71.64 460.65,-71.64 168.67,0 316.35,7.05 442.74,22.75l156.49 19.67 0 1584.83 -1677.17 0 -2592.47 0zm6582.15 -2282.71l403.4 0 0 2282.71 -403.4 0 0 -2282.71zm-448.62 0l0 2282.71 -1592.77 0 0 -397.82 379.33 0 0 -1444.65 403.4 0 0 1444.65 406.63 0 0 -1884.89 403.4 0zm-680.41 97.77l-659.42 140.19 -33.32 -153.26 138.58 -39.05c-78.24,-71.78 -117.44,-159.87 -117.44,-264.24 0,-89.11 29.8,-166.47 88.81,-231.5 59.16,-65.03 135.05,-97.91 227.39,-97.91 78.24,0 156.64,26.13 234.88,78.39l-39.2 195.54c-12.04,-10.86 -29.06,-21.29 -51.09,-30.98 -22.02,-9.69 -47.27,-14.68 -75.45,-14.68 -46.1,0 -83.97,16.44 -112.89,49.03 -28.92,32.3 -43.6,71.64 -43.6,117.29 0,60.92 24.07,109.81 72.23,146.8l328.24 -94.53 42.28 198.91zm-2180.1 1418.51c0,82.65 5.13,149.74 14.97,200.67 9.98,50.94 24.07,107.02 42.28,167.94l535.81 0 0 -831.61c-88.37,-6.46 -157.52,-9.83 -207.72,-9.83 -108.48,0 -189.37,13.21 -242.36,39.19 -53.14,25.98 -90.57,71.93 -111.42,136.96 -20.99,65.03 -31.56,164.12 -31.56,296.68zm-60.34 -1575l310.18 0 0 407.66 -310.18 0 0 -407.66zm457.71 0l310.19 0 0 407.66 -310.19 0 0 -407.66zm-2119.77 1076.18c-142.54,0 -281.56,72.37 -417.05,216.82 -135.35,144.45 -246.33,311.36 -332.64,500.58l0 150.03 1135.05 0 0 -335.87c0,-147.83 -33.76,-273.63 -100.85,-376.68 -67.09,-103.2 -162.06,-154.87 -284.5,-154.87zm5343.76 -4153.08c23.93,139.02 45.06,280.09 63.56,423.37 18.5,143.27 27.6,244.42 27.6,302.84l0 905.16 -670.72 0c-71.34,0 -140.48,-11.89 -206.69,-35.82 -66.21,-23.93 -119.93,-52.11 -161.18,-84.7 -86.91,80.3 -195.69,120.52 -325.6,120.52l-1234.14 0 -814 0 -1409.85 0 -755.42 0 0 -2279.34 436.43 0 0 1882.11 318.99 0 485.17 0 0 -1230.76 436.29 0 0 1230.76 488.39 0 814 0 498.24 0 0 -1067.96 436.28 0 0 1067.96 149.74 0c82.5,0 146.06,-33.18 190.54,-99.38 44.48,-66.21 66.79,-151.35 66.79,-255.58l0 -713 436.29 0 0 713c0,110.39 -10.86,209.48 -32.59,296.39 19.53,15.12 45.21,28.92 76.48,40.66 31.41,11.74 63.56,17.91 96.15,17.91l244.13 0 0 -446.12c0,-138.87 -2.2,-256.75 -6.46,-353.35 -4.26,-96.59 -14.09,-236.05 -29.36,-418.38l380.94 -16.29zm-1097.32 -1139.59l312.68 0 0 364.64 -312.68 0 0 -364.64zm-260.42 449.35l335.43 0 0 390.78 -335.43 0 0 -390.78zm494.86 0l335.44 0 0 390.78 -335.44 0 0 -390.78zm-3369.9 2582.04l400.46 0 0 423.37 -400.46 0 0 -423.37zm-3086.74 0l400.47 0 0 423.37 -400.47 0 0 -423.37z"/>
-            <polygon class="fil1" points="7787.66,13648.01 21600.53,13648.01 21600.53,14288.05 7787.66,14288.05 "/>
-            <path class="fil2" d="M4544.01 9583.45c66.94,194.36 133.15,389.31 198.18,585.43 2097.16,-1952.86 4836.13,-2882.83 8184.9,-2720.91 -63.12,-199.21 -128.6,-401.93 -195.24,-606.72l-42.72 -2.06c-3018.18,-145.92 -5839.65,597.47 -8077.88,2681.72l-67.23 62.53z"/>
-            <path class="fil1" d="M14237.7 1289.18c-2756.58,-366.85 -5513.31,-733.55 -8269.9,-1100.4 -1974.44,1952.86 -3993.36,3933.91 -5967.8,5886.77 1143.71,80.89 2299.31,165.88 3443.02,246.77 345.27,1041.09 722.98,2050.04 1068.25,3091.14 2097.16,-1952.87 4836.13,-2882.83 8184.9,-2720.91 -280.53,-884.75 -605.55,-1840.12 -886.07,-2724.87 -1664.84,-310.63 -3541.08,-75.01 -5551.04,412.65 0,0 2864.63,-1286.54 5405.42,-809.15 728.12,-776.86 1359.36,-1278.47 1359.36,-1278.47 169.99,508.36 365.82,1009.98 535.81,1518.34 70.17,-27.01 114.21,-46.98 184.38,-73.99 -191.57,-539.49 -382.99,-1078.97 -574.57,-1618.46 356.13,-276.42 712.12,-552.99 1068.25,-829.41z"/>
-            <path class="fil3" d="M13686.91 1438.04l-2634.6 -238.26 2129.61 393.72 -1749.69 1719.45 2254.68 -1874.91zm-9143.35 7383.38l69.58 203.76c1043.3,-910.15 2202.41,-1553.43 3442.43,-1969.01 -1258.07,354.08 -2440.23,929.53 -3512.01,1765.25z"/>
-            <polygon class="fil2" points="21600.53,13648.01 22962.23,13648.01 22962.23,14288.05 21600.53,14288.05 "/>
-           </g>
-          </g>
-         </svg>`,
-          width: 250,
-          height: 150,
-          alignment: "center",
-          margin: [0, 30, 0, 30]
-        },
-        // Include certificate text
-        {
-          text: "This is to Certify That",
-          fontSize: 12,
-          alignment: "center",
-          margin: [0, 0, 0, 30]
-        },
-        // Include learner name
-        {
-          text: userName,
-          fontSize: 28,
-          alignment: "center",
-          color: "#0D47A1",
-          margin: [0, 0, 0, 30]
-        },
-        // Include certificate text
-        {
-          text: "Successfully Completed The Following Course",
-          fontSize: 12,
-          alignment: "center",
-          margin: [0, 0, 0, 30]
-        },
-        // Include project title
-        {
-          text: courseTitle,
-          fontSize: 25,
-          alignment: "center",
-          color: "#0D47A1",
-          margin: [0, 0, 0, 30]
-        }
-        // Include date
-        // {
-        //   text: "Awarded on: " + date,
-        //   fontSize: 12,
-        //   alignment: "center",
-        //   margin: [0, 0, 0, 0]
-        // }
-      ]
+  async downloadPDF(
+    language,
+    userName,
+    courseTitle,
+    instructorFirst,
+    instructorLast
+  ) {
+    // Helper Functions
+    const downloadURL = (data, fileName) => {
+      const a = document.createElement("a");
+      a.href = data;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.style.display = "none";
+      a.click();
+      a.remove();
     };
-    // eslint-disable-next-line no-undef
-    pdfMake.createPdf(docDefinition).download("certificate" + ".pdf");
+
+    const downloadBlob = (data, fileName, mimeType) => {
+      const blob = new Blob([data], {
+        type: mimeType
+      });
+      const url = window.URL.createObjectURL(blob);
+      downloadURL(url, fileName);
+      setTimeout(() => window.URL.revokeObjectURL(url), 1000);
+    };
+
+    const truncate = str => {
+      const n = 50;
+      return str.length > n ? str.slice(0, n - 1) + "..." : str;
+    };
+
+    const isArabic = text => {
+      let pattern = /[\u0600-\u06FF\u0750-\u077F]/;
+      return pattern.test(text);
+    };
+
+    const getTodayDate = () => {
+      // Get todays date in format dd/mm/yyyy
+      let today = new Date();
+      let dd = today.getDate();
+      let mm = today.getMonth() + 1; //January is 0!
+      let yyyy = today.getFullYear();
+      if (dd < 10) {
+        dd = "0" + dd;
+      }
+      if (mm < 10) {
+        mm = "0" + mm;
+      }
+      return dd + "/" + mm + "/" + yyyy;
+    };
+
+    // // Load a PDFDocument from the existing PDF bytes
+    let pdfDocBytes;
+    if (language === "English") {
+      pdfDocBytes = await fetch(englishCertificate).then(res =>
+        res.arrayBuffer()
+      );
+    } else {
+      pdfDocBytes = new Uint8Array(arabicCertificate);
+      pdfDocBytes = await fetch(arabicCertificate).then(res =>
+        res.arrayBuffer()
+      );
+    }
+    let pdfDoc = await PDFDocument.load(pdfDocBytes);
+    pdfDoc.registerFontkit(fontkit);
+
+    // Load fonts from google fonts
+    const CairoFontBytes = await fetch(Cairo).then(res => res.arrayBuffer());
+    const SacramentoFontBytes = await fetch(Sacramento).then(res =>
+      res.arrayBuffer()
+    );
+
+    // Embed the Fonts
+    const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    const CairoFont = await pdfDoc.embedFont(CairoFontBytes);
+    const SacramentoFont = await pdfDoc.embedFont(SacramentoFontBytes);
+
+    // Get the first page of the document
+    const pages = pdfDoc.getPages();
+    const firstPage = pages[0];
+
+    // Get the width and height of the first page
+    const { width, height } = firstPage.getSize();
+
+    if (language === "Arabic") {
+      // Add Username
+      let text = userName;
+      let textSize = 32;
+      let textWidth = isArabic(userName)
+        ? CairoFont.widthOfTextAtSize(text, textSize)
+        : SacramentoFont.widthOfTextAtSize(text, textSize);
+      firstPage.drawText(text, {
+        x: width / 2 - textWidth / 2,
+        y: height / 2 + 75,
+        size: textSize,
+        font: isArabic(userName) ? CairoFont : SacramentoFont,
+        color: rgb(0, 0, 0)
+      });
+
+      // Add Date
+      text = getTodayDate();
+      textSize = 14;
+      textWidth = helveticaFont.widthOfTextAtSize(text, textSize);
+      firstPage.drawText(text, {
+        x: width / 2 + 122 - textWidth / 2,
+        y: 41,
+        size: textSize,
+        font: helveticaFont,
+        color: rgb(0, 0, 0)
+      });
+
+      // Add Serial Number
+      text = "000000-000000";
+      textSize = 14;
+      textWidth = helveticaFont.widthOfTextAtSize(text, textSize);
+      firstPage.drawText(text, {
+        x: width / 2 - 125 - textWidth / 2,
+        y: 41,
+        size: textSize,
+        font: helveticaFont,
+        color: rgb(0, 0, 0)
+      });
+
+      // Add Training Hours
+      text = "10";
+      textSize = 20;
+      textWidth = helveticaFont.widthOfTextAtSize(text, textSize);
+      firstPage.drawText(text, {
+        x: width / 2 + 75 - textWidth / 2,
+        y: height / 2 - 132,
+        size: textSize,
+        font: helveticaFont,
+        color: rgb(0, 0, 0)
+      });
+
+      // Add Course Title
+      text = truncate(courseTitle);
+      textSize = 24;
+      textWidth = isArabic(courseTitle)
+        ? CairoFont.widthOfTextAtSize(text, textSize)
+        : SacramentoFont.widthOfTextAtSize(text, textSize);
+      firstPage.drawText(text, {
+        x: width / 2 - textWidth / 2,
+        y: height / 2 - 63,
+        size: textSize,
+        font: isArabic(courseTitle) ? CairoFont : SacramentoFont,
+        color: rgb(0, 0, 0)
+      });
+
+      // Add Instructor Name
+      text = instructorFirst;
+      textSize = 24;
+      textWidth = isArabic(instructorFirst)
+        ? CairoFont.widthOfTextAtSize(text, textSize)
+        : SacramentoFont.widthOfTextAtSize(text, textSize);
+      firstPage.drawText(text, {
+        x: 135 - textWidth / 2,
+        y: 157,
+        size: textSize,
+        font: isArabic(instructorFirst) ? CairoFont : SacramentoFont,
+        color: rgb(0, 0, 0)
+      });
+      text = instructorLast;
+      textSize = 24;
+      textWidth = isArabic(instructorLast)
+        ? CairoFont.widthOfTextAtSize(text, textSize)
+        : SacramentoFont.widthOfTextAtSize(text, textSize);
+      firstPage.drawText(text, {
+        x: 135 - textWidth / 2,
+        y: 132,
+        size: textSize,
+        font: isArabic(instructorLast) ? CairoFont : SacramentoFont,
+        color: rgb(0, 0, 0)
+      });
+    } else {
+      // Add Username
+      let text = userName;
+      let textSize = 32;
+      let textWidth = isArabic(userName)
+        ? CairoFont.widthOfTextAtSize(text, textSize)
+        : SacramentoFont.widthOfTextAtSize(text, textSize);
+      firstPage.drawText(text, {
+        x: width / 2 - textWidth / 2,
+        y: height / 2 + 50,
+        size: textSize,
+        font: isArabic(instructorLast) ? CairoFont : SacramentoFont,
+        color: rgb(0, 0, 0)
+      });
+
+      // Add Date
+      text = getTodayDate();
+      textSize = 14;
+      textWidth = helveticaFont.widthOfTextAtSize(text, textSize);
+      firstPage.drawText(text, {
+        x: width / 2 - 135 - textWidth / 2,
+        y: 35,
+        size: textSize,
+        font: helveticaFont,
+        color: rgb(0, 0, 0)
+      });
+
+      // Add Serial Number
+      text = "000000-000000";
+      textSize = 14;
+      textWidth = helveticaFont.widthOfTextAtSize(text, textSize);
+      firstPage.drawText(text, {
+        x: width / 2 + 170 - textWidth / 2,
+        y: 35,
+        size: textSize,
+        font: helveticaFont,
+        color: rgb(0, 0, 0)
+      });
+
+      // Add Training Hours
+      text = "10";
+      textSize = 20;
+      textWidth = helveticaFont.widthOfTextAtSize(text, textSize);
+      firstPage.drawText(text, {
+        x: width / 2 - 48 - textWidth / 2,
+        y: height / 2 - 135,
+        size: textSize,
+        font: helveticaFont,
+        color: rgb(0, 0, 0)
+      });
+
+      // Add Course Title
+      text = truncate(courseTitle);
+      textSize = 24;
+      textWidth = isArabic(courseTitle)
+        ? CairoFont.widthOfTextAtSize(text, textSize)
+        : SacramentoFont.widthOfTextAtSize(text, textSize);
+      firstPage.drawText(text, {
+        x: width / 2 - textWidth / 2,
+        y: height / 2 - 71,
+        size: textSize,
+        font: isArabic(courseTitle) ? CairoFont : SacramentoFont,
+        color: rgb(0, 0, 0)
+      });
+
+      // Add Instructor Name
+      text = instructorFirst;
+      textSize = 24;
+      textWidth = isArabic(instructorFirst)
+        ? CairoFont.widthOfTextAtSize(text, textSize)
+        : SacramentoFont.widthOfTextAtSize(text, textSize);
+      firstPage.drawText(text, {
+        x: 135 - textWidth / 2,
+        y: 145,
+        size: textSize,
+        font: isArabic(instructorFirst) ? CairoFont : SacramentoFont,
+        color: rgb(0, 0, 0)
+      });
+      text = instructorLast;
+      textSize = 24;
+      textWidth = isArabic(instructorLast)
+        ? CairoFont.widthOfTextAtSize(text, textSize)
+        : SacramentoFont.widthOfTextAtSize(text, textSize);
+      firstPage.drawText(text, {
+        x: 135 - textWidth / 2,
+        y: 120,
+        size: textSize,
+        font: isArabic(instructorLast) ? CairoFont : SacramentoFont,
+        color: rgb(0, 0, 0)
+      });
+    }
+
+    // Serialize the PDFDocument to bytes (a Uint8Array)
+    const uint8PDF = await pdfDoc.save();
+
+    // Download the file
+    downloadBlob(uint8PDF, "certificate.pdf", "application/pdf");
   }
 };
