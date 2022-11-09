@@ -130,7 +130,7 @@ export default {
       });
 
       // Add Serial Number
-      text = "000000-000000";
+      text = "----------";
       textSize = 14;
       textWidth = helveticaFont.widthOfTextAtSize(text, textSize);
       firstPage.drawText(text, {
@@ -142,7 +142,7 @@ export default {
       });
 
       // Add Training Hours
-      text = "10";
+      text = "-";
       textSize = 20;
       textWidth = helveticaFont.widthOfTextAtSize(text, textSize);
       firstPage.drawText(text, {
@@ -220,7 +220,7 @@ export default {
       });
 
       // Add Serial Number
-      text = "000000-000000";
+      text = "----------";
       textSize = 14;
       textWidth = helveticaFont.widthOfTextAtSize(text, textSize);
       firstPage.drawText(text, {
@@ -232,7 +232,7 @@ export default {
       });
 
       // Add Training Hours
-      text = "10";
+      text = "-";
       textSize = 20;
       textWidth = helveticaFont.widthOfTextAtSize(text, textSize);
       firstPage.drawText(text, {
