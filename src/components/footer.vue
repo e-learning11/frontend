@@ -117,9 +117,11 @@
               target="_blank"
               >{{ language.twitter }}</a
             >
-            <a class="list-item" href="mailto:shabaab.alaaksa@gmail.com">{{
-              language.mail
-            }}</a>
+            <a
+              class="list-item"
+              href="mailto:shabab.alaqsa.academy@gmail.com"
+              >{{ language.mail }}</a
+            >
           </v-list>
         </v-col>
       </v-row>
