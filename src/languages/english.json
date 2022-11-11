@@ -157,7 +157,8 @@
     "prerequisites": "Prerequisites",
     "finishedCourses": "You need to have Finished the Following Courses :",
     "successMessage": "You are Now Registered in This Course",
-    "certificate": "Download Certificate"
+    "certificate": "Download Certificate",
+    "approval": "This Course is pending admin approval, Students will not be able to enroll until it is approved"
   },
   "courseContent": {
     "registerNow": "Register Now",

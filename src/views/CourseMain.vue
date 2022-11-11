@@ -145,6 +145,15 @@
         </v-container>
       </v-container>
 
+      <!-- Alert for Course -->
+      <v-row justify="center" v-if="!course.approved">
+        <v-col cols="auto" class="text-center mt-5">
+          <v-alert outlined type="info">
+            {{ language.approval }}
+          </v-alert>
+        </v-col>
+      </v-row>
+
       <v-row justify="center"
         ><v-col cols="auto" class="text-center mt-10 mb-0">
           <v-btn
