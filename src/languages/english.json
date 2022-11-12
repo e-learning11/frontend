@@ -25,7 +25,9 @@
     "newAccount": "Don't have an account?",
     "wentWrong": "Something went wrong. Please Try again",
     "welcome": "Welcome! Nice to Have you",
-    "wrong": "Wrong Email or Password"
+    "wrong": "Wrong Email or Password",
+    "notVerified": "Your account has not been activated, Please check your email.",
+    "notApproved": "Your account is not approved yet by the Admin, please wait till approval and try again later."
   },
   "register": {
     "signup": "Sign Up",
@@ -45,7 +47,7 @@
     "wentWrong": "Something went wrong. Please Try again",
     "accountSuccess": "Account Created Successfuly",
     "accountLogin": "Account Created, Please Login",
-    "awaitApprove": "Account Submitted, Please Wait For Admin Approval",
+    "awaitVerifyEmail": "Please check your email to complete the registration process",
     "token": "Token",
     "resetPassword": "Reset Password",
     "forgetPassword": "Forgot Password",

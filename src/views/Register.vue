@@ -55,7 +55,7 @@
                     :label="language.firstName"
                     required
                     v-model="Userform.firstName"
-                    :rules="[rules.required]"
+                    :rules="[rules.required, rules.between2and100]"
                   ></v-text-field>
                 </v-col>
                 <v-col md="6" cols="12">
@@ -65,7 +65,7 @@
                     :label="language.lastName"
                     required
                     v-model="Userform.lastName"
-                    :rules="[rules.required]"
+                    :rules="[rules.required, rules.between2and100]"
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -85,7 +85,7 @@
                 required
                 v-model="Userform.password"
                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                :rules="[rules.required]"
+                :rules="[rules.required, rules.notlessthan8]"
                 :type="showPassword ? 'text' : 'password'"
                 @click:append="showPassword = !showPassword"
               ></v-text-field>
@@ -207,6 +207,11 @@ export default {
       },
       rules: {
         required: value => !!value || "Required.",
+        between2and100: value =>
+          (value.length >= 2 && value.length <= 100) ||
+          "Must be between 2 and 100 characters",
+        notlessthan8: value =>
+          value.length >= 8 || "Must be at least 8 characters",
         email: value => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
           return pattern.test(value) || "Not a valid Email";
@@ -216,7 +221,6 @@ export default {
         correctAge: value =>
           (value >= 5 && value <= 100) || "Age must be between 5 and 100",
         correctPhone: value => {
-          if (value === "") return true;
           const pattern = /^(\d{10}|\d{11}|\d{12})$/;
           return pattern.test(value) || "Please write 10, 11 or 12 Numbers";
         }
@@ -243,48 +247,14 @@ export default {
       // Send the request
       const registerResponse = await api.RegisterUser({ ...this.Userform });
 
-      // If Teacher Route to Home and view Awaiting Approval
-      if (registerResponse.status === 204) {
+      // Show that the account was created and an email is sent
+      if (registerResponse.status === 200) {
         // Display welcome Message
-        this.$store.state.newNotification.Message = this.language.awaitApprove;
+        this.$store.state.newNotification.Message = this.language.awaitVerifyEmail;
         this.$store.state.newNotification.state = true;
         this.$store.state.newNotification.color = "success";
         this.$router.push("/");
         return;
-      }
-
-      // If the request was successful,
-      if (registerResponse.status === 200) {
-        // Save the token
-        const token = registerResponse.data;
-        localStorage.setItem("userToken", JSON.stringify(token));
-
-        // Send the Request to get the User profile Info
-        const profileResponse = await api.getUserProfile(
-          JSON.parse(localStorage.getItem("userToken"))
-        );
-
-        // If the request was successful,
-        // add the currentUser to localStorage
-        // and route to home
-        // 200 OK
-        if (profileResponse.status === 200) {
-          // Get User info using the token
-          const currentUser = profileResponse.data;
-          localStorage.setItem("currentUser", JSON.stringify(currentUser));
-          this.$store.state.currentUser = currentUser;
-
-          // Display welcome Message
-          this.$store.state.newNotification.Message = this.language.accountSuccess;
-          this.$store.state.newNotification.state = true;
-          this.$store.state.newNotification.color = "success";
-          this.$router.push("/");
-        } else {
-          this.$store.state.newNotification.Message = this.language.accountLogin;
-          this.$store.state.newNotification.state = true;
-          this.$store.state.newNotification.color = "success";
-          this.$router.push("/login");
-        }
       } else {
         this.$store.state.newNotification.Message = registerResponse.data;
         this.$store.state.newNotification.state = true;

@@ -172,7 +172,14 @@ export default {
           this.$store.state.newNotification.color = "error";
         }
       } else {
-        this.$store.state.newNotification.Message = this.language.wrong;
+        // Set the error depending on backend error
+        if (loginResponse.data === "Not Verified") {
+          this.$store.state.newNotification.Message = this.language.notVerified;
+        } else if (loginResponse.data === "Not Approved") {
+          this.$store.state.newNotification.Message = this.language.notApproved;
+        } else {
+          this.$store.state.newNotification.Message = this.language.wrong;
+        }
         this.$store.state.newNotification.state = true;
         this.$store.state.newNotification.color = "error";
       }
