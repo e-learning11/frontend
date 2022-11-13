@@ -18,6 +18,7 @@ import ResetPassword from "../views/ResetPassword.vue";
 import ForgetPassword from "../views/ForgetPassword.vue";
 import News from "../views/News.vue";
 import NewsStory from "../views/NewsStory.vue";
+import ConfirmEmail from "../views/ConfirmEmail.vue";
 
 Vue.use(VueRouter);
 
@@ -111,6 +112,11 @@ const routes = [
     path: "/createcourse",
     name: "CreateCourse",
     component: CreateAndEditCourse
+  },
+  {
+    path: "/confirmemail/:confirmationCode",
+    name: "ConfirmEmail",
+    component: ConfirmEmail
   },
   {
     path: "*",

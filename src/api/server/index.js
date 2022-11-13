@@ -1197,5 +1197,17 @@ export default {
       .then(res => res)
       .catch(err => err.response);
     return response;
+  },
+
+  async confirmEmail(confirmationCode) {
+    const data = {
+      confirmationCode
+    };
+    const response = await axios
+      .post(`${Base_URL}/api/user/confirm-email`, data)
+      .then(res => res)
+      .catch(err => err.response);
+
+    return response;
   }
 };

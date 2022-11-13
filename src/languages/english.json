@@ -390,5 +390,9 @@
     "newCourses": "New Courses",
     "deleteCourses": "Delete Courses",
     "newsAdded": "News Added"
+  },
+  "confirmEmail": {
+    "emailConfirmed": "Email Confirmed, You can login now",
+    "userIncorrect": "An Error has occured with the code, please try again"
   }
 }
