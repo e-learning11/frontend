@@ -208,13 +208,17 @@
           >
             <div id="circle-one-outer">
               <div id="circle-one-inner" class="center-horizontal text-center">
-                <div class="text-h4">3000+</div>
+                <div class="text-h4">
+                  {{ stats ? stats.students + "+" : null }}
+                </div>
                 <div class="text-h6">{{ language.circleOne }}</div>
               </div>
             </div>
             <div id="circle-two-outer">
               <div id="circle-two-inner" class="center-horizontal text-center">
-                <div class="text-h4">20+</div>
+                <div class="text-h4">
+                  {{ stats ? stats.teachers + "+" : null }}
+                </div>
                 <div class="text-h6">{{ language.circleTwo }}</div>
               </div>
             </div>
@@ -223,7 +227,9 @@
                 id="circle-three-inner"
                 class="center-horizontal text-center"
               >
-                <div class="text-h4">13+</div>
+                <div class="text-h4">
+                  {{ stats ? stats.courses + "+" : null }}
+                </div>
                 <div class="text-h6">{{ language.circleThree }}</div>
               </div>
             </div>
@@ -268,10 +274,21 @@
 </template>
 
 <script>
+import api from "api-client";
+
 export default {
   computed: {
     language() {
       return this.$store.state.language.home;
+    }
+  },
+  data: () => ({
+    stats: null
+  }),
+  async created() {
+    const response = await api.getStatsOverview();
+    if (response.status === 200) {
+      this.stats = response.data;
     }
   }
 };

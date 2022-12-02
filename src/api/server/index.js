@@ -1209,5 +1209,14 @@ export default {
       .catch(err => err.response);
 
     return response;
+  },
+
+  async getStatsOverview() {
+    const response = await axios
+      .get(`${Base_URL}/api/stats/overview`)
+      .then(res => res)
+      .catch(err => err.response);
+
+    return response;
   }
 };
