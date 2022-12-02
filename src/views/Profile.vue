@@ -176,7 +176,9 @@
               :key="i"
             >
               <v-col cols="auto">
-                <v-icon size="40" color="#263238">mdi-book-open-variant</v-icon>
+                <v-btn fab dark :to="`/course/${course.id}`">
+                  <v-icon size="40" color="#eee">mdi-book-open-variant</v-icon>
+                </v-btn>
               </v-col>
               <v-col cols="auto">
                 <div class=" font-weight-bold">
