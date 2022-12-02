@@ -1,7 +1,7 @@
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import englishCertificate from "./../assets/certificates/english.pdf";
 import arabicCertificate from "./../assets/certificates/arabic.pdf";
-import Sacramento from "./../assets/fonts/Sacramento.ttf";
+import BigShotOne from "./../assets/fonts/BigShotOne.ttf";
 import Cairo from "./../assets/fonts/Cairo.ttf";
 import fontkit from "@pdf-lib/fontkit";
 
@@ -86,14 +86,14 @@ export default {
 
     // Load fonts from google fonts
     const CairoFontBytes = await fetch(Cairo).then(res => res.arrayBuffer());
-    const SacramentoFontBytes = await fetch(Sacramento).then(res =>
+    const BigShotOneFontBytes = await fetch(BigShotOne).then(res =>
       res.arrayBuffer()
     );
 
     // Embed the Fonts
     const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const CairoFont = await pdfDoc.embedFont(CairoFontBytes);
-    const SacramentoFont = await pdfDoc.embedFont(SacramentoFontBytes);
+    const BigShotOneFont = await pdfDoc.embedFont(BigShotOneFontBytes);
 
     // Get the first page of the document
     const pages = pdfDoc.getPages();
@@ -108,12 +108,12 @@ export default {
       let textSize = 32;
       let textWidth = isArabic(userName)
         ? CairoFont.widthOfTextAtSize(text, textSize)
-        : SacramentoFont.widthOfTextAtSize(text, textSize);
+        : BigShotOneFont.widthOfTextAtSize(text, textSize);
       firstPage.drawText(text, {
         x: width / 2 - textWidth / 2,
         y: height / 2 + 75,
         size: textSize,
-        font: isArabic(userName) ? CairoFont : SacramentoFont,
+        font: isArabic(userName) ? CairoFont : BigShotOneFont,
         color: rgb(0, 0, 0)
       });
 
@@ -158,12 +158,12 @@ export default {
       textSize = 24;
       textWidth = isArabic(courseTitle)
         ? CairoFont.widthOfTextAtSize(text, textSize)
-        : SacramentoFont.widthOfTextAtSize(text, textSize);
+        : BigShotOneFont.widthOfTextAtSize(text, textSize);
       firstPage.drawText(text, {
         x: width / 2 - textWidth / 2,
         y: height / 2 - 63,
         size: textSize,
-        font: isArabic(courseTitle) ? CairoFont : SacramentoFont,
+        font: isArabic(courseTitle) ? CairoFont : BigShotOneFont,
         color: rgb(0, 0, 0)
       });
 
@@ -172,24 +172,24 @@ export default {
       textSize = 24;
       textWidth = isArabic(instructorFirst)
         ? CairoFont.widthOfTextAtSize(text, textSize)
-        : SacramentoFont.widthOfTextAtSize(text, textSize);
+        : BigShotOneFont.widthOfTextAtSize(text, textSize);
       firstPage.drawText(text, {
         x: 135 - textWidth / 2,
         y: 157,
         size: textSize,
-        font: isArabic(instructorFirst) ? CairoFont : SacramentoFont,
+        font: isArabic(instructorFirst) ? CairoFont : BigShotOneFont,
         color: rgb(0, 0, 0)
       });
       text = instructorLast;
       textSize = 24;
       textWidth = isArabic(instructorLast)
         ? CairoFont.widthOfTextAtSize(text, textSize)
-        : SacramentoFont.widthOfTextAtSize(text, textSize);
+        : BigShotOneFont.widthOfTextAtSize(text, textSize);
       firstPage.drawText(text, {
         x: 135 - textWidth / 2,
         y: 132,
         size: textSize,
-        font: isArabic(instructorLast) ? CairoFont : SacramentoFont,
+        font: isArabic(instructorLast) ? CairoFont : BigShotOneFont,
         color: rgb(0, 0, 0)
       });
     } else {
@@ -198,12 +198,12 @@ export default {
       let textSize = 32;
       let textWidth = isArabic(userName)
         ? CairoFont.widthOfTextAtSize(text, textSize)
-        : SacramentoFont.widthOfTextAtSize(text, textSize);
+        : BigShotOneFont.widthOfTextAtSize(text, textSize);
       firstPage.drawText(text, {
         x: width / 2 - textWidth / 2,
         y: height / 2 + 50,
         size: textSize,
-        font: isArabic(instructorLast) ? CairoFont : SacramentoFont,
+        font: isArabic(instructorLast) ? CairoFont : BigShotOneFont,
         color: rgb(0, 0, 0)
       });
 
@@ -248,12 +248,12 @@ export default {
       textSize = 24;
       textWidth = isArabic(courseTitle)
         ? CairoFont.widthOfTextAtSize(text, textSize)
-        : SacramentoFont.widthOfTextAtSize(text, textSize);
+        : BigShotOneFont.widthOfTextAtSize(text, textSize);
       firstPage.drawText(text, {
         x: width / 2 - textWidth / 2,
         y: height / 2 - 71,
         size: textSize,
-        font: isArabic(courseTitle) ? CairoFont : SacramentoFont,
+        font: isArabic(courseTitle) ? CairoFont : BigShotOneFont,
         color: rgb(0, 0, 0)
       });
 
@@ -262,24 +262,24 @@ export default {
       textSize = 24;
       textWidth = isArabic(instructorFirst)
         ? CairoFont.widthOfTextAtSize(text, textSize)
-        : SacramentoFont.widthOfTextAtSize(text, textSize);
+        : BigShotOneFont.widthOfTextAtSize(text, textSize);
       firstPage.drawText(text, {
         x: 135 - textWidth / 2,
         y: 145,
         size: textSize,
-        font: isArabic(instructorFirst) ? CairoFont : SacramentoFont,
+        font: isArabic(instructorFirst) ? CairoFont : BigShotOneFont,
         color: rgb(0, 0, 0)
       });
       text = instructorLast;
       textSize = 24;
       textWidth = isArabic(instructorLast)
         ? CairoFont.widthOfTextAtSize(text, textSize)
-        : SacramentoFont.widthOfTextAtSize(text, textSize);
+        : BigShotOneFont.widthOfTextAtSize(text, textSize);
       firstPage.drawText(text, {
         x: 135 - textWidth / 2,
         y: 120,
         size: textSize,
-        font: isArabic(instructorLast) ? CairoFont : SacramentoFont,
+        font: isArabic(instructorLast) ? CairoFont : BigShotOneFont,
         color: rgb(0, 0, 0)
       });
     }
