@@ -1078,6 +1078,19 @@ export default {
     }
   },
 
+  async getCertificates(UserToken) {
+    const config = {
+      headers: {
+        "x-auth-token": `${UserToken}`
+      }
+    };
+    const response = await axios
+      .get(`${Base_URL}/api/admin/Allcertificates`, config)
+      .then(res => res)
+      .catch(err => err.response);
+    return response;
+  },
+
   async approveRequests(UserToken, type, id) {
     const config = {
       headers: {

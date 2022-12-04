@@ -47,6 +47,20 @@
               >{{ language.addNews }}</v-btn
             >
           </v-col>
+          <v-col cols="12">
+            <v-btn
+              width="100%"
+              height="50"
+              tile
+              text
+              color="grey lighten-2"
+              @click="currentTab = 'Certificates'"
+              :class="{
+                'btn-active': currentTab === 'Certificates'
+              }"
+              >{{ language.certificates }}</v-btn
+            >
+          </v-col>
         </v-row>
       </v-navigation-drawer>
       <div v-else class="admin-panel-mob">
@@ -83,6 +97,20 @@
                 'btn-active': currentTab === 'AddNews'
               }"
               >{{ language.addNews }}</v-btn
+            >
+          </v-col>
+          <v-col cols="12">
+            <v-btn
+              width="100%"
+              height="50"
+              tile
+              text
+              color="grey lighten-2"
+              @click="currentTab = 'Certificates'"
+              :class="{
+                'btn-active': currentTab === 'Certificates'
+              }"
+              >{{ language.certificates }}</v-btn
             >
           </v-col>
         </v-row>
@@ -236,7 +264,7 @@
             </v-col>
           </v-row>
         </template>
-        <template v-else>
+        <template v-else-if="currentTab === 'AddNews'">
           <v-row justify="center" align="center" class="mt-10">
             <v-col cols="12" class="center-horizontal"
               ><h2 class="text-h4 text-center font-weight-light">
@@ -314,6 +342,35 @@
             </v-row>
           </v-form>
         </template>
+        <template v-else>
+          <v-row justify="center" align="center" class="mt-10">
+            <v-col cols="12" class="center-horizontal"
+              ><h2 class="text-h4 text-center font-weight-light">
+                {{ language.certificates }}
+              </h2></v-col
+            >
+          </v-row>
+          <v-row justify="center" align="center" class="mt-5">
+            <v-card>
+              <v-card-title>
+                <v-text-field
+                  v-model="certSearch"
+                  append-icon="mdi-magnify"
+                  label="Search"
+                  single-line
+                  hide-details
+                ></v-text-field>
+              </v-card-title>
+              <v-data-table
+                :headers="certHeaders"
+                :items="certificates"
+                :items-per-page="10"
+                class="elevation-1"
+                :search="certSearch"
+              ></v-data-table>
+            </v-card>
+          </v-row>
+        </template>
       </v-container>
     </template>
     <!--footer-->
@@ -358,7 +415,15 @@ export default {
           text: this.$store.state.language.admin.deleteCourses
         }
       ],
-      typesOfRequestValues: ["New Teachers", "New Courses", "Delete Courses"]
+      typesOfRequestValues: ["New Teachers", "New Courses", "Delete Courses"],
+      certificates: null,
+      certHeaders: [
+        { text: "Email", value: "Email" },
+        { text: "User Name", value: "User Name" },
+        { text: "Course Name", value: "Course Name" },
+        { text: "Serial", value: "Serial" }
+      ],
+      certSearch: ""
     };
   },
   components: { Loading },
@@ -437,6 +502,21 @@ export default {
       if (response.status === 200) {
         this.getRequests(0);
       }
+    },
+    remodelCertificates(certs) {
+      const data = [];
+      certs.forEach(cert => {
+        data.push({
+          Email: cert.User.email,
+          "User Name": cert.User.firstName + " " + cert.User.lastName,
+          "Course Name": cert.Course.name,
+          Serial:
+            String(cert.CourseId).padStart(4, "0") +
+            "-" +
+            String(cert.UserId).padStart(5, "0")
+        });
+      });
+      return data;
     }
   },
   async created() {
@@ -447,6 +527,15 @@ export default {
     )
       this.$router.push("/");
     await this.getRequests(0);
+    api
+      .getCertificates(JSON.parse(localStorage.getItem("userToken")))
+      .then(response => {
+        if (response.status === 200) {
+          this.certificates = this.remodelCertificates(
+            response.data.certificates
+          );
+        }
+      });
   }
 };
 </script>
