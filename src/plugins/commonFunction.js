@@ -22,7 +22,9 @@ export default {
     userName,
     courseTitle,
     instructorFirst,
-    instructorLast
+    instructorLast,
+    courseid,
+    userid
   ) {
     // Helper Functions
     const downloadURL = (data, fileName) => {
@@ -130,7 +132,10 @@ export default {
       });
 
       // Add Serial Number
-      text = "----------";
+      text =
+        String(courseid).padStart(4, "0") +
+        "-" +
+        String(userid).padStart(5, "0");
       textSize = 14;
       textWidth = helveticaFont.widthOfTextAtSize(text, textSize);
       firstPage.drawText(text, {
@@ -220,7 +225,10 @@ export default {
       });
 
       // Add Serial Number
-      text = "----------";
+      text =
+        String(courseid).padStart(4, "0") +
+        "-" +
+        String(userid).padStart(5, "0");
       textSize = 14;
       textWidth = helveticaFont.widthOfTextAtSize(text, textSize);
       firstPage.drawText(text, {

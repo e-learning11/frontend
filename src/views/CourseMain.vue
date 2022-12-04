@@ -359,7 +359,9 @@ export default {
           this.$store.state.currentUser.lastName,
         this.course.name,
         this.course.instructors[0].firstName,
-        this.course.instructors[0].lastName
+        this.course.instructors[0].lastName,
+        this.$route.params.courseId,
+        this.$store.state.currentUser.id
       );
     }
   },
