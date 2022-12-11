@@ -175,6 +175,7 @@
             class="text-h6 mx-5"
             color="blue darken-3"
             append
+            v-if="registered"
             to="forum"
           >
             {{ language.forum }}
