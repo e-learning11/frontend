@@ -61,6 +61,20 @@
               >{{ language.certificates }}</v-btn
             >
           </v-col>
+          <v-col cols="12">
+            <v-btn
+              width="100%"
+              height="50"
+              tile
+              text
+              color="grey lighten-2"
+              @click="currentTab = 'Users'"
+              :class="{
+                'btn-active': currentTab === 'Users'
+              }"
+              >{{ language.users }}</v-btn
+            >
+          </v-col>
         </v-row>
       </v-navigation-drawer>
       <div v-else class="admin-panel-mob">
@@ -111,6 +125,20 @@
                 'btn-active': currentTab === 'Certificates'
               }"
               >{{ language.certificates }}</v-btn
+            >
+          </v-col>
+          <v-col cols="12">
+            <v-btn
+              width="100%"
+              height="50"
+              tile
+              text
+              color="grey lighten-2"
+              @click="currentTab = 'Users'"
+              :class="{
+                'btn-active': currentTab === 'Users'
+              }"
+              >{{ language.users }}</v-btn
             >
           </v-col>
         </v-row>
@@ -342,7 +370,7 @@
             </v-row>
           </v-form>
         </template>
-        <template v-else>
+        <template v-else-if="currentTab === 'Certificates'">
           <v-row justify="center" align="center" class="mt-10">
             <v-col cols="12" class="center-horizontal"
               ><h2 class="text-h4 text-center font-weight-light">
@@ -368,6 +396,64 @@
                 class="elevation-1"
                 :search="certSearch"
               ></v-data-table>
+            </v-card>
+          </v-row>
+        </template>
+        <template v-else-if="currentTab === 'Users'">
+          <v-row justify="center" align="center" class="mt-10">
+            <v-col cols="12" class="center-horizontal"
+              ><h2 class="text-h4 text-center font-weight-light">
+                {{ language.users }}
+              </h2></v-col
+            >
+          </v-row>
+          <v-row justify="center" align="center" class="mt-5">
+            <v-card>
+              <v-card-title>
+                <v-text-field
+                  v-model="AllUsersSearch"
+                  append-icon="mdi-magnify"
+                  label="Search"
+                  single-line
+                  hide-details
+                ></v-text-field>
+              </v-card-title>
+              <v-data-table
+                :headers="AllUsersHeaders"
+                :items="AllUsers"
+                :items-per-page="10"
+                class="elevation-1"
+                :search="AllUsersSearch"
+              >
+                <template v-slot:top>
+                  <v-dialog v-model="dialogDelete" max-width="500px">
+                    <v-card>
+                      <v-card-title class="text-h5"
+                        >Are you sure you want to delete this
+                        User?</v-card-title
+                      >
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" text @click="closeDelete"
+                          >Cancel</v-btn
+                        >
+                        <v-btn
+                          color="red darken-1"
+                          text
+                          @click="deleteUserConfirm"
+                          >Delete</v-btn
+                        >
+                        <v-spacer></v-spacer>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+                </template>
+                <template v-slot:item.actions="{ item }">
+                  <v-icon color="red darken-2" small @click="deleteUser(item)">
+                    mdi-delete
+                  </v-icon>
+                </template>
+              </v-data-table>
             </v-card>
           </v-row>
         </template>
@@ -423,7 +509,23 @@ export default {
         { text: "Course Name", value: "Course Name" },
         { text: "Serial", value: "Serial" }
       ],
-      certSearch: ""
+      certSearch: "",
+      AllUsers: null,
+      AllUsersHeaders: [
+        { text: "Email", value: "email" },
+        { text: "First Name", value: "firstName" },
+        { text: "Last Name", value: "lastName" },
+        { text: "Age", value: "age" },
+        // { text: "Gender", value: "gender" },
+        { text: "Type", value: "type" },
+        { text: "Phone", value: "phone" },
+        { text: "Activated", value: "activated" },
+        { text: "Delete", value: "actions", sortable: false }
+      ],
+      AllUsersSearch: "",
+      // Dialog and User delete
+      dialogDelete: false,
+      selectedUserToDeleteIndex: -1
     };
   },
   components: { Loading },
@@ -436,6 +538,40 @@ export default {
     }
   },
   methods: {
+    deleteUser(user) {
+      this.selectedUserToDeleteIndex = this.AllUsers.indexOf(user);
+      this.dialogDelete = true;
+    },
+    deleteUserConfirm() {
+      const deleteIndex = this.selectedUserToDeleteIndex;
+      api
+        .deleteUser(
+          JSON.parse(localStorage.getItem("userToken")),
+          this.AllUsers[this.selectedUserToDeleteIndex].id
+        )
+        .then(response => {
+          if (response.status === 200) {
+            this.$store.state.newNotification.Message = response.data;
+            this.$store.state.newNotification.state = true;
+            this.$store.state.newNotification.color = "success";
+            this.AllUsers.splice(deleteIndex, 1);
+          } else {
+            this.$store.state.newNotification.Message = response.data;
+            this.$store.state.newNotification.state = true;
+            this.$store.state.newNotification.color = "error";
+          }
+        })
+        .catch(e => {
+          this.$store.state.newNotification.Message = e;
+          this.$store.state.newNotification.state = true;
+          this.$store.state.newNotification.color = "error";
+        });
+      this.closeDelete();
+    },
+    closeDelete() {
+      this.dialogDelete = false;
+      this.selectedUserToDeleteIndex = -1;
+    },
     async addNews(event) {
       event.preventDefault();
       if (!this.$refs.NewsForm.validate()) return;
@@ -534,6 +670,13 @@ export default {
           this.certificates = this.remodelCertificates(
             response.data.certificates
           );
+        }
+      });
+    api
+      .getAllUsers(JSON.parse(localStorage.getItem("userToken")))
+      .then(response => {
+        if (response.status === 200) {
+          this.AllUsers = response.data;
         }
       });
   }

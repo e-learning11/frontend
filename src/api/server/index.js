@@ -714,6 +714,21 @@ export default {
     return response;
   },
 
+  async getAllUsers(UserToken) {
+    const request = {
+      method: "GET",
+      url: `${Base_URL}/api/admin/users`,
+      headers: {
+        "x-auth-token": `${UserToken}`
+      }
+    };
+    const response = await axios(request)
+      .then(res => res)
+      .catch(err => err.response);
+
+    return response;
+  },
+
   async getCourseTestsAndAssignments(
     UserToken,
     limit,
@@ -1176,6 +1191,19 @@ export default {
         .catch(err => err.response);
       return response;
     }
+  },
+
+  async deleteUser(UserToken, id) {
+    const config = {
+      headers: {
+        "x-auth-token": `${UserToken}`
+      }
+    };
+    const response = await axios
+      .delete(`${Base_URL}/api/admin/user?userId=${id}`, config)
+      .then(res => res)
+      .catch(err => err.response);
+    return response;
   },
 
   async editNewsStory(UserToken, DataObject) {
