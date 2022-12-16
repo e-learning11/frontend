@@ -41,6 +41,19 @@
           {{ $store.state.language.createCourseForms.private }}
         </p>
       </v-card-text>
+      <v-card-text
+        class="text-subtitle-2 font-weight-thin"
+        v-if="CardData.CourseCategories && CardData.CourseCategories.length > 0"
+      >
+        <v-chip
+          :key="category.id"
+          color="primary"
+          outlined
+          class="ma-1"
+          v-for="category in CardData.CourseCategories"
+          >{{ category.name }}</v-chip
+        >
+      </v-card-text>
     </v-card>
   </router-link>
 </template>

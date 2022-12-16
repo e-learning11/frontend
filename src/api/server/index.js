@@ -217,7 +217,8 @@ export default {
           language: data.language,
           gender: data.gender,
           sortOrder: data.sortOrder,
-          sort: data.sortType
+          sort: data.sortType,
+          categoryID: data.categoryID
         }
       };
     } else {

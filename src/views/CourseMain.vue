@@ -62,6 +62,20 @@
                   {{ course.date.slice(0, course.date.indexOf("T")) }}</span
                 >
               </div>
+              <div
+                class="text-subtitle-2 font-weight-thin mr-2"
+                v-if="
+                  course.CourseCategories && course.CourseCategories.length > 0
+                "
+              >
+                <v-chip
+                  :key="category.id"
+                  color="white"
+                  outlined
+                  v-for="category in course.CourseCategories"
+                  >{{ category.name }}</v-chip
+                >
+              </div>
             </v-col>
             <v-col
               :class="{

@@ -38,7 +38,7 @@
         <v-row align="center" justify="center">
           <v-col
             :class="{
-              'col-3': $vuetify.breakpoint.mdAndUp,
+              'col-4': $vuetify.breakpoint.mdAndUp,
               'col-auto': $vuetify.breakpoint.smAndDown
             }"
             class="center-horizontal"
@@ -97,7 +97,8 @@ export default {
         language: null,
         gender: null,
         sortOrder: "ASC",
-        sortType: "date"
+        sortType: "date",
+        categoryID: null
       },
       getNewCourses: false,
       filters: [
@@ -168,6 +169,11 @@ export default {
               value: "createdAt"
             }
           ]
+        },
+        {
+          name: this.$store.state.language.courses.categories,
+          model: "categoryID",
+          values: []
         }
       ]
     };
@@ -204,6 +210,20 @@ export default {
   },
   async created() {
     //Send request to get all the courses for allCourses
+    api.getAllCategories().then(res => {
+      if (res.status === 200) {
+        this.filters[4].values = [
+          ...res.data.map(obj => ({
+            text: obj.name,
+            value: obj.id
+          })),
+          {
+            text: this.$store.state.language.courses.all,
+            value: null
+          }
+        ];
+      }
+    });
     const response = await api.getAllCourses(0, 20, this.searchData);
     if (response.status === 200) {
       this.Courses = response.data;
