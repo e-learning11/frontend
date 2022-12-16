@@ -371,6 +371,8 @@
     "addNews": "Add News",
     "certificates": "Certificates",
     "users": "Users",
+    "categories": "Course Categories",
+    "addCategory": "Add Category",
     "adminRequests": "Admin Requests",
     "noRequests": "No Requests For Now",
     "courseName": "Course Name:",

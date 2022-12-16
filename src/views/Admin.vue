@@ -75,6 +75,20 @@
               >{{ language.users }}</v-btn
             >
           </v-col>
+          <v-col cols="12">
+            <v-btn
+              width="100%"
+              height="50"
+              tile
+              text
+              color="grey lighten-2"
+              @click="currentTab = 'Categories'"
+              :class="{
+                'btn-active': currentTab === 'Categories'
+              }"
+              >{{ language.categories }}</v-btn
+            >
+          </v-col>
         </v-row>
       </v-navigation-drawer>
       <div v-else class="admin-panel-mob">
@@ -139,6 +153,20 @@
                 'btn-active': currentTab === 'Users'
               }"
               >{{ language.users }}</v-btn
+            >
+          </v-col>
+          <v-col cols="12">
+            <v-btn
+              width="100%"
+              height="50"
+              tile
+              text
+              color="grey lighten-2"
+              @click="currentTab = 'Categories'"
+              :class="{
+                'btn-active': currentTab === 'Categories'
+              }"
+              >{{ language.categories }}</v-btn
             >
           </v-col>
         </v-row>
@@ -392,6 +420,7 @@
               <v-data-table
                 :headers="certHeaders"
                 :items="certificates"
+                :loading="certificates.length === 0"
                 :items-per-page="10"
                 class="elevation-1"
                 :search="certSearch"
@@ -421,12 +450,13 @@
               <v-data-table
                 :headers="AllUsersHeaders"
                 :items="AllUsers"
+                :loading="AllUsers.length === 0"
                 :items-per-page="10"
                 class="elevation-1"
                 :search="AllUsersSearch"
               >
                 <template v-slot:top>
-                  <v-dialog v-model="dialogDelete" max-width="500px">
+                  <v-dialog v-model="UserDialogDelete" max-width="500px">
                     <v-card>
                       <v-card-title class="text-h5"
                         >Are you sure you want to delete this
@@ -434,7 +464,10 @@
                       >
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" text @click="closeDelete"
+                        <v-btn
+                          color="blue darken-1"
+                          text
+                          @click="closeDeleteUser"
                           >Cancel</v-btn
                         >
                         <v-btn
@@ -448,8 +481,90 @@
                     </v-card>
                   </v-dialog>
                 </template>
-                <template v-slot:item.actions="{ item }">
+                <template v-slot:[`item.actions`]="{ item }">
                   <v-icon color="red darken-2" small @click="deleteUser(item)">
+                    mdi-delete
+                  </v-icon>
+                </template>
+              </v-data-table>
+            </v-card>
+          </v-row>
+        </template>
+        <template v-else-if="currentTab === 'Categories'">
+          <v-row justify="center" align="center" class="mt-10">
+            <v-col cols="12" class="center-horizontal"
+              ><h2 class="text-h4 text-center font-weight-light">
+                {{ language.categories }}
+              </h2></v-col
+            >
+          </v-row>
+          <v-row justify="center" align="center" class="mt-5">
+            <v-card>
+              <v-card-title>
+                <v-text-field
+                  v-model="CategoriesSearch"
+                  append-icon="mdi-magnify"
+                  label="Search"
+                  single-line
+                  hide-details
+                ></v-text-field>
+              </v-card-title>
+              <v-data-table
+                :headers="CategoriesHeaders"
+                :items="Categories"
+                :loading="!CategoriesRequestDone"
+                :items-per-page="10"
+                class="elevation-1"
+                :search="CategoriesSearch"
+              >
+                <template v-slot:top>
+                  <v-form ref="categoryForm" @submit="addCategory">
+                    <v-row justify="center" align="center">
+                      <v-col cols="5">
+                        <v-text-field
+                          :rules="[rules.Required]"
+                          v-model="newCategory"
+                          :disabled="sendCreateCatRequest"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="3">
+                        <v-btn color="primary" rounded type="submit">{{
+                          language.addCategory
+                        }}</v-btn>
+                      </v-col>
+                    </v-row>
+                  </v-form>
+                  <v-dialog v-model="CategoryDialogDelete" max-width="550px">
+                    <v-card>
+                      <v-card-title class="text-h5"
+                        >Are you sure you want to delete this
+                        Category?</v-card-title
+                      >
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                          color="blue darken-1"
+                          text
+                          @click="closeDeleteCategory"
+                          >Cancel</v-btn
+                        >
+                        <v-btn
+                          color="red darken-1"
+                          text
+                          @click="deleteCategoryConfirm"
+                          >Delete</v-btn
+                        >
+                        <v-spacer></v-spacer>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+                </template>
+                <template v-slot:[`item.actions`]="{ item }">
+                  <v-icon
+                    color="red darken-2"
+                    small
+                    @click="deleteCategory(item)"
+                  >
                     mdi-delete
                   </v-icon>
                 </template>
@@ -502,7 +617,7 @@ export default {
         }
       ],
       typesOfRequestValues: ["New Teachers", "New Courses", "Delete Courses"],
-      certificates: null,
+      certificates: [],
       certHeaders: [
         { text: "Email", value: "Email" },
         { text: "User Name", value: "User Name" },
@@ -510,7 +625,9 @@ export default {
         { text: "Serial", value: "Serial" }
       ],
       certSearch: "",
-      AllUsers: null,
+
+      // Users data
+      AllUsers: [],
       AllUsersHeaders: [
         { text: "Email", value: "email" },
         { text: "First Name", value: "firstName" },
@@ -524,8 +641,22 @@ export default {
       ],
       AllUsersSearch: "",
       // Dialog and User delete
-      dialogDelete: false,
-      selectedUserToDeleteIndex: -1
+      UserDialogDelete: false,
+      selectedUserToDeleteIndex: -1,
+
+      // Categories Data
+      Categories: [],
+      CategoriesHeaders: [
+        { text: "ID", value: "id" },
+        { text: "Name", value: "name" },
+        { text: "Delete", value: "actions", sortable: false }
+      ],
+      CategoriesSearch: "",
+      CategoriesRequestDone: false,
+      CategoryDialogDelete: false,
+      selectedCategoryToDeleteIndex: -1,
+      newCategory: "",
+      sendCreateCatRequest: false
     };
   },
   components: { Loading },
@@ -538,9 +669,40 @@ export default {
     }
   },
   methods: {
+    async addCategory(event) {
+      event.preventDefault();
+      if (!this.$refs.categoryForm.validate()) return;
+      this.sendCreateCatRequest = true;
+
+      // Send the Request
+      const response = await api.AddCategory(
+        JSON.parse(localStorage.getItem("userToken")),
+        { name: this.newCategory }
+      );
+      if (response.status === 200) {
+        this.$store.state.newNotification.Message = "Category Created";
+        this.$store.state.newNotification.state = true;
+        this.$store.state.newNotification.color = "success";
+
+        // Add to categories
+        this.Categories.push(response.data);
+      } else {
+        this.$store.state.newNotification.Message = response.data;
+        this.$store.state.newNotification.state = true;
+        this.$store.state.newNotification.color = "error";
+      }
+
+      this.sendCreateCatRequest = false;
+      // Reset the form
+      this.$refs.categoryForm.reset();
+    },
     deleteUser(user) {
       this.selectedUserToDeleteIndex = this.AllUsers.indexOf(user);
-      this.dialogDelete = true;
+      this.UserDialogDelete = true;
+    },
+    deleteCategory(category) {
+      this.selectedCategoryToDeleteIndex = this.Categories.indexOf(category);
+      this.CategoryDialogDelete = true;
     },
     deleteUserConfirm() {
       const deleteIndex = this.selectedUserToDeleteIndex;
@@ -566,11 +728,41 @@ export default {
           this.$store.state.newNotification.state = true;
           this.$store.state.newNotification.color = "error";
         });
-      this.closeDelete();
+      this.closeDeleteUser();
     },
-    closeDelete() {
-      this.dialogDelete = false;
+    deleteCategoryConfirm() {
+      const deleteIndex = this.selectedCategoryToDeleteIndex;
+      api
+        .deleteCategory(
+          JSON.parse(localStorage.getItem("userToken")),
+          this.Categories[this.selectedCategoryToDeleteIndex].id
+        )
+        .then(response => {
+          if (response.status === 200) {
+            this.$store.state.newNotification.Message = response.data;
+            this.$store.state.newNotification.state = true;
+            this.$store.state.newNotification.color = "success";
+            this.Categories.splice(deleteIndex, 1);
+          } else {
+            this.$store.state.newNotification.Message = response.data;
+            this.$store.state.newNotification.state = true;
+            this.$store.state.newNotification.color = "error";
+          }
+        })
+        .catch(e => {
+          this.$store.state.newNotification.Message = e;
+          this.$store.state.newNotification.state = true;
+          this.$store.state.newNotification.color = "error";
+        });
+      this.closeDeleteCategory();
+    },
+    closeDeleteUser() {
+      this.UserDialogDelete = false;
       this.selectedUserToDeleteIndex = -1;
+    },
+    closeDeleteCategory() {
+      this.CategoryDialogDelete = false;
+      this.selectedCategoryToDeleteIndex = -1;
     },
     async addNews(event) {
       event.preventDefault();
@@ -677,6 +869,14 @@ export default {
       .then(response => {
         if (response.status === 200) {
           this.AllUsers = response.data;
+        }
+      });
+    api
+      .getAllCategories(JSON.parse(localStorage.getItem("userToken")))
+      .then(response => {
+        if (response.status === 200) {
+          this.CategoriesRequestDone = true;
+          this.Categories = response.data;
         }
       });
   }

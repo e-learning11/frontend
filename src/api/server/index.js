@@ -233,6 +233,19 @@ export default {
     return response;
   },
 
+  async getAllCategories() {
+    const request = {
+      method: "GET",
+      url: `${Base_URL}/api/course/categories`
+    };
+
+    const response = await axios(request)
+      .then(res => res)
+      .catch(err => err.response);
+
+    return response;
+  },
+
   async getSingleCourse(courseId) {
     const request = {
       method: "GET",
@@ -1041,6 +1054,20 @@ export default {
     return response;
   },
 
+  async AddCategory(UserToken, data) {
+    const config = {
+      headers: {
+        "x-auth-token": `${UserToken}`
+      }
+    };
+
+    const response = await axios
+      .post(`${Base_URL}/api/admin/category`, data, config)
+      .then(res => res)
+      .catch(err => err.response);
+    return response;
+  },
+
   async deleteNews(UserToken, id) {
     const config = {
       headers: {
@@ -1052,6 +1079,22 @@ export default {
     };
     const response = await axios
       .delete(`${Base_URL}/api/admin/post`, config)
+      .then(res => res)
+      .catch(err => err.response);
+    return response;
+  },
+
+  async deleteCategory(UserToken, id) {
+    const config = {
+      headers: {
+        "x-auth-token": `${UserToken}`
+      },
+      data: {
+        categoryID: id
+      }
+    };
+    const response = await axios
+      .delete(`${Base_URL}/api/admin/category`, config)
       .then(res => res)
       .catch(err => err.response);
     return response;
