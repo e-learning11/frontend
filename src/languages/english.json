@@ -277,6 +277,8 @@
     "both": "Both",
     "prerequisites": "Prerequisites :",
     "selectPrerequisites": "Select Prerequisite Courses",
+    "CourseCategories": "Course Categories",
+    "selectCourseCategories": "Select Categories wanted",
     "components": "Components",
     "noComponents": "There are no components yet",
     "sections": "Sections",

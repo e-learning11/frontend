@@ -128,6 +128,7 @@ export default {
           photo: null,
           gender: null,
           prerequisites: [],
+          CourseCategories: [],
           url: null,
           age: [0, 70],
           components: [],
@@ -185,6 +186,9 @@ export default {
       this.$store.state.CourseInfo.age = [data.ageMin, data.ageMax];
       this.$store.state.CourseInfo.courseId = this.$store.state.CourseInfo.id;
       this.$store.state.CourseInfo.prerequisites = this.$store.state.CourseInfo.prequisites;
+      this.$store.state.CourseInfo.CourseCategories = this.$store.state.CourseInfo.CourseCategories.map(
+        obj => obj.id
+      );
       this.$store.state.CourseInfo.gender = String(
         this.$store.state.CourseInfo.gender
       );

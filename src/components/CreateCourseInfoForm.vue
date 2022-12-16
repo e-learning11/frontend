@@ -131,6 +131,28 @@
               'text-subtitle-1': $vuetify.breakpoint.xs
             }"
           >
+            <div class="mr-5 font-weight-bold">
+              {{ language.CourseCategories }}
+            </div>
+            <v-select
+              :items="AllCategories"
+              multiple
+              chips
+              clearable
+              deletable-chips
+              :hint="language.selectCourseCategories"
+              persistent-hint
+              v-model="$store.state.CourseInfo['CourseCategories']"
+              class="scroll-leftright"
+            ></v-select>
+          </v-col>
+          <v-col
+            cols="12"
+            :class="{
+              'text-h6': $vuetify.breakpoint.smAndUp,
+              'text-subtitle-1': $vuetify.breakpoint.xs
+            }"
+          >
             <div class="mr-5 font-weight-bold">{{ language.URL }}</div>
             <v-text-field
               dense
@@ -416,6 +438,7 @@ export default {
         }
       },
       allCourses: [],
+      AllCategories: [],
       isEdit: false,
       sendRequest: false
     };
@@ -434,6 +457,7 @@ export default {
         photo: null,
         gender: null,
         prerequisites: [],
+        CourseCategories: [],
         url: null,
         age: [0, 70],
         private: false,
@@ -695,6 +719,15 @@ export default {
     //Check if the Page is an Edit
     if (this.PageType === "EditCourse") this.isEdit = true;
     else this.isEdit = false;
+    // Get Categories
+    api.getAllCategories().then(res => {
+      if (res.status === 200) {
+        this.AllCategories = res.data.map(v => ({
+          text: v.name,
+          value: v.id
+        }));
+      }
+    });
     //Send request to get all the courses for allCourses
     const response = await api.getAllCourses(0, 200);
     if (response.status === 200) {

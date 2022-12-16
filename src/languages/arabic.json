@@ -278,6 +278,8 @@
     "both": "لكلا الجنسين",
     "prerequisites": "هل يشترط حضور دورات سابقة لحضور الدورة، اخترها من هنا",
     "selectPrerequisites": "اختر الدورات المرغوبة",
+    "CourseCategories": "تخصصات الدورة",
+    "selectCourseCategories": "اختر التخصصات المرغوبة",
     "components": "دروس",
     "noComponents": "لا يوجد دروس بعد ",
     "sections": "وحدات",

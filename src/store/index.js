@@ -19,6 +19,7 @@ export default new Vuex.Store({
       photo: null,
       gender: null,
       prerequisites: [],
+      CourseCategories: [],
       url: null,
       age: [0, 70],
       private: false,
