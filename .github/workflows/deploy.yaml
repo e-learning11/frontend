@@ -41,7 +41,7 @@ jobs:
           remote_host: ${{ secrets.IP_PROD }}
           remote_user: ${{ secrets.USER_PROD }}
           remote_key: ${{ secrets.SSH_PRIVATE_KEY_CD }}
-          remote_dir: "/var/elearning-frontend"
+          remote_dir: "/var/www/elearning-frontend"
         run: |
           mkdir ~/.ssh
           echo "$remote_key" > ~/.ssh/gh_actions_key
