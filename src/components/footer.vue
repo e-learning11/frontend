@@ -22,21 +22,30 @@
               'text-subtitle-1': $vuetify.breakpoint.mdAndUp
             }"
           >
-            <router-link class="list-item" to="/">{{
-              language.howItWorks
-            }}</router-link>
-            <router-link class="list-item" to="/">{{
-              language.testimonials
-            }}</router-link>
-            <router-link class="list-item" to="/">{{
-              language.careers
-            }}</router-link>
-            <router-link class="list-item" to="/">{{
-              language.investors
-            }}</router-link>
-            <router-link class="list-item" to="/">{{
-              language.terms
-            }}</router-link>
+            <a
+              class="list-item"
+              target="_blank"
+              href="https://www.shababalaksa.org/%d9%83%d9%8a%d9%81-%d9%8a%d8%b9%d9%85%d9%84-%d8%a7%d9%84%d9%85%d9%88%d9%82%d8%b9/"
+              >{{ language.howItWorks }}</a
+            >
+            <a
+              class="list-item"
+              target="_blank"
+              href="https://www.shababalaksa.org/review/"
+              >{{ language.testimonials }}</a
+            >
+            <a
+              class="list-item"
+              target="_blank"
+              href="https://www.shababalaksa.org/job/"
+              >{{ language.careers }}</a
+            >
+            <a
+              class="list-item"
+              target="_blank"
+              href="https://www.shababalaksa.org/terms/"
+              >{{ language.terms }}</a
+            >
           </v-list>
         </v-col>
         <v-col md="3" sm="4" cols="12" class="list-center fill-height mt-5">
@@ -59,18 +68,30 @@
               'text-subtitle-1': $vuetify.breakpoint.mdAndUp
             }"
           >
-            <router-link class="list-item" to="/">{{
-              language.contact
-            }}</router-link>
-            <router-link class="list-item" to="/">{{
-              language.support
-            }}</router-link>
-            <router-link class="list-item" to="/">{{
-              language.destinations
-            }}</router-link>
-            <router-link class="list-item" to="/">{{
-              language.sponsorships
-            }}</router-link>
+            <a
+              class="list-item"
+              target="_blank"
+              href="https://www.shababalaksa.org/contact_us/"
+              >{{ language.contact }}</a
+            >
+            <a
+              class="list-item"
+              target="_blank"
+              href="https://www.shababalaksa.org/donat/"
+              >{{ language.support }}</a
+            >
+            <a
+              class="list-item"
+              target="_blank"
+              href="https://www.shababalaksa.org/about_us/"
+              >{{ language.destinations }}</a
+            >
+            <a
+              class="list-item"
+              target="_blank"
+              href="https://www.shababalaksa.org/partner/"
+              >{{ language.sponsorships }}</a
+            >
           </v-list>
         </v-col>
         <v-col md="3" sm="4" cols="12" class="list-center fill-height mt-5">
