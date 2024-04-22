@@ -1,6 +1,5 @@
 import axios from "axios";
 const Base_URL = `${process.env.VUE_APP_API_HOST}`;
-
 export default {
   async loginUser(user) {
     const request = {
@@ -195,7 +194,8 @@ export default {
   async getRandomCourses(count) {
     const request = {
       method: "GET",
-      url: `${Base_URL}/api/courses/random?count=${count}`
+      url: `${Base_URL}/api/courses/random?count=${count}`,
+      // withCredentials: true
     };
     const response = await axios(request)
       .then(res => res)
